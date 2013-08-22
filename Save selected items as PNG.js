@@ -61,7 +61,7 @@ function main(){
 			alert(filename);
 			var doc = createNewDocument(sels);
 			saveAsPNG(doc,filename);
-			//doc.close(SaveOptions.DONOTSAVECHANGES);
+			doc.close(SaveOptions.DONOTSAVECHANGES);
 		}
 	}
 
