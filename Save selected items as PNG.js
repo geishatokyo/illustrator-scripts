@@ -1,8 +1,5 @@
 
 
-var doc = app.activeDocument;
-
-var sels = doc.selection;
 
 function saveAsPNG( doc , filename){
 	var exportOptions = new ExportOptionsPNG24();
@@ -40,17 +37,30 @@ function getDefaultName(items){
 	return null;
 }
 
-if(sels.length == 0){
-	alert("オブジェクトを選択してください。");
-}else{
-	var filename = File.saveDialog("保存ファイル","*.png");
-	if(filename){
-		alert(filename);
-		var doc = createNewDocument(sels);
-		saveAsPNG(doc,filename);
-		doc.close(SaveOptions.DONOTSAVECHANGES);
+function main(){
+
+	var doc = app.activeDocument;
+	if(doc == null){
+		alert("ドキュメントを開いてください。")
+		return ;
 	}
+
+	var sels = doc.selection;
+
+	if(sels.length == 0){
+		alert("オブジェクトを選択してください。");
+	}else{
+		var filename = File.saveDialog("保存ファイル","*.png");
+		if(filename){
+			alert(filename);
+			var doc = createNewDocument(sels);
+			saveAsPNG(doc,filename);
+			doc.close(SaveOptions.DONOTSAVECHANGES);
+		}
+	}
+
 }
 
+main();
 
 
