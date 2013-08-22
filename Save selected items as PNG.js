@@ -5,7 +5,7 @@ function saveAsPNG( doc , filename){
 	var exportOptions = new ExportOptionsPNG24();
 	var type = ExportType.PNG24;
 	var fileSpec = new File(filename);
-	exportOptions.antiAliasing = false;
+	exportOptions.antiAliasing = true;
 	exportOptions.transparency = true;
 	exportOptions.matte = false;
 	exportOptions.saveAsHTML = false;
@@ -15,7 +15,7 @@ function saveAsPNG( doc , filename){
 }
 
 function createNewDocument(items ){
-	var newDoc = app.documents.add();
+	var newDoc = app.documents.add(DocumentColorSpace.RGB);
 	for(var i = 0; i < items.length;i++){
 		var item = items[i];
 		if(item.duplicate){
@@ -61,7 +61,7 @@ function main(){
 			alert(filename);
 			var doc = createNewDocument(sels);
 			saveAsPNG(doc,filename);
-			doc.close(SaveOptions.DONOTSAVECHANGES);
+			//doc.close(SaveOptions.DONOTSAVECHANGES);
 		}
 	}
 
