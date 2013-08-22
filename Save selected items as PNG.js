@@ -1,7 +1,7 @@
 
 
 
-function saveAsPNG( doc , filename){
+function saveAsPNG( doc , filename, scale){
 	var exportOptions = new ExportOptionsPNG24();
 	var type = ExportType.PNG24;
 	var fileSpec = new File(filename);
@@ -9,6 +9,8 @@ function saveAsPNG( doc , filename){
 	exportOptions.transparency = true;
 	exportOptions.matte = false;
 	exportOptions.saveAsHTML = false;
+	exportOptions.verticalScale = scale;
+	exportOptions.horizontalScale = scale;
 
 	doc.exportFile(fileSpec,type,exportOptions)
 
@@ -38,6 +40,17 @@ function getDefaultName(items){
 	return null;
 }
 
+function getDoubleSizeFilename(filename){
+	var name = filename.name;
+	if(name.indexOf(".") > 0){
+		name = name.substring(0,name.indexOf("."));
+	}
+    var name2 = new File(filename.path + "/" + name + "@2x.png");
+
+	return name2;
+
+}
+
 function main(){
 
 	if(app == null){
@@ -58,9 +71,12 @@ function main(){
 	}else{
 		var filename = File.saveDialog("保存ファイル","*.png");
 		if(filename){
-			alert(filename);
+
+			var filename2 = getDoubleSizeFilename(filename);
+
 			var doc = createNewDocument(sels);
-			saveAsPNG(doc,filename);
+			saveAsPNG(doc,filename,100);
+			saveAsPNG(doc,filename2,200);
 			doc.close(SaveOptions.DONOTSAVECHANGES);
 		}
 	}
