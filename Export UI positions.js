@@ -36,6 +36,7 @@ function saveAsPNG( doc , filename, scale){
 	var fileSpec = new File(filename);
 	exportOptions.antiAliasing = true;
 	exportOptions.transparency = true;
+	//exportOptions.artBoardClipping = true;
 	exportOptions.matte = false;
 	exportOptions.saveAsHTML = false;
 	exportOptions.verticalScale = scale;
@@ -154,7 +155,7 @@ function convertGroup(group){
 
 	var rec = rect(group);
 	
-	if(type == "container"){
+	if(type == "container" || type.indexOf("!") == type.length - 1){
 
 		var children = [];
 
