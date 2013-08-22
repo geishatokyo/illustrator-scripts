@@ -6,8 +6,9 @@ function saveAsPNG( doc , filename){
 	var type = ExportType.PNG24;
 	var fileSpec = new File(filename);
 	exportOptions.antiAliasing = false;
-	exportOptions.transparency = false;
-	exportOptions.saveAsHTML = true;
+	exportOptions.transparency = true;
+	exportOptions.matte = false;
+	exportOptions.saveAsHTML = false;
 
 	doc.exportFile(fileSpec,type,exportOptions)
 
@@ -38,6 +39,11 @@ function getDefaultName(items){
 }
 
 function main(){
+
+	if(app == null){
+		alert("ドキュメントを開いてください。")
+		return ;
+	}
 
 	var doc = app.activeDocument;
 	if(doc == null){
