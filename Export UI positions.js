@@ -218,7 +218,7 @@ function toJson(obj ,indent){
 
 	if(typeof obj == "int") return obj;
 	else if(typeof obj == "number") return obj;
-	else if(typeof obj == "string") return '"' + obj + '"';
+	else if(typeof obj == "string") return '"' + obj.replace(/[\n\r]/g,"\\n") + '"';
 	else if(obj instanceof Array) {
 		var objs = [];
 		for(var i = 0;i < obj.length;i++){
@@ -253,5 +253,6 @@ var structure = convert(layers);
 
 // 書き込みモードでファイルを開き、改行でjoinした配列を書き込んで閉じる
 saveFile.open("w");
+saveFile.encoding = "utf-8";
 var success = saveFile.write(toJson(structure));
 saveFile.close();
