@@ -192,7 +192,7 @@ function convertGroup(group){
 }
 
 function rect(com){
-	return [com.position[0] + com.width / 2, com.position[1] + com.height / 2,com.width,com.height];
+	return [com.position[0], com.position[1],com.width,com.height];
 }
 
 
