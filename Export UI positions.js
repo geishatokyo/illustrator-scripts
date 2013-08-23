@@ -136,6 +136,10 @@ function convertComponent(com){
 
 	if(com.typename == "TextFrame"){
 		o["text"] = com.contents;
+		var att = com.textRange.characterAttributes;
+		o["font"] = att.textFont.name;
+		o["fontSize"] = att.size;
+		o["fontColor"] = colorToRGB(att.fillColor);
 	}else if(com.typename = "PathItem"){
 		var images = saveImages(name,com);
 		o["image"] = images[0];
@@ -143,6 +147,17 @@ function convertComponent(com){
 	}
 
 	return o;
+}
+
+function colorToRGB(color){
+	if(color.typename == "RGBColor"){
+		return {r : color.red,g : color.green , b : color.blue};
+	}else if(color.typename == "NoColor"){
+		return {r : 0, g : 0,b : 0};
+	}else{
+		alert("Unknown color type " + color.typename);
+		return null;
+	}
 }
 
 function convertGroup(group){
@@ -204,15 +219,21 @@ function convert(layers){
 		children.push(convertLayer(l));
 
 	}
+
+	var artboard = app.activeDocument.artboards[0];
+
 	return {
 		name : actDocName,
 		version : scriptVersion,
+		width : artboard.artboardRect[2],
+		height : -artboard.artboardRect[3],
 		root : children
 	};
 
 }
 
 function toJson(obj ,indent){
+	
 	if(obj == null) return "null";
 	if(indent == null) indent = "";
 
@@ -238,7 +259,10 @@ function toJson(obj ,indent){
 		}
 		return "{\n  " + indent + fields.join(",\n  " + indent) + "\n" + indent + "}";
 	}
+
+	//return obj.toSource().replace(/\(\{/g,"{").replace(/})/g,"}");
 }
+
 
 
 var selectObject = app.activeDocument.selection[0];
