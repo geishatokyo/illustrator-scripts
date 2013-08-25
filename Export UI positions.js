@@ -4,13 +4,12 @@ var scriptVersion = "0.1";
 
 var actDoc = app.activeDocument;
 var saveFolder = actDoc.path; // アクティブなドキュメントの保存フォルダ
-var actDocName = actDoc.name.substring(0,actDoc.name.indexOf(".")); // アクティブなドキュメントの名前
+//var actDocName = actDoc.name.substring(0,actDoc.name.indexOf(".")); // アクティブなドキュメントの名前
 
-var imageDir = saveFolder + "/" + actDocName;
+var imageDir = saveFolder;// = saveFolder + "/" + actDocName;
 
 var imageIndex = 1;
 
-new Folder(imageDir).create();
 
 function extractTypeAndName(name,defaultType) {
 	var s = name.split(".");
@@ -81,6 +80,8 @@ function saveImages(name , item){
 }
 
 function convertLayer( layer ){
+	if(layer.name.indexOf("#") == 0) return null;
+
 	var typeAndName = extractTypeAndName(layer.name);
 	var type = typeAndName[0];
 	var name = typeAndName[1];
@@ -92,14 +93,16 @@ function convertLayer( layer ){
 	for (var i = 0; i < layers.length;i++){
 		var l = layers[i];
 		if(l.visible){
-			children.push(convertLayer(l));
+			var c = convertLayer(l);
+			if(c != null) children.push(c);
 	    }
 	}
 
 	for(var i = 0; i < layer.pageItems.length;i++){
 		var pi = layer.pageItems[i];
 		if(!pi.hidden){
-		    children.push(convertComponent(pi));
+			var c = convertComponent(pi);
+		    if(c != null) children.push(c);
 	    }
 
 	}
@@ -110,6 +113,8 @@ function convertLayer( layer ){
 	};
 }
 function convertComponent(com){
+	 
+
 	if(com.typename == "GroupItem"){
 		return convertGroup(com);
 	}
@@ -140,6 +145,7 @@ function convertComponent(com){
 		o["font"] = att.textFont.name;
 		o["fontSize"] = att.size;
 		o["fontColor"] = colorToRGB(att.fillColor);
+		
 	}else if(com.typename = "PathItem"){
 		var images = saveImages(name,com);
 		o["image"] = images[0];
@@ -177,7 +183,8 @@ function convertGroup(group){
 		for(var i = 0; i < group.pageItems.length;i++){
 			var pi = group.pageItems[i];
 			if(!pi.hidden){
-				children.push(convertComponent(pi));
+				var c = convertComponent(pi);
+				if(c != null) children.push(c);
 			}
 		}
 		return {
@@ -211,19 +218,26 @@ function rect(com){
 }
 
 
-function convert(layers){
+
+var currentArtboard;
+
+function convert(artboard){
 
 	var children = [];
+	imageDir = saveFolder + "/" + artboard.name;
+	currentArtboard = artboard;
+
+
+	new Folder(imageDir).create();
+	var layers = app.activeDocument.layers;
 	for (var i = 0; i < layers.length;i++){
 		var l = layers[i];
-		children.push(convertLayer(l));
-
+		if(l.visible){
+			children.push(convertLayer(l));
+		}
 	}
-
-	var artboard = app.activeDocument.artboards[0];
-
 	return {
-		name : actDocName,
+		name : artboard.name,
 		version : scriptVersion,
 		width : artboard.artboardRect[2],
 		height : -artboard.artboardRect[3],
@@ -265,18 +279,23 @@ function toJson(obj ,indent){
 
 
 
+
 var selectObject = app.activeDocument.selection[0];
 
-var layers = app.activeDocument.layers;
 
+var artboards = app.activeDocument.artboards;
 
+for(var i = 0;i < artboards.length;i++){
+	var artboard = artboards[i];
+	var saveFile = new File(saveFolder + "/" + artboard.name + "_ui.json");
 
-var saveFile = new File(saveFolder + "/" + actDocName + "_ui.json");
+	var structure = convert(artboard);
 
-var structure = convert(layers);
+	// 書き込みモードでファイルを開き、改行でjoinした配列を書き込んで閉じる
+	saveFile.open("w");
+	saveFile.encoding = "utf-8";
+	var success = saveFile.write(toJson(structure));
+	saveFile.close();
 
-// 書き込みモードでファイルを開き、改行でjoinした配列を書き込んで閉じる
-saveFile.open("w");
-saveFile.encoding = "utf-8";
-var success = saveFile.write(toJson(structure));
-saveFile.close();
+}
+
