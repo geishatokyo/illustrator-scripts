@@ -40,7 +40,7 @@ function saveAsPNG( doc , filename, scale){
 	exportOptions.saveAsHTML = false;
 	exportOptions.verticalScale = scale;
 	exportOptions.horizontalScale = scale;
-	doc.exportFile(fileSpec,type,exportOptions)
+	doc.exportFile(fileSpec,type,exportOptions);
 }
 function createNewDocument(item ){
 	var newDoc = app.documents.add(DocumentColorSpace.RGB);
@@ -70,10 +70,14 @@ function saveImages(name , item){
 	}
 	var doc = createNewDocument(item);
 	var path = new File(imageDir + "/" + name + ".png");
-
 	var path2 = getDoubleSizeFilename(path);
-	saveAsPNG(doc,path,100);
-	saveAsPNG(doc,path2,200);
+	if(isRetina){
+	    saveAsPNG(doc,path,50);
+	    saveAsPNG(doc,path2,100);
+	}else{
+	    saveAsPNG(doc,path,100);
+	    saveAsPNG(doc,path2,200);
+	}
 	doc.close(SaveOptions.DONOTSAVECHANGES);
 
 	return [path.name, path2.name];
@@ -226,11 +230,15 @@ function rect(com){
 
 var currentArtboard;
 
+var isRetina = false;
+
+
 function convert(artboard){
 
 	var children = [];
 	imageDir = saveFolder + "/" + artboard.name;
 	currentArtboard = artboard;
+	isRetina = artboard.artboardRect[2] >= 640;
 
 
 	new Folder(imageDir).create();

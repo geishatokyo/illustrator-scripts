@@ -51,6 +51,8 @@ function getDoubleSizeFilename(filename){
 
 }
 
+var isRetina = false;
+
 function main(){
 
 	if(app == null){
@@ -69,14 +71,21 @@ function main(){
 	if(sels.length == 0){
 		alert("オブジェクトを選択してください。");
 	}else{
+		isRetina = doc.artboards[0].artboardRect[2] >= 640;
+
 		var filename = File.saveDialog("保存ファイル","*.png");
 		if(filename){
 
 			var filename2 = getDoubleSizeFilename(filename);
 
 			var doc = createNewDocument(sels);
-			saveAsPNG(doc,filename,100);
-			saveAsPNG(doc,filename2,200);
+			if(isRetina){
+				saveAsPNG(doc,filename,50);
+				saveAsPNG(doc,filename2,100);
+			}else{
+				saveAsPNG(doc,filename,100);
+				saveAsPNG(doc,filename2,200);
+			}
 			doc.close(SaveOptions.DONOTSAVECHANGES);
 		}
 	}
