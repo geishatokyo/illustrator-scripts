@@ -13,10 +13,36 @@ var imageIndex = 1;
 
 function extractTypeAndName(name,defaultType) {
 	var s = name.split(".");
+
 	if(s.length == 1){
-		return [null,name];
+		var params = parseGetParam(name);
+		return [null,name,params];
 	}else{
-		return [s[0],s[1]];
+		var params = parseGetParam(s[1]);
+		var index = s[1].indexOf("?");
+		if(index >= 0){
+			s[1] = s[1].substring(0,index);
+		}
+		return [s[0],s[1],params];
+	}
+
+}
+
+
+function parseGetParam( name){
+
+	var index = name.indexOf("?");
+	if(index >= 0){
+		var query = name.substring(index + 1,name.length);
+		var ps = query.split("&");
+		var params = {};
+		for(var i = 0;i < ps.length ; i ++){
+			var s = ps[i].split("=");
+			params[s[0]] = s[1];
+		}
+		return params;
+	}else{
+		return {};
 	}
 
 }
@@ -29,25 +55,31 @@ function convertToClassName( n ){
 	return capitalize(n);
 }
 
-function saveAsPNG( doc , filename, scale){
+
+function saveAsPNG( doc , filename, scale,clip){
 	var exportOptions = new ExportOptionsPNG24();
 	var type = ExportType.PNG24;
 	var fileSpec = new File(filename);
 	exportOptions.antiAliasing = true;
 	exportOptions.transparency = true;
-	//exportOptions.artBoardClipping = true;
+	exportOptions.artBoardClipping = clip;
 	exportOptions.matte = false;
 	exportOptions.saveAsHTML = false;
 	exportOptions.verticalScale = scale;
 	exportOptions.horizontalScale = scale;
 	doc.exportFile(fileSpec,type,exportOptions);
 }
-function createNewDocument(item ){
-	var newDoc = app.documents.add(DocumentColorSpace.RGB);
-		if(item.duplicate){
-		    var copy = item.duplicate();
-		    copy.moveToEnd(newDoc);
-	    }
+function createNewDocument(item,width,height ){
+	if(height < 0) height = -height;
+	var newDoc = app.documents.add(DocumentColorSpace.RGB,width,height);
+	if(item.duplicate){
+	    var copy = item.duplicate();
+	    copy.moveToEnd(newDoc);
+	    copy.position = [0,0];//[0,height];
+    }
+
+    newDoc.artboards[0].artboardRect = [0,0,width,-height];
+
 	return newDoc;
 
 }
@@ -63,20 +95,34 @@ function getDoubleSizeFilename(filename){
 
 }
 
-function saveImages(name , item){
+function saveImages(name , item,params){
 	if(name == null || name.length == 0){
 		name = "image" + imageIndex;
 		imageIndex += 1;
 	}
-	var doc = createNewDocument(item);
+	var width = item.width;
+	var height = item.height;
+
+	var clip = false;
+	if(params.tileWidth){
+		width = params.tileWidth;
+		clip = true;
+	}
+	if(params.tileHeight){
+		height = params.tileHeight;
+		clip = true;
+	}
+
+	var doc = createNewDocument(item,width,height);
+
 	var path = new File(imageDir + "/" + name + ".png");
 	var path2 = getDoubleSizeFilename(path);
 	if(isRetina){
-	    saveAsPNG(doc,path,50);
-	    saveAsPNG(doc,path2,100);
+	    saveAsPNG(doc,path,50,clip);
+	    saveAsPNG(doc,path2,100,clip);
 	}else{
-	    saveAsPNG(doc,path,100);
-	    saveAsPNG(doc,path2,200);
+	    saveAsPNG(doc,path,100,clip);
+	    saveAsPNG(doc,path2,200,clip);
 	}
 	doc.close(SaveOptions.DONOTSAVECHANGES);
 
@@ -110,11 +156,17 @@ function convertLayer( layer ){
 	    }
 
 	}
-	return {
+	var d = {
 		type : type,
 		name : typeAndName[1],
 		children : children
 	};
+
+	var params = typeAndName[2];
+	for(var key in params){
+		o[key] = params[key];
+	}
+	return d;
 }
 function convertComponent(com){
 	 
@@ -143,6 +195,11 @@ function convertComponent(com){
 		height : rec[3]
 	};
 
+	var params = typeAndName[2];
+	for(var key in params){
+		o[key] = params[key];
+	}
+
 	if(com.typename == "TextFrame"){
 		if(com.contents == null || com.contents.length == 0) return null;
 		o["text"] = com.contents;
@@ -156,7 +213,7 @@ function convertComponent(com){
 		}
 		
 	}else if(com.typename = "PathItem"){
-		var images = saveImages(name,com);
+		var images = saveImages(name,com,params);
 		o["image"] = images[0];
 		o["image_2x"] = images[1];
 	}
@@ -184,7 +241,7 @@ function convertGroup(group){
 	}
 
 	var rec = rect(group);
-	
+	var o = null;
 	if(type == "container" || type.indexOf("!") == type.length - 1){
 
 		var children = [];
@@ -196,7 +253,7 @@ function convertGroup(group){
 				if(c != null) children.push(c);
 			}
 		}
-		return {
+		o = {
 			type : type,
 			name : typeAndName[1],
 			x : rec[0],
@@ -207,8 +264,8 @@ function convertGroup(group){
 		};
     }else{
 
-		var images = saveImages(name,group);
-		return {
+		var images = saveImages(name,group,typeAndName[2]);
+		o = {
 			type : type,
 			name : typeAndName[1],
 			x : rec[0],
@@ -220,6 +277,12 @@ function convertGroup(group){
 		};
 
     }
+
+	var params = typeAndName[2];
+	for(var key in params){
+		o[key] = params[key];
+	}
+	return o;
 }
 
 function rect(com){
