@@ -140,11 +140,16 @@ function convertComponent(com){
 	};
 
 	if(com.typename == "TextFrame"){
+		if(com.contents == null || com.contents.length == 0) return null;
 		o["text"] = com.contents;
 		var att = com.textRange.characterAttributes;
-		o["font"] = att.textFont.name;
-		o["fontSize"] = att.size;
-		o["fontColor"] = colorToRGB(att.fillColor);
+		if(att != null && att.textFont != null){
+			o["font"] = att.textFont.name;
+		}
+		if(att != null){
+			o["fontSize"] = att.size;
+			o["fontColor"] = colorToRGB(att.fillColor);
+		}
 		
 	}else if(com.typename = "PathItem"){
 		var images = saveImages(name,com);
@@ -233,7 +238,8 @@ function convert(artboard){
 	for (var i = 0; i < layers.length;i++){
 		var l = layers[i];
 		if(l.visible){
-			children.push(convertLayer(l));
+			var t = convertLayer(l);
+			if(t != null) children.push(t);
 		}
 	}
 	return {
