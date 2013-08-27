@@ -1,5 +1,5 @@
 
-var scriptVersion = "0.1";
+var scriptVersion = "0.1.1";
 
 
 var actDoc = app.activeDocument;
@@ -12,17 +12,17 @@ var imageIndex = 1;
 
 
 function extractTypeAndName(name,defaultType) {
+	var params = parseGetParam(name);
+	var index = name.indexOf("?");
+	if(index >= 0){
+		name = name.substring(0,index);
+	}
+
 	var s = name.split(".");
 
 	if(s.length == 1){
-		var params = parseGetParam(name);
 		return [null,name,params];
 	}else{
-		var params = parseGetParam(s[1]);
-		var index = s[1].indexOf("?");
-		if(index >= 0){
-			s[1] = s[1].substring(0,index);
-		}
 		return [s[0],s[1],params];
 	}
 
@@ -164,7 +164,7 @@ function convertLayer( layer ){
 
 	var params = typeAndName[2];
 	for(var key in params){
-		o[key] = params[key];
+		d[key] = params[key];
 	}
 	return d;
 }
