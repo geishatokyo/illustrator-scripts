@@ -1,5 +1,5 @@
 
-var scriptVersion = "0.1.1";
+var scriptVersion = "0.1.2";
 
 
 var actDoc = app.activeDocument;
