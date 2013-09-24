@@ -129,7 +129,7 @@ function saveImages(name , item,params){
 	return [path.name, path2.name];
 }
 
-function convertLayer( layer ){
+function convertLayer( layer , artboard){
 	if(layer.name.indexOf("#") == 0) return null;
 
 	var typeAndName = extractTypeAndName(layer.name);
@@ -143,7 +143,7 @@ function convertLayer( layer ){
 	for (var i = 0; i < layers.length;i++){
 		var l = layers[i];
 		if(l.visible){
-			var c = convertLayer(l);
+			var c = convertLayer(l,artboard);
 			if(c != null) children.push(c);
 	    }
 	}
@@ -159,6 +159,8 @@ function convertLayer( layer ){
 	var d = {
 		type : type,
 		name : typeAndName[1],
+		width : artboard.artboardRect[2],
+		height : -artboard.artboardRect[3],
 		children : children
 	};
 
@@ -309,7 +311,7 @@ function convert(artboard){
 	for (var i = 0; i < layers.length;i++){
 		var l = layers[i];
 		if(l.visible){
-			var t = convertLayer(l);
+			var t = convertLayer(l,artboard);
 			if(t != null) children.push(t);
 		}
 	}
