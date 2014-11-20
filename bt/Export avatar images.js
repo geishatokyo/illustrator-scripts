@@ -35,15 +35,17 @@ function exportArtboard( _artboard) {
 	artboardRect = _artboard.artboardRect;
 	//alert(artboard.name);
 	for( var i = 0;i < actDoc.layers.length ;i ++){
-
+		var layer = actDoc.layers[i];
+		if(!layer.visible) continue;
 		findPartAndExport(actDoc.layers[i])
 	}
-
 }
 
-function findPartAndExport(layer) {
-	for(var i = 0;i < layer.pageItems.length; i++){
-		var item = layer.pageItems[i];
+function findPartAndExport(layerOrItem) {
+	for(var i = 0;i < layerOrItem.pageItems.length; i++){
+		var item = layerOrItem.pageItems[i];
+		if(item.hidden) continue;
+
 		if(item.typename == "GroupItem"){
 			// 無名のパーツがぶら下がっている場合に出力
 			var exports = extractAnonymousItems(item);
@@ -73,28 +75,31 @@ function extractAnonymousItems(groupItem){
 		return items;
 	}
 	for(var i = 0; i < groupItem.pageItems.length;i++){
-		var name = groupItem.pageItems[i].name;
+		var item = groupItem.pageItems[i];
+		if(item.hidden) continue;
+
+		var name = item.name;
 		if(name == null || name.length == 0){
-			items.push(groupItem.pageItems[i]);
+			items.push(item);
 		}
 	}
 
 	return items;
 }
 
-function isExportTargetGroupItem(groupItem) {
-	if(!isAvatarPartName(groupItem)) return false;
-	var allChildrenNotHaveName = true;
-	for(var i = 0; i < groupItem.pageItems.length;i++){
-		var name = groupItem.pageItems[i].name;
-		if(name != null && name.length > 0){
-			allChildrenNotHaveName = false;
-			break;
-		}
-	}
-	return allChildrenNotHaveName;
+// function isExportTargetGroupItem(groupItem) {
+// 	if(!isAvatarPartName(groupItem)) return false;
+// 	var allChildrenNotHaveName = true;
+// 	for(var i = 0; i < groupItem.pageItems.length;i++){
+// 		var name = groupItem.pageItems[i].name;
+// 		if(name != null && name.length > 0){
+// 			allChildrenNotHaveName = false;
+// 			break;
+// 		}
+// 	}
+// 	return allChildrenNotHaveName;
 
-}
+// }
 
 function exportItem(item) {
 	exportedFiles.push(item.name);
