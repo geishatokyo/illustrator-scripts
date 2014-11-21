@@ -63,8 +63,10 @@ function findPartAndExport(layerOrItem) {
 }
 
 function isAvatarPartName(item ) {
+	if(item.name == null || item.name.length == 0) return false;
+	else return true;
 	// avから始まるものだけをアバターパーツとして認識する
-	return item.name.indexOf("av_") == 0;
+	//return item.name.indexOf("av_") == 0;
 }
 
 function extractAnonymousItems(groupItem){
