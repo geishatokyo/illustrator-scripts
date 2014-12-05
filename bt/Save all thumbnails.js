@@ -49,7 +49,7 @@ function saveImages(name, item){
 
 	var doc = createNewDocument(item,width,height);
 
-	var path = new File(saveFolder + "/_" + name + ".png");
+	var path = new File(saveFolder + "/" + name + ".png");
 	saveAsPNG(doc,path,100);
 
 	doc.close(SaveOptions.DONOTSAVECHANGES);
