@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "outDir": "./hc/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "none",
+        "target": "es5",
+        "moduleResolution": "node",
+        "noLib": true,
+        //"lib": [
+        //    "es5",
+        //    "es2015",
+        //    "dom",
+        //    "scripthost"
+        //],
+        "typeRoots": [ "./types", "./node_modules/@types"],
+    },
+    "include": [
+        "./src/main/**/*"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+}

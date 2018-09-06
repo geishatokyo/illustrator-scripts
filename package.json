@@ -1,0 +1,22 @@
+{
+  "name": "illustrator-script",
+  "version": "1.0.0",
+  "description": "Illustrator script",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "publish": "webpack --production"
+  },
+  "author": "",
+  "license": "ISC"
+}
