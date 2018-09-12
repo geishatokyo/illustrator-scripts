@@ -3795,6 +3795,18 @@ declare enum DocumentLayoutStyle {
 }
 
 /**
+ * Element placement location
+ */
+declare enum ElementPlacement {
+	INSIDE,
+	PLACEBEFORE,
+	PLACEATBEGINNING,
+	PLACEAFTER,
+	PLACEATEND
+}
+
+
+/**
  * A collection of artboards.
  */
 declare class Artboards {
@@ -3926,6 +3938,13 @@ declare class Documents {
  * A collection of layers.
  */
 declare class Layers {
+
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: Layer
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -3944,7 +3963,7 @@ declare class Layers {
 	/**
 	 * Create a layer.
 	 */
-	static add(): Layer;
+	add(): Layer;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -3963,6 +3982,11 @@ declare class Layers {
  * A collection of group items.
  */
 declare class GroupItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: GroupItem
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -3981,7 +4005,7 @@ declare class GroupItems {
 	/**
 	 * Create a group item.
 	 */
-	static add(): GroupItem;
+	add(): GroupItem;
 
 	/**
 	 * Create a group item from a vector graphics file.
@@ -4006,6 +4030,13 @@ declare class GroupItems {
  * A collection of page items.
  */
 declare class PageItems {
+
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: PageItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4033,6 +4064,13 @@ declare class PageItems {
  * A collection of path items.
  */
 declare class PathItems {
+
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: PathItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4051,7 +4089,7 @@ declare class PathItems {
 	/**
 	 * Create a path.
 	 */
-	static add(): PathItem;
+	add(): PathItem;
 
 	/**
 	 * Create an elliptical path item.
@@ -4142,7 +4180,7 @@ declare class PathPoints {
 	/**
 	 * Create a path point.
 	 */
-	static add(): PathPoint;
+	add(): PathPoint;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4161,6 +4199,11 @@ declare class PathPoints {
  * A collection of compound path items.
  */
 declare class CompoundPathItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: CompoundPathItem
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4179,7 +4222,7 @@ declare class CompoundPathItems {
 	/**
 	 * Create a compound path item.
 	 */
-	static add(): CompoundPathItem;
+	add(): CompoundPathItem;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4225,6 +4268,12 @@ declare class Stories {
  * A collection of text frame items.
  */
 declare class TextFrameItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: TextFrameItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4243,7 +4292,7 @@ declare class TextFrameItems {
 	/**
 	 * Create a point text frame item.
 	 */
-	static add(): TextFrameItem;
+	add(): TextFrameItem;
 
 	/**
 	 * Create an area text frame item.
@@ -4289,6 +4338,12 @@ declare class TextFrameItems {
  * A collection of legacy text items.
  */
 declare class LegacyTextItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: LegacyTextItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4628,7 +4683,7 @@ declare class Spots {
 	/**
 	 * Create a spot color.
 	 */
-	static add(): Spot;
+	add(): Spot;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4665,7 +4720,7 @@ declare class Swatches {
 	/**
 	 * Create a swatch.
 	 */
-	static add(): Swatch;
+	add(): Swatch;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4708,7 +4763,7 @@ declare class SwatchGroups {
 	/**
 	 * Create a Swatch group.
 	 */
-	static add(): SwatchGroup;
+	add(): SwatchGroup;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4750,7 +4805,7 @@ declare class Gradients {
 	/**
 	 * Create a gradient.
 	 */
-	static add(): Gradient;
+	add(): Gradient;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4787,7 +4842,7 @@ declare class GradientStops {
 	/**
 	 * Create a gradient stop.
 	 */
-	static add(): GradientStop;
+	add(): GradientStop;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4824,7 +4879,7 @@ declare class Patterns {
 	/**
 	 * Create a pattern.
 	 */
-	static add(): Pattern;
+	add(): Pattern;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4882,6 +4937,12 @@ declare class Symbols {
  * A collection of symbol items.
  */
 declare class SymbolItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: SymbolItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5054,7 +5115,7 @@ declare class Tags {
 	/**
 	 * Create a tag.
 	 */
-	static add(): Tag;
+	add(): Tag;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5073,6 +5134,12 @@ declare class Tags {
  * 
  */
 declare class RasterItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: RasterItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5105,6 +5172,12 @@ declare class RasterItems {
  * 
  */
 declare class PlacedItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: PlacedItem
+	
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5123,7 +5196,7 @@ declare class PlacedItems {
 	/**
 	 * Create a placed item.
 	 */
-	static add(): PlacedItem;
+	add(): PlacedItem;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5142,6 +5215,12 @@ declare class PlacedItems {
  * EmbeddedItems Collection.
  */
 declare class EmbeddedItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: EmbedItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5160,7 +5239,7 @@ declare class EmbeddedItems {
 	/**
 	 * Create an embedded item.
 	 */
-	static add(): EmbedItem;
+	add(): EmbedItem;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5179,6 +5258,12 @@ declare class EmbeddedItems {
  * 
  */
 declare class MeshItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: MeshItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5211,6 +5296,12 @@ declare class MeshItems {
  * 
  */
 declare class GraphItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: GraphItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5243,6 +5334,12 @@ declare class GraphItems {
  * 
  */
 declare class PluginItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: PluginItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5275,6 +5372,12 @@ declare class PluginItems {
  * 
  */
 declare class NonNativeItems {
+
+	/**
+	 * Access by index
+	 */
+	[index: number]: NonNativeItem
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -5347,7 +5450,7 @@ declare class Variables {
 	/**
 	 * Create a variable.
 	 */
-	static add(): Variable;
+	add(): Variable;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5384,7 +5487,7 @@ declare class DataSets {
 	/**
 	 * Create a data set.
 	 */
-	static add(): DataSet;
+	add(): DataSet;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -6084,47 +6187,47 @@ declare class ExportOptionsPNG24 {
 	/**
 	 * Should the resulting image be antialiased.
 	 */
-	static antiAliasing: boolean;
+	antiAliasing: boolean;
 
 	/**
 	 * Should the resulting image be clipped to the artboard.
 	 */
-	static artBoardClipping: boolean;
+	artBoardClipping: boolean;
 
 	/**
 	 * Dimensions in which to contain the resulting raster.
 	 */
-	static dimensions: Dimensions;
+	dimensions: Dimensions;
 
 	/**
 	 * Horizontal scaling factor.
 	 */
-	static horizontalScale: number;
+	horizontalScale: number;
 
 	/**
 	 * Should the artboard be matted with a color.
 	 */
-	static matte: boolean;
+	matte: boolean;
 
 	/**
 	 * The color to use when matting the artboard (default: white)
 	 */
-	static matteColor: RGBColor;
+	matteColor: RGBColor;
 
 	/**
 	 * Should the resulting image be saved as HTML.
 	 */
-	static saveAsHTML: boolean;
+	saveAsHTML: boolean;
 
 	/**
 	 * Should the resulting image use transparency.
 	 */
-	static transparency: boolean;
+	transparency: boolean;
 
 	/**
 	 * Vertical scaling factor.
 	 */
-	static verticalScale: number;
+	verticalScale: number;
 
 }
 
@@ -6700,17 +6803,17 @@ declare class RGBColor extends Color {
 	/**
 	 * The blue color value (between 0.0 and 255.0)
 	 */
-	static blue: number;
+	blue: number;
 
 	/**
 	 * The green color value (between 0.0 and 255.0)
 	 */
-	static green: number;
+	green: number;
 
 	/**
 	 * The red color value (between 0.0 and 255.0)
 	 */
-	static red: number;
+	red: number;
 
 }
 
@@ -6721,22 +6824,22 @@ declare class CMYKColor extends Color {
 	/**
 	 * The black color value (between 0.0 and 100.0)
 	 */
-	static black: number;
+	black: number;
 
 	/**
 	 * The cyan color value (between 0.0 and 100.0)
 	 */
-	static cyan: number;
+	cyan: number;
 
 	/**
 	 * The magenta color value (between 0.0 and 100.0)
 	 */
-	static magenta: number;
+	magenta: number;
 
 	/**
 	 * The yellow color value (between 0.0 and 100.0)
 	 */
-	static yellow: number;
+	yellow: number;
 
 }
 
@@ -6747,7 +6850,7 @@ declare class GrayColor extends Color {
 	/**
 	 * The gray value (between 0.0 and 100.0)
 	 */
-	static gray: number;
+	gray: number;
 
 }
 
@@ -7908,7 +8011,7 @@ declare class Application {
 	/**
 	 * The selection visible to the user.
 	 */
-	selection: any;
+	selection: any[];
 
 	/**
 	 * The list of presets available for creating a new document.
@@ -8739,7 +8842,7 @@ declare class Document {
 	/**
 	 * The selection within the document.
 	 */
-	selection: any;
+	selection: any[];
 
 	/**
 	 * 
@@ -9213,7 +9316,7 @@ declare class Layer {
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	move(relativeObject: object, insertionLocation: any): Layer;
+	move(relativeObject: object, insertionLocation: ElementPlacement): Layer;
 
 	/**
 	 * Deletes this object.
@@ -9717,7 +9820,7 @@ declare class Symbol {
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	duplicate(relativeObject: object, insertionLocation: any): Symbol;
+	duplicate(relativeObject: object, insertionLocation: ElementPlacement): Symbol;
 
 	/**
 	 * Deletes this object.
@@ -10010,14 +10113,14 @@ declare class PageItem {
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	duplicate(relativeObject: object, insertionLocation: any): PageItem;
+	duplicate(relativeObject: object, insertionLocation: ElementPlacement): PageItem;
 
 	/**
 	 * Move the object.
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	move(relativeObject: object, insertionLocation: any): PageItem;
+	move(relativeObject: object, insertionLocation: ElementPlacement): PageItem;
 
 	/**
 	 * Deletes this object.
@@ -11122,14 +11225,14 @@ declare class TextRange {
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	duplicate(relativeObject: object, insertionLocation: any): TextRange;
+	duplicate(relativeObject: object, insertionLocation: ElementPlacement): TextRange;
 
 	/**
 	 * Move the object.
 	 * @param relativeObject 
 	 * @param insertionLocation 
 	 */
-	move(relativeObject: object, insertionLocation: any): TextRange;
+	move(relativeObject: object, insertionLocation: ElementPlacement): TextRange;
 
 	/**
 	 * Deletes this object.
