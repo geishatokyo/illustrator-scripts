@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Illustrator script",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "ps-scripting-es5shim": "0.0.2"
+  },
   "devDependencies": {
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
