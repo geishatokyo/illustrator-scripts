@@ -12,7 +12,12 @@ const SilhouetteLayerName = "silhouette"
 
 const StrokeColor = ColorPallete.rgbString("#898989")
 
-
+/**
+ * originalの名前のレイヤーを元に、
+ * 輪郭化したものをoutline
+ * シルエット化したものをshilhouette
+ * のレイヤーに作成し、それぞれの画像を保存する
+ */
 class FillItDocument {
 
   private doc = app.activeDocument
