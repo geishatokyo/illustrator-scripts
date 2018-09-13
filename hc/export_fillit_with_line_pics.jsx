@@ -84,95 +84,1484 @@
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ "./node_modules/ps-scripting-es5shim/bundle/main.bundle.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/ps-scripting-es5shim/bundle/main.bundle.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+__webpack_require__(1);
+module.exports = __webpack_require__(2);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
-eval("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId])\n/******/ \t\t\treturn installedModules[moduleId].exports;\n\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\texports: {},\n/******/ \t\t\tid: moduleId,\n/******/ \t\t\tloaded: false\n/******/ \t\t};\n\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.loaded = true;\n\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n\n\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"\";\n\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ function(module, exports, __webpack_require__) {\n\n\tmodule.exports = __webpack_require__(28);\n\n\n/***/ },\n/* 1 */,\n/* 2 */,\n/* 3 */,\n/* 4 */,\n/* 5 */,\n/* 6 */,\n/* 7 */,\n/* 8 */,\n/* 9 */,\n/* 10 */,\n/* 11 */,\n/* 12 */,\n/* 13 */,\n/* 14 */,\n/* 15 */,\n/* 16 */,\n/* 17 */,\n/* 18 */,\n/* 19 */,\n/* 20 */,\n/* 21 */,\n/* 22 */,\n/* 23 */,\n/* 24 */,\n/* 25 */,\n/* 26 */,\n/* 27 */,\n/* 28 */\n/***/ function(module, exports, __webpack_require__) {\n\n\t/*\r\n\tTODO\r\n\t1) Make a list with functionality that need to patch [done]\r\n\t2) Get \"blueprints\" of these methods [done]\r\n\t3) Rewrite methods with Photoshop javascript environment and \"blueprints\" licences in mind\r\n\r\n\tFunction\r\n\t• Function.bind [done]\r\n\r\n\tObject\r\n\t• Object.defineProperty [done]\r\n\t• Object.getOwnPropertyDescriptor [done]\r\n\t• Object.defineProperties \t [done]\r\n\t• Object.create\t\t\t  \t [done]\r\n\t• Object.getOwnPropertyNames [done]\r\n\t• Object.getPrototypeOf\t\t [done]\r\n\t• Object.preventExtensions   [done]\r\n\t• Object.isExtensible\t\t [done]\r\n\t• Object.seal \t\t\t\t [done]\r\n\t• Object.isSealed(obj)\t\t [done]\r\n\t• Object.freeze \t\t\t [done]\r\n\t• Object.isFrozen(obj)\t\t [done]\r\n\t• Object.keys \t\t\t\t [done]\r\n\r\n\tArray\r\n\t• Array.isArray\t\t\t\t\t[done]\r\n\t• Array.prototype.indexOf \t\t[done]\r\n\t• Array.prototype.lastIndexOf\t[done]\r\n\t• Array.prototype.every \t\t[done]\r\n\t• Array.prototype.some\t\t\t[done]\r\n\t• Array.prototype.forEach\t\t[done]\r\n\t• Array.prototype.map\t\t\t[done]\r\n\t• Array.prototype.filter\t\t[done]\r\n\t• Array.prototype.reduce \t\t[done]\r\n\t• Array.prototype.reduceRight\t[done]\r\n\r\n\r\n\tString\r\n\t• String.prototype.trim\t\r\n\r\n\tOther\r\n\t• console.log\r\n\t• window\r\n\r\n\r\n\r\n\t*/\r\n\t__webpack_require__(29)\r\n\r\n\t__webpack_require__(30)\r\n\t__webpack_require__(31)\r\n\t__webpack_require__(32)\r\n\t__webpack_require__(33)\r\n\t__webpack_require__(34)\r\n\t__webpack_require__(35)\r\n\t__webpack_require__(36)\r\n\t__webpack_require__(37)\r\n\t__webpack_require__(38)\r\n\t__webpack_require__(39)\r\n\r\n\t__webpack_require__(40)\r\n\r\n\t__webpack_require__(41);\r\n\t__webpack_require__(42);\r\n\t__webpack_require__(43);\r\n\t__webpack_require__(44);\r\n\t__webpack_require__(45);\r\n\t__webpack_require__(46);\r\n\t__webpack_require__(47);\r\n\t__webpack_require__(48);\r\n\t__webpack_require__(49);\r\n\t__webpack_require__(50);\r\n\t__webpack_require__(51);\r\n\t__webpack_require__(52);\r\n\t__webpack_require__(53);\n\n/***/ },\n/* 29 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/Trim\r\n\t*/\r\n\tif (!String.prototype.trim) {\r\n\t\t// Вырезаем BOM и неразрывный пробел\r\n\t\tString.prototype.trim = function() {\r\n\t\t\treturn this.replace(/^[\\s\\uFEFF\\xA0]+|[\\s\\uFEFF\\xA0]+$/g, '');\r\n\t\t};\r\n\t}\n\n/***/ },\n/* 30 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every\r\n\t*/\r\n\tif (!Array.prototype.every) {\r\n\t  Array.prototype.every = function(callback, thisArg) {\r\n\t    var T, k;\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.every called on null or undefined');\r\n\t    }\r\n\r\n\t    // 1. Let O be the result of calling ToObject passing the this \r\n\t    //    value as the argument.\r\n\t    var O = Object(this);\r\n\r\n\t    // 2. Let lenValue be the result of calling the Get internal method\r\n\t    //    of O with the argument \"length\".\r\n\t    // 3. Let len be ToUint32(lenValue).\r\n\t    var len = O.length >>> 0;\r\n\r\n\t    // 4. If IsCallable(callback) is false, throw a TypeError exception.\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.\r\n\t    T = (arguments.length > 1) ? thisArg : void 0;\r\n\r\n\t    // 6. Let k be 0.\r\n\t    k = 0;\r\n\r\n\t    // 7. Repeat, while k < len\r\n\t    while (k < len) {\r\n\r\n\t      var kValue;\r\n\r\n\t      // a. Let Pk be ToString(k).\r\n\t      //   This is implicit for LHS operands of the in operator\r\n\t      // b. Let kPresent be the result of calling the HasProperty internal \r\n\t      //    method of O with argument Pk.\r\n\t      //   This step can be combined with c\r\n\t      // c. If kPresent is true, then\r\n\t      if (k in O) {\r\n\r\n\t        // i. Let kValue be the result of calling the Get internal method\r\n\t        //    of O with argument Pk.\r\n\t        kValue = O[k];\r\n\r\n\t        // ii. Let testResult be the result of calling the Call internal method\r\n\t        //     of callback with T as the this value and argument list \r\n\t        //     containing kValue, k, and O.\r\n\t        var testResult = callback.call(T, kValue, k, O);\r\n\r\n\t        // iii. If ToBoolean(testResult) is false, return false.\r\n\t        if (!testResult) {\r\n\t          return false;\r\n\t        }\r\n\t      }\r\n\t      k++;\r\n\t    }\r\n\t    return true;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 31 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter\r\n\t*/\r\n\tif (!Array.prototype.filter) {\r\n\t  Array.prototype.filter = function(callback, thisArg) {\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.filter called on null or undefined');\r\n\t    }\r\n\r\n\t    var t = Object(this);\r\n\t    var len = t.length >>> 0;\r\n\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    var res = [];\r\n\r\n\t    var T = (arguments.length > 1) ? thisArg : void 0;\r\n\t    \r\n\t    for (var i = 0; i < len; i++) {\r\n\t      if (i in t) {\r\n\t        var val = t[i];\r\n\r\n\t        // NOTE: Technically this should Object.defineProperty at\r\n\t        //       the next index, as push can be affected by\r\n\t        //       properties on Object.prototype and Array.prototype.\r\n\t        //       But that method's new, and collisions should be\r\n\t        //       rare, so use the more-compatible alternative.\r\n\t        if (callback.call(T, val, i, t)) {\r\n\t          res.push(val);\r\n\t        }\r\n\t      }\r\n\t    }\r\n\r\n\t    return res;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 32 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.18\r\n\t// Reference: http://es5.github.io/#x15.4.4.18\r\n\tif (!Array.prototype.forEach) {\r\n\t    Array.prototype.forEach = function(callback, thisArg) {\r\n\r\n\r\n\t        if (this === void 0 || this === null) {\r\n\t            throw new TypeError('Array.prototype.forEach called on null or undefined');\r\n\t        }\r\n\r\n\t        // 1. Let O be the result of calling toObject() passing the\r\n\t        // |this| value as the argument.\r\n\t        var O = Object(this);\r\n\r\n\t        // 2. Let lenValue be the result of calling the Get() internal\r\n\t        // method of O with the argument \"length\".\r\n\t        // 3. Let len be toUint32(lenValue).\r\n\t        var len = O.length >>> 0;\r\n\r\n\t        // 4. If isCallable(callback) is false, throw a TypeError exception. \r\n\t        // See: http://es5.github.com/#x9.11\r\n\t        if (callback.__class__ !== 'Function') {\r\n\t            throw new TypeError(callback + ' is not a function');\r\n\t        }\r\n\r\n\t        // 5. If thisArg was supplied, let T be thisArg; else let\r\n\t        // T be undefined.\r\n\t        var T = (arguments.length > 1) ? thisArg : void 0;\r\n\r\n\r\n\t        // 6. Let k be 0\r\n\t        //k = 0;\r\n\r\n\t        // 7. Repeat, while k < len\r\n\t        for (var k = 0; k < len; k++) {\r\n\t            var kValue;\r\n\t            // a. Let Pk be ToString(k).\r\n\t            //    This is implicit for LHS operands of the in operator\r\n\t            // b. Let kPresent be the result of calling the HasProperty\r\n\t            //    internal method of O with argument Pk.\r\n\t            //    This step can be combined with c\r\n\t            // c. If kPresent is true, then\r\n\t            if (k in O) {\r\n\t                // i. Let kValue be the result of calling the Get internal\r\n\t                // method of O with argument Pk.\r\n\t                kValue = O[k];\r\n\t                // ii. Call the Call internal method of callback with T as\r\n\t                // the this value and argument list containing kValue, k, and O.\r\n\t                callback.call(T, kValue, k, O);\r\n\t            }\r\n\t        }\r\n\t        // 8. return undefined\r\n\t    }\r\n\t}\n\n/***/ },\n/* 33 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#Polyfill\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.14\r\n\t// Reference: http://es5.github.io/#x15.4.4.14\r\n\tif (!Array.prototype.indexOf) {\r\n\t  Array.prototype.indexOf = function(searchElement, fromIndex) {\r\n\r\n\r\n\t    // 1. Let o be the result of calling ToObject passing\r\n\t    //    the this value as the argument.\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.indexOf called on null or undefined');\r\n\t    }\r\n\r\n\t    var k;\r\n\t    var o = Object(this);\r\n\r\n\t    // 2. Let lenValue be the result of calling the Get\r\n\t    //    internal method of o with the argument \"length\".\r\n\t    // 3. Let len be ToUint32(lenValue).\r\n\t    var len = o.length >>> 0;\r\n\r\n\t    // 4. If len is 0, return -1.\r\n\t    if (len === 0) {\r\n\t      return -1;\r\n\t    }\r\n\r\n\t    // 5. If argument fromIndex was passed let n be\r\n\t    //    ToInteger(fromIndex); else let n be 0.\r\n\t    var n = +fromIndex || 0;\r\n\r\n\t    if (Math.abs(n) === Infinity) {\r\n\t      n = 0;\r\n\t    }\r\n\r\n\t    // 6. If n >= len, return -1.\r\n\t    if (n >= len) {\r\n\t      return -1;\r\n\t    }\r\n\r\n\t    // 7. If n >= 0, then Let k be n.\r\n\t    // 8. Else, n<0, Let k be len - abs(n).\r\n\t    //    If k is less than 0, then let k be 0.\r\n\t    k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);\r\n\r\n\t    // 9. Repeat, while k < len\r\n\t    while (k < len) {\r\n\t      // a. Let Pk be ToString(k).\r\n\t      //   This is implicit for LHS operands of the in operator\r\n\t      // b. Let kPresent be the result of calling the\r\n\t      //    HasProperty internal method of o with argument Pk.\r\n\t      //   This step can be combined with c\r\n\t      // c. If kPresent is true, then\r\n\t      //    i.  Let elementK be the result of calling the Get\r\n\t      //        internal method of o with the argument ToString(k).\r\n\t      //   ii.  Let same be the result of applying the\r\n\t      //        Strict Equality Comparison Algorithm to\r\n\t      //        searchElement and elementK.\r\n\t      //  iii.  If same is true, return k.\r\n\t      if (k in o && o[k] === searchElement) {\r\n\t        return k;\r\n\t      }\r\n\t      k++;\r\n\t    }\r\n\t    return -1;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 34 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray\r\n\t*/\r\n\tif (!Array.isArray) {\r\n\t  Array.isArray = function(arg) {\r\n\r\n\t    if (arg === void 0 || arg === null) {\r\n\t      return false;\r\n\t    }\r\n\t  \treturn (arg.__class__ === 'Array');\r\n\t  };\r\n\t}\n\n/***/ },\n/* 35 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.15\r\n\t// Reference: http://es5.github.io/#x15.4.4.15\r\n\tif (!Array.prototype.lastIndexOf) {\r\n\t  Array.prototype.lastIndexOf = function(searchElement, fromIndex) {\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.lastIndexOf called on null or undefined');\r\n\t    }\r\n\r\n\t    var n, k,\r\n\t      t = Object(this),\r\n\t      len = t.length >>> 0;\r\n\t    if (len === 0) {\r\n\t      return -1;\r\n\t    }\r\n\r\n\t    n = len - 1;\r\n\t    if (arguments.length > 1) {\r\n\t      n = Number(arguments[1]);\r\n\t      if (n != n) {\r\n\t        n = 0;\r\n\t      }\r\n\t      else if (n != 0 && n != Infinity && n != -Infinity) {\r\n\t        n = (n > 0 || -1) * Math.floor(Math.abs(n));\r\n\t      }\r\n\t    }\r\n\r\n\t    for (k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n); k >= 0; k--) {\r\n\t      if (k in t && t[k] === searchElement) {\r\n\t        return k;\r\n\t      }\r\n\t    }\r\n\t    return -1;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 36 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.19\r\n\t// Reference: http://es5.github.io/#x15.4.4.19\r\n\tif (!Array.prototype.map) {\r\n\r\n\t  Array.prototype.map = function(callback, thisArg) {\r\n\r\n\t    var T, A, k;\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.map called on null or undefined');\r\n\t    }\r\n\r\n\t    // 1. Let O be the result of calling ToObject passing the |this| \r\n\t    //    value as the argument.\r\n\t    var O = Object(this);\r\n\r\n\t    // 2. Let lenValue be the result of calling the Get internal \r\n\t    //    method of O with the argument \"length\".\r\n\t    // 3. Let len be ToUint32(lenValue).\r\n\t    var len = O.length >>> 0;\r\n\r\n\t    // 4. If IsCallable(callback) is false, throw a TypeError exception.\r\n\t    // See: http://es5.github.com/#x9.11\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.\r\n\t    T = (arguments.length > 1) ? thisArg : void 0;\r\n\r\n\t    // 6. Let A be a new array created as if by the expression new Array(len) \r\n\t    //    where Array is the standard built-in constructor with that name and \r\n\t    //    len is the value of len.\r\n\t    A = new Array(len);\r\n\r\n\t    for (var k = 0; k < len; k++) {\r\n\r\n\t      var kValue, mappedValue;\r\n\r\n\t      // a. Let Pk be ToString(k).\r\n\t      //   This is implicit for LHS operands of the in operator\r\n\t      // b. Let kPresent be the result of calling the HasProperty internal \r\n\t      //    method of O with argument Pk.\r\n\t      //   This step can be combined with c\r\n\t      // c. If kPresent is true, then\r\n\t      if (k in O) {\r\n\r\n\t        // i. Let kValue be the result of calling the Get internal \r\n\t        //    method of O with argument Pk.\r\n\t        kValue = O[k];\r\n\r\n\t        // ii. Let mappedValue be the result of calling the Call internal \r\n\t        //     method of callback with T as the this value and argument \r\n\t        //     list containing kValue, k, and O.\r\n\t        mappedValue = callback.call(T, kValue, k, O);\r\n\r\n\t        // iii. Call the DefineOwnProperty internal method of A with arguments\r\n\t        // Pk, Property Descriptor\r\n\t        // { Value: mappedValue,\r\n\t        //   Writable: true,\r\n\t        //   Enumerable: true,\r\n\t        //   Configurable: true },\r\n\t        // and false.\r\n\r\n\t        // In browsers that support Object.defineProperty, use the following:\r\n\t        // Object.defineProperty(A, k, {\r\n\t        //   value: mappedValue,\r\n\t        //   writable: true,\r\n\t        //   enumerable: true,\r\n\t        //   configurable: true\r\n\t        // });\r\n\r\n\t        // For best browser support, use the following:\r\n\t        A[k] = mappedValue;\r\n\t      }\r\n\t    }\r\n\t    // 9. return A\r\n\t    return A;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 37 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.21\r\n\t// Reference: http://es5.github.io/#x15.4.4.21\r\n\tif (!Array.prototype.reduce) {\r\n\t  Array.prototype.reduce = function(callback, initialValue) {\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.reduce called on null or undefined');\r\n\t    }\r\n\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    var t = Object(this), len = t.length >>> 0, k = 0, value;\r\n\r\n\t    if (arguments.length > 1) \r\n\t      {\r\n\t        value = initialValue;\r\n\t      } \r\n\t    else \r\n\t      {\r\n\t        while (k < len && !(k in t)) {\r\n\t          k++; \r\n\t        }\r\n\t        if (k >= len) {\r\n\t          throw new TypeError('Reduce of empty array with no initial value');\r\n\t        }\r\n\t        value = t[k++];\r\n\t      }\r\n\r\n\t    for (; k < len; k++) {\r\n\t      if (k in t) {\r\n\t        value = callback(value, t[k], k, t);\r\n\t      }\r\n\t    }\r\n\t    return value;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 38 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.22\r\n\t// Reference: http://es5.github.io/#x15.4.4.22\r\n\tif (!Array.prototype.reduceRight) {\r\n\t  Array.prototype.reduceRight = function(callback, initialValue) {\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.reduceRight called on null or undefined');\r\n\t    }\r\n\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    var t = Object(this), len = t.length >>> 0, k = len - 1, value;\r\n\t    if (arguments.length > 1) \r\n\t      {\r\n\t        value = initialValue;\r\n\t      } \r\n\t    else \r\n\t      {\r\n\t        while (k >= 0 && !(k in t)) {\r\n\t          k--;\r\n\t        }\r\n\t        if (k < 0) {\r\n\t          throw new TypeError('Reduce of empty array with no initial value');\r\n\t        }\r\n\t        value = t[k--];\r\n\t      }\r\n\t      \r\n\t    for (; k >= 0; k--) {\r\n\t      if (k in t) {\r\n\t        value = callback(value, t[k], k, t);\r\n\t      }\r\n\t    }\r\n\t    return value;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 39 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some\r\n\t*/\r\n\t// Production steps of ECMA-262, Edition 5, 15.4.4.17\r\n\t// Reference: http://es5.github.io/#x15.4.4.17\r\n\tif (!Array.prototype.some) {\r\n\t  Array.prototype.some = function(callback, thisArg) {\r\n\r\n\t    if (this === void 0 || this === null) {\r\n\t      throw new TypeError('Array.prototype.some called on null or undefined');\r\n\t    }\r\n\r\n\t    if (callback.__class__ !== 'Function') {\r\n\t      throw new TypeError(callback + ' is not a function');\r\n\t    }\r\n\r\n\t    var t = Object(this);\r\n\t    var len = t.length >>> 0;\r\n\r\n\t    var T = arguments.length > 1 ? thisArg : void 0;\r\n\t    for (var i = 0; i < len; i++) {\r\n\t      if (i in t && callback.call(T, t[i], i, t)) {\r\n\t        return true;\r\n\t      }\r\n\t    }\r\n\r\n\t    return false;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 40 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill\r\n\r\n\tWARNING! Bound functions used as constructors NOT supported by this polyfill!\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Bound_functions_used_as_constructors\r\n\t*/\r\n\tif (!Function.prototype.bind) {\r\n\t  Function.prototype.bind = function(oThis) {\r\n\t    if (this.__class__ !== 'Function') {\r\n\t      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');\r\n\t    }\r\n\r\n\t    var aArgs   = Array.prototype.slice.call(arguments, 1),\r\n\t        fToBind = this,\r\n\t        fNOP    = function() {},\r\n\t        fBound  = function() {\r\n\t          return fToBind.apply(this instanceof fNOP\r\n\t                 ? this\r\n\t                 : oThis,\r\n\t                 aArgs.concat(Array.prototype.slice.call(arguments)));\r\n\t        };\r\n\r\n\t    if (this.prototype) {\r\n\t      // Function.prototype doesn't have a prototype property\r\n\t      fNOP.prototype = this.prototype; \r\n\t    }\r\n\t    fBound.prototype = new fNOP();\r\n\r\n\t    return fBound;\r\n\t  };\r\n\t}\n\n/***/ },\n/* 41 */\n/***/ function(module, exports) {\n\n\tif (!Object.create) {\r\n\t  // Production steps of ECMA-262, Edition 5, 15.2.3.5\r\n\t  // Reference: http://es5.github.io/#x15.2.3.5\r\n\t  Object.create = (function() {\r\n\t    // To save on memory, use a shared constructor\r\n\t    function Temp() {}\r\n\r\n\t    // make a safe reference to Object.prototype.hasOwnProperty\r\n\t    var hasOwn = Object.prototype.hasOwnProperty;\r\n\r\n\t    return function(O) {\r\n\t      // 1. If Type(O) is not Object or Null throw a TypeError exception.\r\n\t      if (Object(O) !== O && O !== null) {\r\n\t        throw TypeError('Object prototype may only be an Object or null');\r\n\t      }\r\n\r\n\t      // 2. Let obj be the result of creating a new object as if by the\r\n\t      //    expression new Object() where Object is the standard built-in\r\n\t      //    constructor with that name\r\n\t      // 3. Set the [[Prototype]] internal property of obj to O.\r\n\t      Temp.prototype = O;\r\n\t      var obj = new Temp();\r\n\t      Temp.prototype = null; // Let's not keep a stray reference to O...\r\n\r\n\t      // 4. If the argument Properties is present and not undefined, add\r\n\t      //    own properties to obj as if by calling the standard built-in\r\n\t      //    function Object.defineProperties with arguments obj and\r\n\t      //    Properties.\r\n\t      if (arguments.length > 1) {\r\n\t        // Object.defineProperties does ToObject on its first argument.\r\n\t        var Properties = Object(arguments[1]);\r\n\t        for (var prop in Properties) {\r\n\t          if (hasOwn.call(Properties, prop)) {\r\n\t            var descriptor = Properties[prop];\r\n\t            if (Object(descriptor) !== descriptor) {\r\n\t              throw TypeError(prop + 'must be an object');\r\n\t            }\r\n\t            if ('get' in descriptor || 'set' in descriptor) {\r\n\t              throw new TypeError('getters & setters can not be defined on this javascript engine');\r\n\t            }\r\n\t            if ('value' in descriptor) {\r\n\t              obj[prop] = Properties[prop];\r\n\t            }\r\n\r\n\t          }\r\n\t        }\r\n\t      }\r\n\r\n\t      // 5. Return obj\r\n\t      return obj;\r\n\t    };\r\n\t  })();\r\n\t}\n\n/***/ },\n/* 42 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties#Polyfill\r\n\t*/\r\n\tif (!Object.defineProperties) {\r\n\r\n\t  Object.defineProperties = function(object, props) {\r\n\r\n\t    function hasProperty(obj, prop) {\r\n\t      return Object.prototype.hasOwnProperty.call(obj, prop);\r\n\t    }\r\n\r\n\t    function convertToDescriptor(desc) {\r\n\r\n\t      if (Object(desc) !== desc) {\r\n\t        throw new TypeError('Descriptor can only be an Object.');\r\n\t      }\r\n\r\n\r\n\t      var d = {};\r\n\r\n\t      if (hasProperty(desc, \"enumerable\")) {\r\n\t        d.enumerable = !!desc.enumerable;\r\n\t      }\r\n\r\n\t      if (hasProperty(desc, \"configurable\")) {\r\n\t        d.configurable = !!desc.configurable;\r\n\t      }\r\n\r\n\t      if (hasProperty(desc, \"value\")) {\r\n\t        d.value = desc.value;\r\n\t      }\r\n\r\n\t      if (hasProperty(desc, \"writable\")) {\r\n\t        d.writable = !!desc.writable;\r\n\t      }\r\n\r\n\t      if (hasProperty(desc, \"get\")) {\r\n\t        throw new TypeError('getters & setters can not be defined on this javascript engine');\r\n\t      }\r\n\r\n\t      if (hasProperty(desc, \"set\")) {\r\n\t        throw new TypeError('getters & setters can not be defined on this javascript engine');\r\n\t      }\r\n\r\n\t      return d;\r\n\t    }\r\n\r\n\t    if (Object(object) !== object) {\r\n\t      throw new TypeError('Object.defineProperties can only be called on Objects.');\r\n\t    }\r\n\r\n\t    if (Object(props) !== props) {\r\n\t      throw new TypeError('Properties can only be an Object.');\r\n\t    }\r\n\r\n\t    var properties = Object(props);\r\n\t    for (propName in properties) {\r\n\t      if (hasOwnProperty.call(properties, propName)) {\r\n\t        var descr = convertToDescriptor(properties[propName]);\r\n\t        object[propName] = descr.value;\r\n\t      }\r\n\t    }\r\n\t    return object;\r\n\t  }\r\n\t}\n\n/***/ },\n/* 43 */\n/***/ function(module, exports) {\n\n\tif (!Object.defineProperty) {\r\n\r\n\t    Object.defineProperty = function defineProperty(object, property, descriptor) {\r\n\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.defineProperty can only be called on Objects.');\r\n\t        }\r\n\r\n\t        if (Object(descriptor) !== descriptor) {\r\n\t            throw new TypeError('Property description can only be an Object.');\r\n\t        }\r\n\r\n\t        if ('get' in descriptor || 'set' in descriptor) {\r\n\t            throw new TypeError('getters & setters can not be defined on this javascript engine');\r\n\t        }\r\n\t        // If it's a data property.\r\n\t        if ('value' in descriptor) {\r\n\t            // fail silently if 'writable', 'enumerable', or 'configurable'\r\n\t            // are requested but not supported\r\n\t            // can't implement these features; allow true but not false\r\n\t            /* if ( \r\n\t                     ('writable' in descriptor && !descriptor.writable) ||\r\n\t                     ('enumerable' in descriptor && !descriptor.enumerable) ||\r\n\t                     ('configurable' in descriptor && !descriptor.configurable)\r\n\t                 )\r\n\t                     {\r\n\t                         throw new RangeError('This implementation of Object.defineProperty does not support configurable, enumerable, or writable properties SET to FALSE.');\r\n\t                     }*/\r\n\r\n\r\n\t            object[property] = descriptor.value;\r\n\t        }\r\n\t        return object;\r\n\t    }\r\n\t}\n\n/***/ },\n/* 44 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://github.com/es-shims/es5-shim/blob/master/es5-sham.js\r\n\t*/\r\n\t// ES5 15.2.3.9\r\n\t// http://es5.github.com/#x15.2.3.9\r\n\tif (!Object.freeze) {\r\n\t    Object.freeze = function freeze(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.freeze can only be called on Objects.');\r\n\t        }\r\n\t        // this is misleading and breaks feature-detection, but\r\n\t        // allows \"securable\" code to \"gracefully\" degrade to working\r\n\t        // but insecure code.\r\n\t        return object;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 45 */\n/***/ function(module, exports) {\n\n\tif (!Object.getOwnPropertyDescriptor) {\r\n\r\n\t    Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.getOwnPropertyDescriptor can only be called on Objects.');\r\n\t        }\r\n\r\n\t        var descriptor;\r\n\t        if (!Object.prototype.hasOwnProperty.call(object, property)) {\r\n\t            return descriptor;\r\n\t        }\r\n\r\n\t        descriptor = {\r\n\t            enumerable: Object.prototype.propertyIsEnumerable.call(object, property),\r\n\t            configurable: true\r\n\t        };\r\n\r\n\t        descriptor.value = object[property];\r\n\r\n\t        var psPropertyType = object.reflect.find(property).type;\r\n\t        descriptor.writable = !(psPropertyType === \"readonly\");\r\n\r\n\t        return descriptor;\r\n\t    }\r\n\t}\n\n/***/ },\n/* 46 */\n/***/ function(module, exports) {\n\n\tif (!Object.getOwnPropertyNames) {\r\n\t    Object.getOwnPropertyNames = function getOwnPropertyNames(object) {\r\n\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.getOwnPropertyNames can only be called on Objects.');\r\n\t        }\r\n\t        var names = [];\r\n\t        var hasOwnProperty = Object.prototype.hasOwnProperty;\r\n\t        var propertyIsEnumerable = Object.prototype.propertyIsEnumerable;\r\n\t        for (var prop in object) {\r\n\t            if (hasOwnProperty.call(object, prop)) {\r\n\t                names.push(prop);\r\n\t            }\r\n\t        }\r\n\t        var properties = object.reflect.properties;\r\n\t        var methods = object.reflect.methods;\r\n\t        var all = methods.concat(properties);\r\n\t        for (var i = 0; i < all.length; i++) {\r\n\t            var prop = all[i].name;\r\n\t            if (hasOwnProperty.call(object, prop) && !(propertyIsEnumerable.call(object, prop))) {\r\n\t                names.push(prop);\r\n\t            }\r\n\t        }\r\n\t        return names;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 47 */\n/***/ function(module, exports) {\n\n\tif (!Object.getPrototypeOf) {\r\n\t\tObject.getPrototypeOf = function(object) {\r\n\t\t\tif (Object(object) !== object) {\r\n\t\t\t\tthrow new TypeError('Object.getPrototypeOf can only be called on Objects.');\r\n\t\t\t}\r\n\t\t\treturn object.__proto__;\r\n\t\t}\r\n\t}\n\n/***/ },\n/* 48 */\n/***/ function(module, exports) {\n\n\t// ES5 15.2.3.13\r\n\t// http://es5.github.com/#x15.2.3.13\r\n\tif (!Object.isExtensible) {\r\n\t    Object.isExtensible = function isExtensible(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.isExtensible can only be called on Objects.');\r\n\t        }\r\n\t        return true;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 49 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://github.com/es-shims/es5-shim/blob/master/es5-sham.js\r\n\t*/\r\n\t// ES5 15.2.3.12\r\n\t// http://es5.github.com/#x15.2.3.12\r\n\tif (!Object.isFrozen) {\r\n\t    Object.isFrozen = function isFrozen(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.isFrozen can only be called on Objects.');\r\n\t        }\r\n\t        return false;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 50 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://github.com/es-shims/es5-shim/blob/master/es5-sham.js\r\n\t*/\r\n\t// ES5 15.2.3.11\r\n\t// http://es5.github.com/#x15.2.3.11\r\n\tif (!Object.isSealed) {\r\n\t    Object.isSealed = function isSealed(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.isSealed can only be called on Objects.');\r\n\t        }\r\n\t        return false;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 51 */\n/***/ function(module, exports) {\n\n\tif (!Object.keys) {\r\n\t    Object.keys = function(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.keys can only be called on Objects.');\r\n\t        }\r\n\t        var hasOwnProperty = Object.prototype.hasOwnProperty;\r\n\t        var result = [];\r\n\t        for (var prop in object) {\r\n\t            if (hasOwnProperty.call(object, prop)) {\r\n\t                result.push(prop);\r\n\t            }\r\n\t        }\r\n\t        return result;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 52 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://github.com/es-shims/es5-shim/blob/master/es5-sham.js\r\n\t*/\r\n\t// ES5 15.2.3.10\r\n\t// http://es5.github.com/#x15.2.3.10\r\n\tif (!Object.preventExtensions) {\r\n\t    Object.preventExtensions = function preventExtensions(object) {\r\n\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.preventExtensions can only be called on Objects.');\r\n\t        }\r\n\t        // this is misleading and breaks feature-detection, but\r\n\t        // allows \"securable\" code to \"gracefully\" degrade to working\r\n\t        // but insecure code.\r\n\t        return object;\r\n\t    };\r\n\t}\n\n/***/ },\n/* 53 */\n/***/ function(module, exports) {\n\n\t/*\r\n\thttps://github.com/es-shims/es5-shim/blob/master/es5-sham.js\r\n\t*/\r\n\t// ES5 15.2.3.8\r\n\t// http://es5.github.com/#x15.2.3.8\r\n\tif (!Object.seal) {\r\n\t    Object.seal = function seal(object) {\r\n\t        if (Object(object) !== object) {\r\n\t            throw new TypeError('Object.seal can only be called on Objects.');\r\n\t        }\r\n\t        // this is misleading and breaks feature-detection, but\r\n\t        // allows \"securable\" code to \"gracefully\" degrade to working\r\n\t        // but insecure code.\r\n\t        return object;\r\n\t    };\r\n\t}\n\n/***/ }\n/******/ ]);\n\n//# sourceURL=webpack:///./node_modules/ps-scripting-es5shim/bundle/main.bundle.js?");
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(28);
+
+
+/***/ },
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	TODO
+	1) Make a list with functionality that need to patch [done]
+	2) Get "blueprints" of these methods [done]
+	3) Rewrite methods with Photoshop javascript environment and "blueprints" licences in mind
+
+	Function
+	• Function.bind [done]
+
+	Object
+	• Object.defineProperty [done]
+	• Object.getOwnPropertyDescriptor [done]
+	• Object.defineProperties 	 [done]
+	• Object.create			  	 [done]
+	• Object.getOwnPropertyNames [done]
+	• Object.getPrototypeOf		 [done]
+	• Object.preventExtensions   [done]
+	• Object.isExtensible		 [done]
+	• Object.seal 				 [done]
+	• Object.isSealed(obj)		 [done]
+	• Object.freeze 			 [done]
+	• Object.isFrozen(obj)		 [done]
+	• Object.keys 				 [done]
+
+	Array
+	• Array.isArray					[done]
+	• Array.prototype.indexOf 		[done]
+	• Array.prototype.lastIndexOf	[done]
+	• Array.prototype.every 		[done]
+	• Array.prototype.some			[done]
+	• Array.prototype.forEach		[done]
+	• Array.prototype.map			[done]
+	• Array.prototype.filter		[done]
+	• Array.prototype.reduce 		[done]
+	• Array.prototype.reduceRight	[done]
+
+
+	String
+	• String.prototype.trim	
+
+	Other
+	• console.log
+	• window
+
+
+
+	*/
+	__webpack_require__(29)
+
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
+	__webpack_require__(38)
+	__webpack_require__(39)
+
+	__webpack_require__(40)
+
+	__webpack_require__(41);
+	__webpack_require__(42);
+	__webpack_require__(43);
+	__webpack_require__(44);
+	__webpack_require__(45);
+	__webpack_require__(46);
+	__webpack_require__(47);
+	__webpack_require__(48);
+	__webpack_require__(49);
+	__webpack_require__(50);
+	__webpack_require__(51);
+	__webpack_require__(52);
+	__webpack_require__(53);
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+	*/
+	if (!String.prototype.trim) {
+		// Вырезаем BOM и неразрывный пробел
+		String.prototype.trim = function() {
+			return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+		};
+	}
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
+	*/
+	if (!Array.prototype.every) {
+	  Array.prototype.every = function(callback, thisArg) {
+	    var T, k;
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.every called on null or undefined');
+	    }
+
+	    // 1. Let O be the result of calling ToObject passing the this 
+	    //    value as the argument.
+	    var O = Object(this);
+
+	    // 2. Let lenValue be the result of calling the Get internal method
+	    //    of O with the argument "length".
+	    // 3. Let len be ToUint32(lenValue).
+	    var len = O.length >>> 0;
+
+	    // 4. If IsCallable(callback) is false, throw a TypeError exception.
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+	    T = (arguments.length > 1) ? thisArg : void 0;
+
+	    // 6. Let k be 0.
+	    k = 0;
+
+	    // 7. Repeat, while k < len
+	    while (k < len) {
+
+	      var kValue;
+
+	      // a. Let Pk be ToString(k).
+	      //   This is implicit for LHS operands of the in operator
+	      // b. Let kPresent be the result of calling the HasProperty internal 
+	      //    method of O with argument Pk.
+	      //   This step can be combined with c
+	      // c. If kPresent is true, then
+	      if (k in O) {
+
+	        // i. Let kValue be the result of calling the Get internal method
+	        //    of O with argument Pk.
+	        kValue = O[k];
+
+	        // ii. Let testResult be the result of calling the Call internal method
+	        //     of callback with T as the this value and argument list 
+	        //     containing kValue, k, and O.
+	        var testResult = callback.call(T, kValue, k, O);
+
+	        // iii. If ToBoolean(testResult) is false, return false.
+	        if (!testResult) {
+	          return false;
+	        }
+	      }
+	      k++;
+	    }
+	    return true;
+	  };
+	}
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+	*/
+	if (!Array.prototype.filter) {
+	  Array.prototype.filter = function(callback, thisArg) {
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.filter called on null or undefined');
+	    }
+
+	    var t = Object(this);
+	    var len = t.length >>> 0;
+
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    var res = [];
+
+	    var T = (arguments.length > 1) ? thisArg : void 0;
+	    
+	    for (var i = 0; i < len; i++) {
+	      if (i in t) {
+	        var val = t[i];
+
+	        // NOTE: Technically this should Object.defineProperty at
+	        //       the next index, as push can be affected by
+	        //       properties on Object.prototype and Array.prototype.
+	        //       But that method's new, and collisions should be
+	        //       rare, so use the more-compatible alternative.
+	        if (callback.call(T, val, i, t)) {
+	          res.push(val);
+	        }
+	      }
+	    }
+
+	    return res;
+	  };
+	}
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.18
+	// Reference: http://es5.github.io/#x15.4.4.18
+	if (!Array.prototype.forEach) {
+	    Array.prototype.forEach = function(callback, thisArg) {
+
+
+	        if (this === void 0 || this === null) {
+	            throw new TypeError('Array.prototype.forEach called on null or undefined');
+	        }
+
+	        // 1. Let O be the result of calling toObject() passing the
+	        // |this| value as the argument.
+	        var O = Object(this);
+
+	        // 2. Let lenValue be the result of calling the Get() internal
+	        // method of O with the argument "length".
+	        // 3. Let len be toUint32(lenValue).
+	        var len = O.length >>> 0;
+
+	        // 4. If isCallable(callback) is false, throw a TypeError exception. 
+	        // See: http://es5.github.com/#x9.11
+	        if (callback.__class__ !== 'Function') {
+	            throw new TypeError(callback + ' is not a function');
+	        }
+
+	        // 5. If thisArg was supplied, let T be thisArg; else let
+	        // T be undefined.
+	        var T = (arguments.length > 1) ? thisArg : void 0;
+
+
+	        // 6. Let k be 0
+	        //k = 0;
+
+	        // 7. Repeat, while k < len
+	        for (var k = 0; k < len; k++) {
+	            var kValue;
+	            // a. Let Pk be ToString(k).
+	            //    This is implicit for LHS operands of the in operator
+	            // b. Let kPresent be the result of calling the HasProperty
+	            //    internal method of O with argument Pk.
+	            //    This step can be combined with c
+	            // c. If kPresent is true, then
+	            if (k in O) {
+	                // i. Let kValue be the result of calling the Get internal
+	                // method of O with argument Pk.
+	                kValue = O[k];
+	                // ii. Call the Call internal method of callback with T as
+	                // the this value and argument list containing kValue, k, and O.
+	                callback.call(T, kValue, k, O);
+	            }
+	        }
+	        // 8. return undefined
+	    }
+	}
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#Polyfill
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.14
+	// Reference: http://es5.github.io/#x15.4.4.14
+	if (!Array.prototype.indexOf) {
+	  Array.prototype.indexOf = function(searchElement, fromIndex) {
+
+
+	    // 1. Let o be the result of calling ToObject passing
+	    //    the this value as the argument.
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.indexOf called on null or undefined');
+	    }
+
+	    var k;
+	    var o = Object(this);
+
+	    // 2. Let lenValue be the result of calling the Get
+	    //    internal method of o with the argument "length".
+	    // 3. Let len be ToUint32(lenValue).
+	    var len = o.length >>> 0;
+
+	    // 4. If len is 0, return -1.
+	    if (len === 0) {
+	      return -1;
+	    }
+
+	    // 5. If argument fromIndex was passed let n be
+	    //    ToInteger(fromIndex); else let n be 0.
+	    var n = +fromIndex || 0;
+
+	    if (Math.abs(n) === Infinity) {
+	      n = 0;
+	    }
+
+	    // 6. If n >= len, return -1.
+	    if (n >= len) {
+	      return -1;
+	    }
+
+	    // 7. If n >= 0, then Let k be n.
+	    // 8. Else, n<0, Let k be len - abs(n).
+	    //    If k is less than 0, then let k be 0.
+	    k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+	    // 9. Repeat, while k < len
+	    while (k < len) {
+	      // a. Let Pk be ToString(k).
+	      //   This is implicit for LHS operands of the in operator
+	      // b. Let kPresent be the result of calling the
+	      //    HasProperty internal method of o with argument Pk.
+	      //   This step can be combined with c
+	      // c. If kPresent is true, then
+	      //    i.  Let elementK be the result of calling the Get
+	      //        internal method of o with the argument ToString(k).
+	      //   ii.  Let same be the result of applying the
+	      //        Strict Equality Comparison Algorithm to
+	      //        searchElement and elementK.
+	      //  iii.  If same is true, return k.
+	      if (k in o && o[k] === searchElement) {
+	        return k;
+	      }
+	      k++;
+	    }
+	    return -1;
+	  };
+	}
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+	*/
+	if (!Array.isArray) {
+	  Array.isArray = function(arg) {
+
+	    if (arg === void 0 || arg === null) {
+	      return false;
+	    }
+	  	return (arg.__class__ === 'Array');
+	  };
+	}
+
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.15
+	// Reference: http://es5.github.io/#x15.4.4.15
+	if (!Array.prototype.lastIndexOf) {
+	  Array.prototype.lastIndexOf = function(searchElement, fromIndex) {
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.lastIndexOf called on null or undefined');
+	    }
+
+	    var n, k,
+	      t = Object(this),
+	      len = t.length >>> 0;
+	    if (len === 0) {
+	      return -1;
+	    }
+
+	    n = len - 1;
+	    if (arguments.length > 1) {
+	      n = Number(arguments[1]);
+	      if (n != n) {
+	        n = 0;
+	      }
+	      else if (n != 0 && n != Infinity && n != -Infinity) {
+	        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+	      }
+	    }
+
+	    for (k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n); k >= 0; k--) {
+	      if (k in t && t[k] === searchElement) {
+	        return k;
+	      }
+	    }
+	    return -1;
+	  };
+	}
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.19
+	// Reference: http://es5.github.io/#x15.4.4.19
+	if (!Array.prototype.map) {
+
+	  Array.prototype.map = function(callback, thisArg) {
+
+	    var T, A, k;
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.map called on null or undefined');
+	    }
+
+	    // 1. Let O be the result of calling ToObject passing the |this| 
+	    //    value as the argument.
+	    var O = Object(this);
+
+	    // 2. Let lenValue be the result of calling the Get internal 
+	    //    method of O with the argument "length".
+	    // 3. Let len be ToUint32(lenValue).
+	    var len = O.length >>> 0;
+
+	    // 4. If IsCallable(callback) is false, throw a TypeError exception.
+	    // See: http://es5.github.com/#x9.11
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+	    T = (arguments.length > 1) ? thisArg : void 0;
+
+	    // 6. Let A be a new array created as if by the expression new Array(len) 
+	    //    where Array is the standard built-in constructor with that name and 
+	    //    len is the value of len.
+	    A = new Array(len);
+
+	    for (var k = 0; k < len; k++) {
+
+	      var kValue, mappedValue;
+
+	      // a. Let Pk be ToString(k).
+	      //   This is implicit for LHS operands of the in operator
+	      // b. Let kPresent be the result of calling the HasProperty internal 
+	      //    method of O with argument Pk.
+	      //   This step can be combined with c
+	      // c. If kPresent is true, then
+	      if (k in O) {
+
+	        // i. Let kValue be the result of calling the Get internal 
+	        //    method of O with argument Pk.
+	        kValue = O[k];
+
+	        // ii. Let mappedValue be the result of calling the Call internal 
+	        //     method of callback with T as the this value and argument 
+	        //     list containing kValue, k, and O.
+	        mappedValue = callback.call(T, kValue, k, O);
+
+	        // iii. Call the DefineOwnProperty internal method of A with arguments
+	        // Pk, Property Descriptor
+	        // { Value: mappedValue,
+	        //   Writable: true,
+	        //   Enumerable: true,
+	        //   Configurable: true },
+	        // and false.
+
+	        // In browsers that support Object.defineProperty, use the following:
+	        // Object.defineProperty(A, k, {
+	        //   value: mappedValue,
+	        //   writable: true,
+	        //   enumerable: true,
+	        //   configurable: true
+	        // });
+
+	        // For best browser support, use the following:
+	        A[k] = mappedValue;
+	      }
+	    }
+	    // 9. return A
+	    return A;
+	  };
+	}
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.21
+	// Reference: http://es5.github.io/#x15.4.4.21
+	if (!Array.prototype.reduce) {
+	  Array.prototype.reduce = function(callback, initialValue) {
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.reduce called on null or undefined');
+	    }
+
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    var t = Object(this), len = t.length >>> 0, k = 0, value;
+
+	    if (arguments.length > 1) 
+	      {
+	        value = initialValue;
+	      } 
+	    else 
+	      {
+	        while (k < len && !(k in t)) {
+	          k++; 
+	        }
+	        if (k >= len) {
+	          throw new TypeError('Reduce of empty array with no initial value');
+	        }
+	        value = t[k++];
+	      }
+
+	    for (; k < len; k++) {
+	      if (k in t) {
+	        value = callback(value, t[k], k, t);
+	      }
+	    }
+	    return value;
+	  };
+	}
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.22
+	// Reference: http://es5.github.io/#x15.4.4.22
+	if (!Array.prototype.reduceRight) {
+	  Array.prototype.reduceRight = function(callback, initialValue) {
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.reduceRight called on null or undefined');
+	    }
+
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    var t = Object(this), len = t.length >>> 0, k = len - 1, value;
+	    if (arguments.length > 1) 
+	      {
+	        value = initialValue;
+	      } 
+	    else 
+	      {
+	        while (k >= 0 && !(k in t)) {
+	          k--;
+	        }
+	        if (k < 0) {
+	          throw new TypeError('Reduce of empty array with no initial value');
+	        }
+	        value = t[k--];
+	      }
+	      
+	    for (; k >= 0; k--) {
+	      if (k in t) {
+	        value = callback(value, t[k], k, t);
+	      }
+	    }
+	    return value;
+	  };
+	}
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+	*/
+	// Production steps of ECMA-262, Edition 5, 15.4.4.17
+	// Reference: http://es5.github.io/#x15.4.4.17
+	if (!Array.prototype.some) {
+	  Array.prototype.some = function(callback, thisArg) {
+
+	    if (this === void 0 || this === null) {
+	      throw new TypeError('Array.prototype.some called on null or undefined');
+	    }
+
+	    if (callback.__class__ !== 'Function') {
+	      throw new TypeError(callback + ' is not a function');
+	    }
+
+	    var t = Object(this);
+	    var len = t.length >>> 0;
+
+	    var T = arguments.length > 1 ? thisArg : void 0;
+	    for (var i = 0; i < len; i++) {
+	      if (i in t && callback.call(T, t[i], i, t)) {
+	        return true;
+	      }
+	    }
+
+	    return false;
+	  };
+	}
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill
+
+	WARNING! Bound functions used as constructors NOT supported by this polyfill!
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Bound_functions_used_as_constructors
+	*/
+	if (!Function.prototype.bind) {
+	  Function.prototype.bind = function(oThis) {
+	    if (this.__class__ !== 'Function') {
+	      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+	    }
+
+	    var aArgs   = Array.prototype.slice.call(arguments, 1),
+	        fToBind = this,
+	        fNOP    = function() {},
+	        fBound  = function() {
+	          return fToBind.apply(this instanceof fNOP
+	                 ? this
+	                 : oThis,
+	                 aArgs.concat(Array.prototype.slice.call(arguments)));
+	        };
+
+	    if (this.prototype) {
+	      // Function.prototype doesn't have a prototype property
+	      fNOP.prototype = this.prototype; 
+	    }
+	    fBound.prototype = new fNOP();
+
+	    return fBound;
+	  };
+	}
+
+/***/ },
+/* 41 */
+/***/ function(module, exports) {
+
+	if (!Object.create) {
+	  // Production steps of ECMA-262, Edition 5, 15.2.3.5
+	  // Reference: http://es5.github.io/#x15.2.3.5
+	  Object.create = (function() {
+	    // To save on memory, use a shared constructor
+	    function Temp() {}
+
+	    // make a safe reference to Object.prototype.hasOwnProperty
+	    var hasOwn = Object.prototype.hasOwnProperty;
+
+	    return function(O) {
+	      // 1. If Type(O) is not Object or Null throw a TypeError exception.
+	      if (Object(O) !== O && O !== null) {
+	        throw TypeError('Object prototype may only be an Object or null');
+	      }
+
+	      // 2. Let obj be the result of creating a new object as if by the
+	      //    expression new Object() where Object is the standard built-in
+	      //    constructor with that name
+	      // 3. Set the [[Prototype]] internal property of obj to O.
+	      Temp.prototype = O;
+	      var obj = new Temp();
+	      Temp.prototype = null; // Let's not keep a stray reference to O...
+
+	      // 4. If the argument Properties is present and not undefined, add
+	      //    own properties to obj as if by calling the standard built-in
+	      //    function Object.defineProperties with arguments obj and
+	      //    Properties.
+	      if (arguments.length > 1) {
+	        // Object.defineProperties does ToObject on its first argument.
+	        var Properties = Object(arguments[1]);
+	        for (var prop in Properties) {
+	          if (hasOwn.call(Properties, prop)) {
+	            var descriptor = Properties[prop];
+	            if (Object(descriptor) !== descriptor) {
+	              throw TypeError(prop + 'must be an object');
+	            }
+	            if ('get' in descriptor || 'set' in descriptor) {
+	              throw new TypeError('getters & setters can not be defined on this javascript engine');
+	            }
+	            if ('value' in descriptor) {
+	              obj[prop] = Properties[prop];
+	            }
+
+	          }
+	        }
+	      }
+
+	      // 5. Return obj
+	      return obj;
+	    };
+	  })();
+	}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports) {
+
+	/*
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties#Polyfill
+	*/
+	if (!Object.defineProperties) {
+
+	  Object.defineProperties = function(object, props) {
+
+	    function hasProperty(obj, prop) {
+	      return Object.prototype.hasOwnProperty.call(obj, prop);
+	    }
+
+	    function convertToDescriptor(desc) {
+
+	      if (Object(desc) !== desc) {
+	        throw new TypeError('Descriptor can only be an Object.');
+	      }
+
+
+	      var d = {};
+
+	      if (hasProperty(desc, "enumerable")) {
+	        d.enumerable = !!desc.enumerable;
+	      }
+
+	      if (hasProperty(desc, "configurable")) {
+	        d.configurable = !!desc.configurable;
+	      }
+
+	      if (hasProperty(desc, "value")) {
+	        d.value = desc.value;
+	      }
+
+	      if (hasProperty(desc, "writable")) {
+	        d.writable = !!desc.writable;
+	      }
+
+	      if (hasProperty(desc, "get")) {
+	        throw new TypeError('getters & setters can not be defined on this javascript engine');
+	      }
+
+	      if (hasProperty(desc, "set")) {
+	        throw new TypeError('getters & setters can not be defined on this javascript engine');
+	      }
+
+	      return d;
+	    }
+
+	    if (Object(object) !== object) {
+	      throw new TypeError('Object.defineProperties can only be called on Objects.');
+	    }
+
+	    if (Object(props) !== props) {
+	      throw new TypeError('Properties can only be an Object.');
+	    }
+
+	    var properties = Object(props);
+	    for (propName in properties) {
+	      if (hasOwnProperty.call(properties, propName)) {
+	        var descr = convertToDescriptor(properties[propName]);
+	        object[propName] = descr.value;
+	      }
+	    }
+	    return object;
+	  }
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports) {
+
+	if (!Object.defineProperty) {
+
+	    Object.defineProperty = function defineProperty(object, property, descriptor) {
+
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.defineProperty can only be called on Objects.');
+	        }
+
+	        if (Object(descriptor) !== descriptor) {
+	            throw new TypeError('Property description can only be an Object.');
+	        }
+
+	        if ('get' in descriptor || 'set' in descriptor) {
+	            throw new TypeError('getters & setters can not be defined on this javascript engine');
+	        }
+	        // If it's a data property.
+	        if ('value' in descriptor) {
+	            // fail silently if 'writable', 'enumerable', or 'configurable'
+	            // are requested but not supported
+	            // can't implement these features; allow true but not false
+	            /* if ( 
+	                     ('writable' in descriptor && !descriptor.writable) ||
+	                     ('enumerable' in descriptor && !descriptor.enumerable) ||
+	                     ('configurable' in descriptor && !descriptor.configurable)
+	                 )
+	                     {
+	                         throw new RangeError('This implementation of Object.defineProperty does not support configurable, enumerable, or writable properties SET to FALSE.');
+	                     }*/
+
+
+	            object[property] = descriptor.value;
+	        }
+	        return object;
+	    }
+	}
+
+/***/ },
+/* 44 */
+/***/ function(module, exports) {
+
+	/*
+	https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
+	*/
+	// ES5 15.2.3.9
+	// http://es5.github.com/#x15.2.3.9
+	if (!Object.freeze) {
+	    Object.freeze = function freeze(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.freeze can only be called on Objects.');
+	        }
+	        // this is misleading and breaks feature-detection, but
+	        // allows "securable" code to "gracefully" degrade to working
+	        // but insecure code.
+	        return object;
+	    };
+	}
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	if (!Object.getOwnPropertyDescriptor) {
+
+	    Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.getOwnPropertyDescriptor can only be called on Objects.');
+	        }
+
+	        var descriptor;
+	        if (!Object.prototype.hasOwnProperty.call(object, property)) {
+	            return descriptor;
+	        }
+
+	        descriptor = {
+	            enumerable: Object.prototype.propertyIsEnumerable.call(object, property),
+	            configurable: true
+	        };
+
+	        descriptor.value = object[property];
+
+	        var psPropertyType = object.reflect.find(property).type;
+	        descriptor.writable = !(psPropertyType === "readonly");
+
+	        return descriptor;
+	    }
+	}
+
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	if (!Object.getOwnPropertyNames) {
+	    Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
+
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.getOwnPropertyNames can only be called on Objects.');
+	        }
+	        var names = [];
+	        var hasOwnProperty = Object.prototype.hasOwnProperty;
+	        var propertyIsEnumerable = Object.prototype.propertyIsEnumerable;
+	        for (var prop in object) {
+	            if (hasOwnProperty.call(object, prop)) {
+	                names.push(prop);
+	            }
+	        }
+	        var properties = object.reflect.properties;
+	        var methods = object.reflect.methods;
+	        var all = methods.concat(properties);
+	        for (var i = 0; i < all.length; i++) {
+	            var prop = all[i].name;
+	            if (hasOwnProperty.call(object, prop) && !(propertyIsEnumerable.call(object, prop))) {
+	                names.push(prop);
+	            }
+	        }
+	        return names;
+	    };
+	}
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+	if (!Object.getPrototypeOf) {
+		Object.getPrototypeOf = function(object) {
+			if (Object(object) !== object) {
+				throw new TypeError('Object.getPrototypeOf can only be called on Objects.');
+			}
+			return object.__proto__;
+		}
+	}
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	// ES5 15.2.3.13
+	// http://es5.github.com/#x15.2.3.13
+	if (!Object.isExtensible) {
+	    Object.isExtensible = function isExtensible(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.isExtensible can only be called on Objects.');
+	        }
+	        return true;
+	    };
+	}
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	/*
+	https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
+	*/
+	// ES5 15.2.3.12
+	// http://es5.github.com/#x15.2.3.12
+	if (!Object.isFrozen) {
+	    Object.isFrozen = function isFrozen(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.isFrozen can only be called on Objects.');
+	        }
+	        return false;
+	    };
+	}
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	/*
+	https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
+	*/
+	// ES5 15.2.3.11
+	// http://es5.github.com/#x15.2.3.11
+	if (!Object.isSealed) {
+	    Object.isSealed = function isSealed(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.isSealed can only be called on Objects.');
+	        }
+	        return false;
+	    };
+	}
+
+/***/ },
+/* 51 */
+/***/ function(module, exports) {
+
+	if (!Object.keys) {
+	    Object.keys = function(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.keys can only be called on Objects.');
+	        }
+	        var hasOwnProperty = Object.prototype.hasOwnProperty;
+	        var result = [];
+	        for (var prop in object) {
+	            if (hasOwnProperty.call(object, prop)) {
+	                result.push(prop);
+	            }
+	        }
+	        return result;
+	    };
+	}
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	/*
+	https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
+	*/
+	// ES5 15.2.3.10
+	// http://es5.github.com/#x15.2.3.10
+	if (!Object.preventExtensions) {
+	    Object.preventExtensions = function preventExtensions(object) {
+
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.preventExtensions can only be called on Objects.');
+	        }
+	        // this is misleading and breaks feature-detection, but
+	        // allows "securable" code to "gracefully" degrade to working
+	        // but insecure code.
+	        return object;
+	    };
+	}
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	/*
+	https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
+	*/
+	// ES5 15.2.3.8
+	// http://es5.github.com/#x15.2.3.8
+	if (!Object.seal) {
+	    Object.seal = function seal(object) {
+	        if (Object(object) !== object) {
+	            throw new TypeError('Object.seal can only be called on Objects.');
+	        }
+	        // this is misleading and breaks feature-detection, but
+	        // allows "securable" code to "gracefully" degrade to working
+	        // but insecure code.
+	        return object;
+	    };
+	}
+
+/***/ }
+/******/ ]);
 
 /***/ }),
-
-/***/ "./src/main/ActionExecutor.ts":
-/*!************************************!*\
-  !*** ./src/main/ActionExecutor.ts ***!
-  \************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n/// <reference types=\"illustrator/2015.3\"/>\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ActionExecutor = /** @class */ (function () {\n    function ActionExecutor() {\n    }\n    ActionExecutor.prototype.executeActionFromSrc = function (actionScript) {\n        var file = new File(Folder.temp + \"/\" + actionScript.folder + \"_\" + actionScript.name);\n        try {\n            app.unloadAction(actionScript.folder, \"\");\n        }\n        catch (err) {\n        }\n        var isLoaded = false;\n        try {\n            file.open(\"w\");\n            file.write(actionScript.script);\n            file.close();\n            app.loadAction(file);\n            isLoaded = true;\n            app.doScript(actionScript.name, actionScript.folder, false);\n        }\n        finally {\n            if (isLoaded) {\n                app.unloadAction(actionScript.folder, \"\");\n            }\n        }\n    };\n    return ActionExecutor;\n}());\nexports.ActionExecutor = ActionExecutor;\n\n\n//# sourceURL=webpack:///./src/main/ActionExecutor.ts?");
+
+/// <reference types="illustrator/2015.3"/>
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utils_1 = __webpack_require__(3);
+var ActionExecutor_1 = __webpack_require__(4);
+var Actions_1 = __webpack_require__(5);
+var ImageExporter_1 = __webpack_require__(6);
+var OriginLayerName = "original";
+var OutlinedLayerName = "outline";
+var SilhouetteLayerName = "silhouette";
+var StrokeColor = Utils_1.ColorPallete.rgbString("#898989");
+/**
+ * originalの名前のレイヤーを元に、
+ * 輪郭化したものをoutline
+ * シルエット化したものをshilhouette
+ * のレイヤーに作成し、それぞれの画像を保存する
+ */
+var FillItDocument = /** @class */ (function () {
+    function FillItDocument() {
+        this.doc = app.activeDocument;
+    }
+    FillItDocument.prototype.getDocName = function () {
+        var name = app.activeDocument.name;
+        if (name.indexOf(".") >= 0) {
+            return name.substring(0, name.indexOf("."));
+        }
+        else {
+            return name;
+        }
+    };
+    FillItDocument.prototype.getOriginLayer = function () {
+        return this.doc.layers.getByName(OriginLayerName);
+    };
+    FillItDocument.prototype.changeToOutline = function () {
+        var copyer = new LayerCopyer();
+        // 全体をコピー
+        var outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName);
+        // アウトライン化
+        var layersForOutlines = outlinedLayer.layers;
+        for (var i = 0; i < layersForOutlines.length; i++) {
+            var layer = layersForOutlines[i];
+            var outlineOperator = new ObjectOperator(layer);
+            outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
+        }
+        // シルエット
+        var silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);
+        var layersForSilhouette = silhouetteLayer.layers;
+        for (var i = 0; i < layersForSilhouette.length; i++) {
+            var layer = layersForSilhouette[i];
+            var silhouetteOperator = new ObjectOperator(layer);
+            silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
+        }
+        this.saveImages();
+    };
+    FillItDocument.prototype.saveImages = function () {
+        var imageExporter = new ImageExporter_1.ImageExporter();
+        var imageDir = "images/";
+        imageExporter.makeDir(imageDir);
+        this.foreachChildLayers(OriginLayerName)(function (layer) {
+            imageExporter.saveAsPng(imageDir + layer.name, layer);
+        });
+        this.foreachChildLayers(OutlinedLayerName)(function (layer) {
+            imageExporter.saveAsPng(imageDir + layer.name, layer);
+        });
+        this.foreachChildLayers(SilhouetteLayerName)(function (layer) {
+            imageExporter.saveAsPng(imageDir + layer.name, layer);
+        });
+    };
+    FillItDocument.prototype.layer = function (name) {
+        return app.activeDocument.layers.getByName(name);
+    };
+    FillItDocument.prototype.foreachChildLayers = function (layerName) {
+        return function (func) {
+            var layers = app.activeDocument.layers.getByName(layerName).layers;
+            for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                func(layer);
+            }
+        };
+    };
+    return FillItDocument;
+}());
+var LayerCopyer = /** @class */ (function () {
+    function LayerCopyer() {
+    }
+    LayerCopyer.prototype.copyAllItems = function (copyFromLayerName, copyTargetLayerName) {
+        var doc = app.activeDocument;
+        var originLayer = doc.layers.getByName(copyFromLayerName);
+        if (!originLayer) {
+            return null;
+        }
+        var copyTarget = null;
+        try {
+            copyTarget = doc.layers.getByName(copyTargetLayerName);
+        }
+        catch (err) {
+            copyTarget = null;
+        }
+        if (copyTarget) {
+            if (!copyTarget.visible) {
+                copyTarget.visible = true;
+            }
+            copyTarget.remove();
+        }
+        var newCopyTarget = doc.layers.add();
+        newCopyTarget.name = copyTargetLayerName;
+        this.copyRecursively(originLayer, newCopyTarget);
+        return newCopyTarget;
+    };
+    LayerCopyer.prototype.copyRecursively = function (from, dest) {
+        // Copy items
+        for (var i = 0; i < from.pageItems.length; i++) {
+            var fromI = from.pageItems[i];
+            fromI.duplicate(dest, ElementPlacement.PLACEATEND);
+        }
+        // Copy layers
+        for (var i = from.layers.length - 1; i >= 0; i--) {
+            var fromL = from.layers[i];
+            var copied = dest.layers.add();
+            copied.name = fromL.name;
+            this.copyRecursively(fromL, copied);
+        }
+    };
+    return LayerCopyer;
+}());
+var ObjectOperator = /** @class */ (function () {
+    function ObjectOperator(layer) {
+        this.layer = layer;
+        this.allItems = this.gatherItems(layer);
+    }
+    ObjectOperator.prototype.gatherItems = function (layer) {
+        var pageItems = [];
+        for (var i = 0; i < layer.pageItems.length; i++) {
+            pageItems.push(layer.pageItems[i]);
+        }
+        for (var i = 0; i < layer.layers.length; i++) {
+            pageItems = pageItems.concat(this.gatherItems(layer.layers[i]));
+        }
+        return pageItems;
+    };
+    /**
+     * 線画化する
+     */
+    ObjectOperator.prototype.outlinenize = function (fillColor) {
+        this.changeStrokeAndFillColor(StrokeColor, fillColor);
+        this.mergeAndOutineize();
+        // 線の設定を変更
+        new ActionExecutor_1.ActionExecutor().executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
+    };
+    ObjectOperator.prototype.changeStrokeAndFillColor = function (strokeColor, fillColor) {
+        var changeColor = function (item) {
+            if (item.typename == "CompoundPathItem") {
+                var pathItems = item.pathItems;
+                for (var i = 0; i < pathItems.length; i++) {
+                    changeColor(pathItems[i]);
+                }
+            }
+            if (item.typename == "GroupItem") {
+                var pathItems = item.pathItems;
+                for (var i = 0; i < pathItems.length; i++) {
+                    changeColor(pathItems[i]);
+                }
+            }
+            else if (item.typename == "PathItem") {
+                var pathItem = item;
+                pathItem.strokeColor = strokeColor;
+                pathItem.fillColor = fillColor;
+            }
+        };
+        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
+            var item = _a[_i];
+            changeColor(item);
+        }
+    };
+    ObjectOperator.prototype.mergeAndOutineize = function () {
+        var compound = this.layer.compoundPathItems.add();
+        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
+            var item = _a[_i];
+            item.move(compound, ElementPlacement.PLACEATEND);
+        }
+        app.activeDocument.selection = [];
+        compound.selected = true;
+        app.executeMenuCommand("Live Pathfinder Add");
+        app.executeMenuCommand('expandStyle');
+    };
+    return ObjectOperator;
+}());
+new FillItDocument().changeToOutline();
+alert("Done!");
+
 
 /***/ }),
-
-/***/ "./src/main/ImageExporter.ts":
-/*!***********************************!*\
-  !*** ./src/main/ImageExporter.ts ***!
-  \***********************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n/// <reference types=\"illustrator/2015.3\"/>\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ImageExporter = /** @class */ (function () {\n    function ImageExporter() {\n    }\n    ImageExporter.prototype.makeDir = function (name) {\n        var f = new Folder(app.activeDocument.path + \"/\" + name);\n        if (!f.exists) {\n            f.create();\n        }\n    };\n    ImageExporter.prototype.saveAsPng = function (name, layer) {\n        var invisibled = this.makeInvisibleOthers(layer);\n        var exportOptions = new ExportOptionsPNG24();\n        exportOptions.antiAliasing = true;\n        exportOptions.transparency = true;\n        exportOptions.matte = false;\n        //exportOptions.clip = true;\n        exportOptions.saveAsHTML = false;\n        exportOptions.verticalScale = 100;\n        exportOptions.horizontalScale = 100;\n        app.activeDocument.exportFile(new File(app.activeDocument.path + \"/\" + name + \".png\"), ExportType.PNG24, exportOptions);\n        for (var _i = 0, invisibled_1 = invisibled; _i < invisibled_1.length; _i++) {\n            var l = invisibled_1[_i];\n            l.visible = true;\n        }\n    };\n    ImageExporter.prototype.makeInvisibleOthers = function (layer) {\n        var p = layer.parent;\n        var changeLayers = [];\n        var layers = p.layers;\n        for (var i = 0; i < layers.length; i++) {\n            var l = layers[i];\n            if (l != layer && l.visible) {\n                changeLayers.push(l);\n                l.visible = false;\n            }\n        }\n        if (p.typename == \"Layer\") {\n            changeLayers = changeLayers.concat(this.makeInvisibleOthers(p));\n        }\n        return changeLayers;\n    };\n    return ImageExporter;\n}());\nexports.ImageExporter = ImageExporter;\n\n\n//# sourceURL=webpack:///./src/main/ImageExporter.ts?");
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ColorPallete = /** @class */ (function () {
+    function ColorPallete() {
+    }
+    /**
+     * 0 <= parameter <= 255
+     * @param r
+     * @param g
+     * @param b
+     */
+    ColorPallete.rgb = function (r, g, b) {
+        var color = new RGBColor();
+        color.red = r;
+        color.green = g;
+        color.blue = b;
+        return color;
+    };
+    /**
+     *
+     * @param sharpColor #ffffff
+     */
+    ColorPallete.rgbString = function (sharpColor) {
+        if (sharpColor.charAt(0) == "#") {
+            sharpColor = sharpColor.slice(1);
+        }
+        var r = parseInt(sharpColor.slice(0, 1));
+        var g = parseInt(sharpColor.slice(2, 3));
+        var b = parseInt(sharpColor.slice(4, 5));
+        return this.rgb(r, g, b);
+    };
+    ColorPallete.white = function () {
+        return this.rgb(255, 255, 255);
+    };
+    ColorPallete.noColor = function () {
+        return new NoColor();
+    };
+    return ColorPallete;
+}());
+exports.ColorPallete = ColorPallete;
+
 
 /***/ }),
-
-/***/ "./src/main/Utils.ts":
-/*!***************************!*\
-  !*** ./src/main/Utils.ts ***!
-  \***************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar ColorPallete = /** @class */ (function () {\n    function ColorPallete() {\n    }\n    /**\n     * 0 <= parameter <= 255\n     * @param r\n     * @param g\n     * @param b\n     */\n    ColorPallete.rgb = function (r, g, b) {\n        var color = new RGBColor();\n        color.red = r;\n        color.green = g;\n        color.blue = b;\n        return color;\n    };\n    /**\n     *\n     * @param sharpColor #ffffff\n     */\n    ColorPallete.rgbString = function (sharpColor) {\n        if (sharpColor.charAt(0) == \"#\") {\n            sharpColor = sharpColor.slice(1);\n        }\n        var r = parseInt(sharpColor.slice(0, 1));\n        var g = parseInt(sharpColor.slice(2, 3));\n        var b = parseInt(sharpColor.slice(4, 5));\n        return this.rgb(r, g, b);\n    };\n    ColorPallete.white = function () {\n        return this.rgb(255, 255, 255);\n    };\n    ColorPallete.noColor = function () {\n        return new NoColor();\n    };\n    return ColorPallete;\n}());\nexports.ColorPallete = ColorPallete;\n\n\n//# sourceURL=webpack:///./src/main/Utils.ts?");
+
+/// <reference types="illustrator/2015.3"/>
+Object.defineProperty(exports, "__esModule", { value: true });
+var ActionExecutor = /** @class */ (function () {
+    function ActionExecutor() {
+    }
+    ActionExecutor.prototype.executeActionFromSrc = function (actionScript) {
+        var file = new File(Folder.temp + "/" + actionScript.folder + "_" + actionScript.name);
+        try {
+            app.unloadAction(actionScript.folder, "");
+        }
+        catch (err) {
+        }
+        var isLoaded = false;
+        try {
+            file.open("w");
+            file.write(actionScript.script);
+            file.close();
+            app.loadAction(file);
+            isLoaded = true;
+            app.doScript(actionScript.name, actionScript.folder, false);
+        }
+        finally {
+            if (isLoaded) {
+                app.unloadAction(actionScript.folder, "");
+            }
+        }
+    };
+    return ActionExecutor;
+}());
+exports.ActionExecutor = ActionExecutor;
+
 
 /***/ }),
-
-/***/ "./src/main/fillit/Actions.ts":
-/*!************************************!*\
-  !*** ./src/main/fillit/Actions.ts ***!
-  \************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar aiscripts;\n(function (aiscripts) {\n    /**\n       * 線のオプションを\n       * - 線の幅 9pt\n       * - 線端 丸\n       * - 角の形状 丸\n       * - 線の位置 外側\n       *\n       * へ変更するアクション。線の位置がスクリプトだけでは変更できないためアクションを使用している\n       */\n    aiscripts.ChangeStrokeSide = {\n        name: \"Center\",\n        folder: \"ChangeStrokeSide\",\n        script: \"/version 3\\n/name [ 16\\n\\t4368616e67655374726f6b6553696465\\n]\\n/isOpen 1\\n/actionCount 1\\n/action-1 {\\n\\t/name [ 6\\n\\t\\t43656e746572\\n\\t]\\n\\t/keyIndex 0\\n\\t/colorIndex 0\\n\\t/isOpen 1\\n\\t/eventCount 1\\n\\t/event-1 {\\n\\t\\t/useRulersIn1stQuadrant 0\\n\\t\\t/internalName (ai_plugin_setStroke)\\n\\t\\t/localizedName [ 12\\n\\t\\t\\te7b79ae38292e8a8ade5ae9a\\n\\t\\t]\\n\\t\\t/isOpen 1\\n\\t\\t/isOn 1\\n\\t\\t/hasDialog 0\\n\\t\\t/parameterCount 9\\n\\t\\t/parameter-1 {\\n\\t\\t\\t/key 2003072104\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (unit real)\\n\\t\\t\\t/value 9.0\\n\\t\\t\\t/unit 592476268\\n\\t\\t}\\n\\t\\t/parameter-2 {\\n\\t\\t\\t/key 1667330094\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (enumerated)\\n\\t\\t\\t/name [ 12\\n\\t\\t\\t\\te4b8b8e59e8be7b79ae7abaf\\n\\t\\t\\t]\\n\\t\\t\\t/value 1\\n\\t\\t}\\n\\t\\t/parameter-3 {\\n\\t\\t\\t/key 1785686382\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (enumerated)\\n\\t\\t\\t/name [ 18\\n\\t\\t\\t\\te383a9e382a6e383b3e38389e7b590e59088\\n\\t\\t\\t]\\n\\t\\t\\t/value 1\\n\\t\\t}\\n\\t\\t/parameter-4 {\\n\\t\\t\\t/key 1684825454\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (integer)\\n\\t\\t\\t/value 0\\n\\t\\t}\\n\\t\\t/parameter-5 {\\n\\t\\t\\t/key 1684104298\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (boolean)\\n\\t\\t\\t/value 0\\n\\t\\t}\\n\\t\\t/parameter-6 {\\n\\t\\t\\t/key 1634231345\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (ustring)\\n\\t\\t\\t/value [ 8\\n\\t\\t\\t\\t5be381aae381975d\\n\\t\\t\\t]\\n\\t\\t}\\n\\t\\t/parameter-7 {\\n\\t\\t\\t/key 1634231346\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (ustring)\\n\\t\\t\\t/value [ 8\\n\\t\\t\\t\\t5be381aae381975d\\n\\t\\t\\t]\\n\\t\\t}\\n\\t\\t/parameter-8 {\\n\\t\\t\\t/key 1634230636\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (enumerated)\\n\\t\\t\\t/name [ 24\\n\\t\\t\\t\\te38391e382b9e381aee7b582e782b9e381abe9858de7bdae\\n\\t\\t\\t]\\n\\t\\t\\t/value 0\\n\\t\\t}\\n\\t\\t/parameter-9 {\\n\\t\\t\\t/key 1634494318\\n\\t\\t\\t/showInPalette 4294967295\\n\\t\\t\\t/type (enumerated)\\n\\t\\t\\t/name [ 6\\n\\t\\t\\t\\te5a496e581b4\\n\\t\\t\\t]\\n\\t\\t\\t/value 2\\n\\t\\t}\\n\\t}\\n}\"\n    };\n})(aiscripts = exports.aiscripts || (exports.aiscripts = {}));\n\n\n//# sourceURL=webpack:///./src/main/fillit/Actions.ts?");
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var aiscripts;
+(function (aiscripts) {
+    /**
+       * 線のオプションを
+       * - 線の幅 9pt
+       * - 線端 丸
+       * - 角の形状 丸
+       * - 線の位置 外側
+       *
+       * へ変更するアクション。線の位置がスクリプトだけでは変更できないためアクションを使用している
+       */
+    aiscripts.ChangeStrokeSide = {
+        name: "Center",
+        folder: "ChangeStrokeSide",
+        script: "/version 3\n/name [ 16\n\t4368616e67655374726f6b6553696465\n]\n/isOpen 1\n/actionCount 1\n/action-1 {\n\t/name [ 6\n\t\t43656e746572\n\t]\n\t/keyIndex 0\n\t/colorIndex 0\n\t/isOpen 1\n\t/eventCount 1\n\t/event-1 {\n\t\t/useRulersIn1stQuadrant 0\n\t\t/internalName (ai_plugin_setStroke)\n\t\t/localizedName [ 12\n\t\t\te7b79ae38292e8a8ade5ae9a\n\t\t]\n\t\t/isOpen 1\n\t\t/isOn 1\n\t\t/hasDialog 0\n\t\t/parameterCount 9\n\t\t/parameter-1 {\n\t\t\t/key 2003072104\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (unit real)\n\t\t\t/value 9.0\n\t\t\t/unit 592476268\n\t\t}\n\t\t/parameter-2 {\n\t\t\t/key 1667330094\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (enumerated)\n\t\t\t/name [ 12\n\t\t\t\te4b8b8e59e8be7b79ae7abaf\n\t\t\t]\n\t\t\t/value 1\n\t\t}\n\t\t/parameter-3 {\n\t\t\t/key 1785686382\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (enumerated)\n\t\t\t/name [ 18\n\t\t\t\te383a9e382a6e383b3e38389e7b590e59088\n\t\t\t]\n\t\t\t/value 1\n\t\t}\n\t\t/parameter-4 {\n\t\t\t/key 1684825454\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (integer)\n\t\t\t/value 0\n\t\t}\n\t\t/parameter-5 {\n\t\t\t/key 1684104298\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (boolean)\n\t\t\t/value 0\n\t\t}\n\t\t/parameter-6 {\n\t\t\t/key 1634231345\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (ustring)\n\t\t\t/value [ 8\n\t\t\t\t5be381aae381975d\n\t\t\t]\n\t\t}\n\t\t/parameter-7 {\n\t\t\t/key 1634231346\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (ustring)\n\t\t\t/value [ 8\n\t\t\t\t5be381aae381975d\n\t\t\t]\n\t\t}\n\t\t/parameter-8 {\n\t\t\t/key 1634230636\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (enumerated)\n\t\t\t/name [ 24\n\t\t\t\te38391e382b9e381aee7b582e782b9e381abe9858de7bdae\n\t\t\t]\n\t\t\t/value 0\n\t\t}\n\t\t/parameter-9 {\n\t\t\t/key 1634494318\n\t\t\t/showInPalette 4294967295\n\t\t\t/type (enumerated)\n\t\t\t/name [ 6\n\t\t\t\te5a496e581b4\n\t\t\t]\n\t\t\t/value 2\n\t\t}\n\t}\n}"
+    };
+})(aiscripts = exports.aiscripts || (exports.aiscripts = {}));
+
 
 /***/ }),
-
-/***/ "./src/main/fillit/ExportWithLinePics.ts":
-/*!***********************************************!*\
-  !*** ./src/main/fillit/ExportWithLinePics.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n/// <reference types=\"illustrator/2015.3\"/>\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar Utils_1 = __webpack_require__(/*! ../Utils */ \"./src/main/Utils.ts\");\nvar ActionExecutor_1 = __webpack_require__(/*! ../ActionExecutor */ \"./src/main/ActionExecutor.ts\");\nvar Actions_1 = __webpack_require__(/*! ./Actions */ \"./src/main/fillit/Actions.ts\");\nvar ImageExporter_1 = __webpack_require__(/*! ../ImageExporter */ \"./src/main/ImageExporter.ts\");\nvar OriginLayerName = \"original\";\nvar OutlinedLayerName = \"outline\";\nvar SilhouetteLayerName = \"silhouette\";\nvar StrokeColor = Utils_1.ColorPallete.rgbString(\"#898989\");\n/**\n * originalの名前のレイヤーを元に、\n * 輪郭化したものをoutline\n * シルエット化したものをshilhouette\n * のレイヤーに作成し、それぞれの画像を保存する\n */\nvar FillItDocument = /** @class */ (function () {\n    function FillItDocument() {\n        this.doc = app.activeDocument;\n    }\n    FillItDocument.prototype.getDocName = function () {\n        var name = app.activeDocument.name;\n        if (name.indexOf(\".\") >= 0) {\n            return name.substring(0, name.indexOf(\".\"));\n        }\n        else {\n            return name;\n        }\n    };\n    FillItDocument.prototype.getOriginLayer = function () {\n        return this.doc.layers.getByName(OriginLayerName);\n    };\n    FillItDocument.prototype.changeToOutline = function () {\n        var copyer = new LayerCopyer();\n        // 全体をコピー\n        var outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName);\n        // アウトライン\n        var layersForOutlines = outlinedLayer.layers;\n        for (var i = 0; i < layersForOutlines.length; i++) {\n            var layer = layersForOutlines[i];\n            var outlineOperator = new ObjectOperator(layer);\n            outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());\n        }\n        // シルエット\n        var silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);\n        var layersForSilhouette = silhouetteLayer.layers;\n        for (var i = 0; i < layersForSilhouette.length; i++) {\n            var layer = layersForSilhouette[i];\n            var silhouetteOperator = new ObjectOperator(layer);\n            silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());\n        }\n        this.saveImages();\n    };\n    FillItDocument.prototype.saveImages = function () {\n        var imageExporter = new ImageExporter_1.ImageExporter();\n        var imageDir = \"images/\";\n        imageExporter.makeDir(imageDir);\n        this.foreachChildLayers(OriginLayerName)(function (layer) {\n            imageExporter.saveAsPng(imageDir + layer.name, layer);\n        });\n        this.foreachChildLayers(OutlinedLayerName)(function (layer) {\n            imageExporter.saveAsPng(imageDir + layer.name, layer);\n        });\n        this.foreachChildLayers(SilhouetteLayerName)(function (layer) {\n            imageExporter.saveAsPng(imageDir + layer.name, layer);\n        });\n    };\n    FillItDocument.prototype.layer = function (name) {\n        return app.activeDocument.layers.getByName(name);\n    };\n    FillItDocument.prototype.foreachChildLayers = function (layerName) {\n        return function (func) {\n            var layers = app.activeDocument.layers.getByName(layerName).layers;\n            for (var i = 0; i < layers.length; i++) {\n                var layer = layers[i];\n                func(layer);\n            }\n        };\n    };\n    return FillItDocument;\n}());\nvar LayerCopyer = /** @class */ (function () {\n    function LayerCopyer() {\n    }\n    LayerCopyer.prototype.copyAllItems = function (copyFromLayerName, copyTargetLayerName) {\n        var doc = app.activeDocument;\n        var originLayer = doc.layers.getByName(copyFromLayerName);\n        if (!originLayer) {\n            return null;\n        }\n        var copyTarget = null;\n        try {\n            copyTarget = doc.layers.getByName(copyTargetLayerName);\n        }\n        catch (err) {\n            copyTarget = null;\n        }\n        if (copyTarget) {\n            if (!copyTarget.visible) {\n                copyTarget.visible = true;\n            }\n            copyTarget.remove();\n        }\n        var newCopyTarget = doc.layers.add();\n        newCopyTarget.name = copyTargetLayerName;\n        this.copyRecursively(originLayer, newCopyTarget);\n        return newCopyTarget;\n    };\n    LayerCopyer.prototype.copyRecursively = function (from, dest) {\n        // Copy items\n        for (var i = 0; i < from.pageItems.length; i++) {\n            var fromI = from.pageItems[i];\n            fromI.duplicate(dest, ElementPlacement.PLACEATEND);\n        }\n        // Copy layers\n        for (var i = from.layers.length - 1; i >= 0; i--) {\n            var fromL = from.layers[i];\n            var copied = dest.layers.add();\n            copied.name = fromL.name;\n            this.copyRecursively(fromL, copied);\n        }\n    };\n    return LayerCopyer;\n}());\nvar ObjectOperator = /** @class */ (function () {\n    function ObjectOperator(layer) {\n        this.layer = layer;\n        this.allItems = this.gatherItems(layer);\n    }\n    ObjectOperator.prototype.gatherItems = function (layer) {\n        var pageItems = [];\n        for (var i = 0; i < layer.pageItems.length; i++) {\n            pageItems.push(layer.pageItems[i]);\n        }\n        for (var i = 0; i < layer.layers.length; i++) {\n            pageItems = pageItems.concat(this.gatherItems(layer.layers[i]));\n        }\n        return pageItems;\n    };\n    /**\n     * 線画化する\n     */\n    ObjectOperator.prototype.outlinenize = function (fillColor) {\n        this.changeStrokeAndFillColor(StrokeColor, fillColor);\n        this.mergeAndOutineize();\n        // 線の設定を変更\n        new ActionExecutor_1.ActionExecutor().executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);\n    };\n    ObjectOperator.prototype.changeStrokeAndFillColor = function (strokeColor, fillColor) {\n        var changeColor = function (item) {\n            if (item.typename == \"CompoundPathItem\") {\n                var pathItems = item.pathItems;\n                for (var i = 0; i < pathItems.length; i++) {\n                    changeColor(pathItems[i]);\n                }\n            }\n            if (item.typename == \"GroupItem\") {\n                var pathItems = item.pathItems;\n                for (var i = 0; i < pathItems.length; i++) {\n                    changeColor(pathItems[i]);\n                }\n            }\n            else if (item.typename == \"PathItem\") {\n                var pathItem = item;\n                pathItem.strokeColor = strokeColor;\n                pathItem.fillColor = fillColor;\n            }\n        };\n        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {\n            var item = _a[_i];\n            changeColor(item);\n        }\n    };\n    ObjectOperator.prototype.mergeAndOutineize = function () {\n        var compound = this.layer.compoundPathItems.add();\n        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {\n            var item = _a[_i];\n            item.move(compound, ElementPlacement.PLACEATEND);\n        }\n        app.activeDocument.selection = [];\n        compound.selected = true;\n        app.executeMenuCommand(\"Live Pathfinder Add\");\n        app.executeMenuCommand('expandStyle');\n    };\n    return ObjectOperator;\n}());\nnew FillItDocument().changeToOutline();\nalert(\"Done!\");\n\n\n//# sourceURL=webpack:///./src/main/fillit/ExportWithLinePics.ts?");
 
-/***/ }),
+/// <reference types="illustrator/2015.3"/>
+Object.defineProperty(exports, "__esModule", { value: true });
+var ImageExporter = /** @class */ (function () {
+    function ImageExporter() {
+    }
+    ImageExporter.prototype.makeDir = function (name) {
+        var f = new Folder(app.activeDocument.path + "/" + name);
+        if (!f.exists) {
+            f.create();
+        }
+    };
+    ImageExporter.prototype.saveAsPng = function (name, layer) {
+        var invisibled = this.makeInvisibleOthers(layer);
+        var exportOptions = new ExportOptionsPNG24();
+        exportOptions.antiAliasing = true;
+        exportOptions.transparency = true;
+        exportOptions.matte = false;
+        //exportOptions.clip = true;
+        exportOptions.saveAsHTML = false;
+        exportOptions.verticalScale = 100;
+        exportOptions.horizontalScale = 100;
+        app.activeDocument.exportFile(new File(app.activeDocument.path + "/" + name + ".png"), ExportType.PNG24, exportOptions);
+        for (var _i = 0, invisibled_1 = invisibled; _i < invisibled_1.length; _i++) {
+            var l = invisibled_1[_i];
+            l.visible = true;
+        }
+    };
+    ImageExporter.prototype.makeInvisibleOthers = function (layer) {
+        var p = layer.parent;
+        var changeLayers = [];
+        var layers = p.layers;
+        for (var i = 0; i < layers.length; i++) {
+            var l = layers[i];
+            if (l != layer && l.visible) {
+                changeLayers.push(l);
+                l.visible = false;
+            }
+        }
+        if (p.typename == "Layer") {
+            changeLayers = changeLayers.concat(this.makeInvisibleOthers(p));
+        }
+        return changeLayers;
+    };
+    return ImageExporter;
+}());
+exports.ImageExporter = ImageExporter;
 
-/***/ 0:
-/*!***************************************************************************************************************!*\
-  !*** multi ./node_modules/ps-scripting-es5shim/bundle/main.bundle.js ./src/main/fillit/ExportWithLinePics.ts ***!
-  \***************************************************************************************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("__webpack_require__(/*! ./node_modules/ps-scripting-es5shim/bundle/main.bundle.js */\"./node_modules/ps-scripting-es5shim/bundle/main.bundle.js\");\nmodule.exports = __webpack_require__(/*! ./src/main/fillit/ExportWithLinePics.ts */\"./src/main/fillit/ExportWithLinePics.ts\");\n\n\n//# sourceURL=webpack:///multi_./node_modules/ps-scripting-es5shim/bundle/main.bundle.js_./src/main/fillit/ExportWithLinePics.ts?");
 
 /***/ })
-
-/******/ });
+/******/ ]);

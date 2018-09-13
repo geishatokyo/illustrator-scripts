@@ -81,7 +81,7 @@ FillItの画像の輪郭化とシルエット化を行い、画像を保存し�
 * images/{layer_name}_outline.png
 * images/{layer_name}_silhouette.png
 
-で、イラストレーターのaiファイルを同じフォルダに保存されます。
+で、イラストレーターのaiファイルと同じフォルダに保存されます。
 
 
 

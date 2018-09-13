@@ -1,8 +1,9 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const EncodingPlugin = require('webpack-encoding-plugin');
 
 module.exports = {
     name : "Hyper casual analytics hosting",
-    mode : "development",
+    mode : "production",
     entry: {
         "export_fillit_with_line_pics" : [
             "./node_modules/ps-scripting-es5shim/bundle/main.bundle.js",
@@ -23,6 +24,7 @@ module.exports = {
     },
     optimization: {
         minimize: true,
+        minimizer : [new UglifyJsPlugin()],
         concatenateModules: true
     }
     

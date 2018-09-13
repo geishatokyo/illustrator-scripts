@@ -34,16 +34,14 @@ class FillItDocument {
   getOriginLayer() {
     return this.doc.layers.getByName(OriginLayerName)
   }
-
+  
   changeToOutline() {
-
-
     const copyer = new LayerCopyer()
 
     // 全体をコピー
     const outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
     
-    // アウトライン
+    // アウトライン化
     const layersForOutlines = outlinedLayer.layers
 
     for(let i = 0;i < layersForOutlines.length;i++) {
