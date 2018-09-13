@@ -3,7 +3,8 @@
     "module": "none",
     "strict": true,
     "noLib": true,
-    "typeRoots": []
+    "typeRoots": [],
+    "removeComments": true
   },
   "exclude": [
     "node_modules"

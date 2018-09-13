@@ -4,20 +4,17 @@
 
 export class ImageExporter {
 
+  makeDir(name: string) {
+    const f = new Folder(app.activeDocument.path + "/" + name)
+    if(!f.exists) {
+      f.create()
+    }
+  }
+
 
   saveAsPng(name: string, layer: Layer) {
 
-    const layers = app.activeDocument.layers
-    
-    for(let i = 0;i < layers.length; i++) {
-      layers[i].visible = false
-    }
-    layer.visible = true
-    /*const items = app.activeDocument.pageItems
-    for(let i = 0;i < items.length; i++) {
-      items[i].hidden = true
-    }*/
-
+    const invisibled = this.makeInvisibleOthers(layer)
 
 
     const exportOptions = new ExportOptionsPNG24()
@@ -35,12 +32,33 @@ export class ImageExporter {
       exportOptions
     )
 
-    for(let i = 0;i < layers.length; i++) {
-      layers[i].visible = true
+    for(const l of invisibled) {
+      l.visible = true
     }
-    /*for(let i = 0;i < items.length; i++) {
-      items[i].hidden = false
-    }*/
+  }
+
+  private makeInvisibleOthers(layer: Layer) {
+    const p = layer.parent 
+
+    let changeLayers = []
+
+    const layers = p.layers
+    for(let i = 0;i < layers.length;i++) {
+      const l = layers[i]
+      if(l != layer && l.visible) {
+        changeLayers.push(l)
+        l.visible = false
+      }
+    }
+
+
+    if(p.typename == "Layer") {
+      changeLayers = changeLayers.concat(
+        this.makeInvisibleOthers(p as Layer)
+      )
+    }
+  
+    return changeLayers
   }
 
 

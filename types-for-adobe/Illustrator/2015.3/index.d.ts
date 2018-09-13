@@ -9249,7 +9249,7 @@ declare class Layer {
 	/**
 	 * The object's container.
 	 */
-	readonly parent: object;
+	readonly parent: Layer | Document;
 
 	/**
 	 * The path artwork in this layer.

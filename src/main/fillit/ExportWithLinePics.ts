@@ -36,30 +36,67 @@ class FillItDocument {
   }
 
   changeToOutline() {
+
+
     const copyer = new LayerCopyer()
 
+    // 全体をコピー
     const outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
-    const outlineOperator = new ObjectOperator(outlinedLayer)
-    outlineOperator.outlinenize(ColorPallete.noColor())
+    
+    // アウトライン
+    const layersForOutlines = outlinedLayer.layers
 
+    for(let i = 0;i < layersForOutlines.length;i++) {
+      const layer = layersForOutlines[i]
+      const outlineOperator = new ObjectOperator(layer)
+      outlineOperator.outlinenize(ColorPallete.noColor())
+    }
+
+    // シルエット
     const silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName)
-    const silhouetteOperator = new ObjectOperator(silhouetteLayer)
-    silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
+    const layersForSilhouette = silhouetteLayer.layers
 
+    for(let i = 0;i < layersForSilhouette.length;i++){
+      const layer = layersForSilhouette[i]
+      const silhouetteOperator = new ObjectOperator(layer)
+      silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
+    }
 
+    this.saveImages()
+
+  }
+
+  saveImages() {
     const imageExporter = new ImageExporter()
 
-    const docName = this.getDocName()
-    imageExporter.saveAsPng(docName, this.layer(OriginLayerName))
-    imageExporter.saveAsPng(docName + "_outline", this.layer(OutlinedLayerName))
-    imageExporter.saveAsPng(docName + "_silhouette", this.layer(SilhouetteLayerName))
+    const imageDir = "images/"
 
+    imageExporter.makeDir(imageDir)
+
+    this.foreachChildLayers(OriginLayerName)(layer => {
+      imageExporter.saveAsPng(imageDir + layer.name, layer)
+    })
+    this.foreachChildLayers(OutlinedLayerName)(layer => {
+      imageExporter.saveAsPng(imageDir + layer.name, layer)
+    })
+    this.foreachChildLayers(SilhouetteLayerName)(layer => {
+      imageExporter.saveAsPng(imageDir + layer.name, layer)
+    })
 
   }
   layer(name: string) {
     return app.activeDocument.layers.getByName(name)
   }
-  
+  foreachChildLayers(layerName: string) {
+    return (func: (l: Layer) => any) => {
+      const layers = app.activeDocument.layers.getByName(layerName).layers
+      
+      for(let i = 0;i < layers.length; i++) {
+        const layer = layers[i]
+        func(layer)
+      }
+    }
+  }
 
 }
 

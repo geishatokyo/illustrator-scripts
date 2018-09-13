@@ -74,11 +74,59 @@ UI用の画像の吐き出しと、各要素の位置情報を出力します。
 ### export_fillit_line_pics
 
 FillItの画像の輪郭化とシルエット化を行い、画像を保存します。
-ルート直下に「original」と名前をつけたレイヤーを作成し、その中に必要なPathを追加してください。
+ルート直下に「original」と名前をつけたレイヤーを作成し、その中に出力したい画像のまとまり毎にサブレイヤーを作ってください。
 
-実行すると、「outline」「silhouette」のレイヤーが作成され、その中にそれぞれ輪郭化、シルエット化されたPathが作られます。また、それぞれの画像も出力されます。画像の名前は
-* {docName}.png
-* {docName}_outline.png
-* {docName}_silhouette.png
+実行すると、「outline」「silhouette」のレイヤーが作成され、その中にそれぞれ輪郭化、シルエット化されたアイテムが作られます。また、それぞれの画像も出力されます。画像の名前は
+* images/{layer_name}.png
+* images/{layer_name}_outline.png
+* images/{layer_name}_silhouette.png
 
 で、イラストレーターのaiファイルを同じフォルダに保存されます。
+
+
+
+
+
+## ビルド
+
+一部のスクリプトを除いてTypeScriptに置き換わっています。
+ソースはsrcディレクトリ以下に入っています
+
+### 事前準備
+
+#### 1. npmの準備
+
+nvmを利用して入れることを推奨します
+
+
+#### 2. webpackのインストール
+
+ビルドにwebpackが必要なのでglobalインストールしておいてください。
+
+    npm install webpack -g
+
+#### 3. ライブラリのインストール
+
+後はライブラリをインストールしてください
+
+    npm install
+
+### ビルド
+
+    npm run build
+    npm run watch
+
+前者は一回だけビルド、後者は変更があるたびに継続ビルドします
+watchで初回に出る様々なエラーは無視してOKです。
+
+### 注意
+
+* ec5にすら対応していないAdobe javascriptで無理やり動かしている関係上、TypeScriptのPropertyが使用出来ません
+
+## 構成
+
+WebPackでビルド、ファイルの結合を行っています。
+また、Illustratorのスクリプトの型情報は
+https://github.com/pravdomil/Types-for-Adobe
+を使用しています。npmからも取得可能ですが、まだかなりバギーなためgit subtreeでローカルに落としてきています。
+最終的にadobe script用のpolyfillと結合しec5相当の環境で動くようにしています。
