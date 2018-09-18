@@ -4,6 +4,7 @@ import { ColorPallete } from '../Utils';
 import { ActionExecutor } from '../ActionExecutor';
 import { aiscripts } from './Actions';
 import { ImageExporter } from '../ImageExporter';
+import { Logger } from '../Logger';
 
 
 const OriginLayerName = "original"
@@ -34,22 +35,33 @@ class FillItDocument {
   getOriginLayer() {
     return this.doc.layers.getByName(OriginLayerName)
   }
-  
+
   changeToOutline() {
     const copyer = new LayerCopyer()
-
+    const logger = Logger.getDefault()
+    logger.log("Start copy")
     // 全体をコピー
     const outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
     
+    logger.log(outlinedLayer.layers.length + " layers")
+    logger.log(outlinedLayer.groupItems.length + " group items")
+    logger.log(outlinedLayer.compoundPathItems.length + " compound items")
+    logger.log("Make outline")
     // アウトライン化
     const layersForOutlines = outlinedLayer.layers
-
     for(let i = 0;i < layersForOutlines.length;i++) {
       const layer = layersForOutlines[i]
       const outlineOperator = new ObjectOperator(layer)
       outlineOperator.outlinenize(ColorPallete.noColor())
     }
+    const groupItemsForOutlines = outlinedLayer.groupItems
+    for(let i = 0;i < groupItemsForOutlines.length;i++) {
+      const groupItem = groupItemsForOutlines[i]
+      const outlineOperator = new ObjectOperator(groupItem)
+      outlineOperator.outlinenize(ColorPallete.noColor())
+    }
 
+    logger.log("Make silhouette")
     // シルエット
     const silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName)
     const layersForSilhouette = silhouetteLayer.layers
@@ -59,7 +71,14 @@ class FillItDocument {
       const silhouetteOperator = new ObjectOperator(layer)
       silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
     }
+    const groupItemsForSilhouette = silhouetteLayer.groupItems
+    for(let i = 0;i < groupItemsForSilhouette.length;i++){
+      const groupItem = groupItemsForSilhouette[i]
+      const silhouetteOperator = new ObjectOperator(groupItem)
+      silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
+    }
 
+    logger.log("Export to images")
     this.saveImages()
 
   }
@@ -140,39 +159,61 @@ class LayerCopyer {
     for(let i = 0;i < from.pageItems.length;i++) {
       const fromI = from.pageItems[i]
 
+      // Invisibleになっている場合、コピーのために表示状態にして
+      // 終わったら元に戻す
+      let isVisible = true
+      if(fromI.hidden) {
+        isVisible = false
+        fromI.hidden = false
+      }
       fromI.duplicate(dest, ElementPlacement.PLACEATEND)
+      if(!isVisible) {
+        fromI.hidden = true
+      }
     }
     // Copy layers
     for(let i = from.layers.length - 1;i >= 0;i-- ) {
       const fromL = from.layers[i]
+
+      let isVisible = true
+      if(!fromL.visible) {
+        fromL.visible = true
+        isVisible = false
+      }
       
       const copied = dest.layers.add()
       copied.name = fromL.name
       this.copyRecursively(fromL, copied)
+
+      if(!isVisible) {
+        fromL.visible = false
+      }
     }
   }
 }
 
 class ObjectOperator {
 
-  layer: Layer
+  layer: Layer | GroupItem
 
   allItems : PageItem[]
 
-  constructor(layer: Layer) {
+  constructor(layer: Layer | GroupItem) {
     this.layer = layer
     this.allItems = this.gatherItems(layer)
   }
 
-  gatherItems(layer: Layer) {
+  gatherItems(layer: Layer | GroupItem) {
     let pageItems : PageItem[] = []
 
     for(let i = 0;i < layer.pageItems.length;i++) {
       pageItems.push(layer.pageItems[i])
     }
-    
-    for(let i = 0;i < layer.layers.length;i++) {
-      pageItems = pageItems.concat(this.gatherItems(layer.layers[i]))
+    if(layer.typename == "Layer") {
+      const l = layer as Layer
+      for(let i = 0;i < l.layers.length;i++) {
+        pageItems = pageItems.concat(this.gatherItems(l.layers[i]))
+      }
     }
     return pageItems
   }
@@ -202,7 +243,7 @@ class ObjectOperator {
         for(let i = 0;i < pathItems.length;i++) {
           changeColor(pathItems[i])
         }
-      } if(item.typename == "GroupItem") {
+      } else if(item.typename == "GroupItem") {
         const pathItems = (item as GroupItem).pathItems
         for(let i = 0;i < pathItems.length;i++) {
           changeColor(pathItems[i])
@@ -211,6 +252,8 @@ class ObjectOperator {
         const pathItem = item as PathItem
         pathItem.strokeColor = strokeColor
         pathItem.fillColor = fillColor
+      } else {
+        Logger.getDefault().log("Unknown page item type:" + item.typename)
       }
     }
 
@@ -219,15 +262,25 @@ class ObjectOperator {
     }
   }
   private mergeAndOutineize() {
-    const compound = this.layer.compoundPathItems.add()
 
-    for(const item of this.allItems) {
-      item.move(compound, ElementPlacement.PLACEATEND)
+    if(this.layer.typename == "Layer") {
+      const compound = this.layer.compoundPathItems.add()
+
+      for(const item of this.allItems) {
+        item.move(compound, ElementPlacement.PLACEATEND)
+      }
+      app.activeDocument.selection = []
+      compound.selected = true
+      app.executeMenuCommand("Live Pathfinder Add")
+      app.executeMenuCommand('expandStyle');
+    } else {
+
+      app.activeDocument.selection = [];
+      (this.layer as GroupItem).selected = true
+      app.executeMenuCommand("Live Pathfinder Add")
+      app.executeMenuCommand('expandStyle');
+
     }
-    app.activeDocument.selection = []
-    compound.selected = true
-    app.executeMenuCommand("Live Pathfinder Add")
-    app.executeMenuCommand('expandStyle');
   }
 
   

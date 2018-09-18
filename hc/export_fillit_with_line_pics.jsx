@@ -1214,6 +1214,7 @@ var Utils_1 = __webpack_require__(3);
 var ActionExecutor_1 = __webpack_require__(4);
 var Actions_1 = __webpack_require__(5);
 var ImageExporter_1 = __webpack_require__(6);
+var Logger_1 = __webpack_require__(7);
 var OriginLayerName = "original";
 var OutlinedLayerName = "outline";
 var SilhouetteLayerName = "silhouette";
@@ -1242,8 +1243,14 @@ var FillItDocument = /** @class */ (function () {
     };
     FillItDocument.prototype.changeToOutline = function () {
         var copyer = new LayerCopyer();
+        var logger = Logger_1.Logger.getDefault();
+        logger.log("Start copy");
         // 全体をコピー
         var outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName);
+        logger.log(outlinedLayer.layers.length + " layers");
+        logger.log(outlinedLayer.groupItems.length + " group items");
+        logger.log(outlinedLayer.compoundPathItems.length + " compound items");
+        logger.log("Make outline");
         // アウトライン化
         var layersForOutlines = outlinedLayer.layers;
         for (var i = 0; i < layersForOutlines.length; i++) {
@@ -1251,6 +1258,13 @@ var FillItDocument = /** @class */ (function () {
             var outlineOperator = new ObjectOperator(layer);
             outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
         }
+        var groupItemsForOutlines = outlinedLayer.groupItems;
+        for (var i = 0; i < groupItemsForOutlines.length; i++) {
+            var groupItem = groupItemsForOutlines[i];
+            var outlineOperator = new ObjectOperator(groupItem);
+            outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
+        }
+        logger.log("Make silhouette");
         // シルエット
         var silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);
         var layersForSilhouette = silhouetteLayer.layers;
@@ -1259,6 +1273,13 @@ var FillItDocument = /** @class */ (function () {
             var silhouetteOperator = new ObjectOperator(layer);
             silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
         }
+        var groupItemsForSilhouette = silhouetteLayer.groupItems;
+        for (var i = 0; i < groupItemsForSilhouette.length; i++) {
+            var groupItem = groupItemsForSilhouette[i];
+            var silhouetteOperator = new ObjectOperator(groupItem);
+            silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
+        }
+        logger.log("Export to images");
         this.saveImages();
     };
     FillItDocument.prototype.saveImages = function () {
@@ -1320,14 +1341,32 @@ var LayerCopyer = /** @class */ (function () {
         // Copy items
         for (var i = 0; i < from.pageItems.length; i++) {
             var fromI = from.pageItems[i];
+            // Invisibleになっている場合、コピーのために表示状態にして
+            // 終わったら元に戻す
+            var isVisible = true;
+            if (fromI.hidden) {
+                isVisible = false;
+                fromI.hidden = false;
+            }
             fromI.duplicate(dest, ElementPlacement.PLACEATEND);
+            if (!isVisible) {
+                fromI.hidden = true;
+            }
         }
         // Copy layers
         for (var i = from.layers.length - 1; i >= 0; i--) {
             var fromL = from.layers[i];
+            var isVisible = true;
+            if (!fromL.visible) {
+                fromL.visible = true;
+                isVisible = false;
+            }
             var copied = dest.layers.add();
             copied.name = fromL.name;
             this.copyRecursively(fromL, copied);
+            if (!isVisible) {
+                fromL.visible = false;
+            }
         }
     };
     return LayerCopyer;
@@ -1342,8 +1381,11 @@ var ObjectOperator = /** @class */ (function () {
         for (var i = 0; i < layer.pageItems.length; i++) {
             pageItems.push(layer.pageItems[i]);
         }
-        for (var i = 0; i < layer.layers.length; i++) {
-            pageItems = pageItems.concat(this.gatherItems(layer.layers[i]));
+        if (layer.typename == "Layer") {
+            var l = layer;
+            for (var i = 0; i < l.layers.length; i++) {
+                pageItems = pageItems.concat(this.gatherItems(l.layers[i]));
+            }
         }
         return pageItems;
     };
@@ -1364,7 +1406,7 @@ var ObjectOperator = /** @class */ (function () {
                     changeColor(pathItems[i]);
                 }
             }
-            if (item.typename == "GroupItem") {
+            else if (item.typename == "GroupItem") {
                 var pathItems = item.pathItems;
                 for (var i = 0; i < pathItems.length; i++) {
                     changeColor(pathItems[i]);
@@ -1375,6 +1417,9 @@ var ObjectOperator = /** @class */ (function () {
                 pathItem.strokeColor = strokeColor;
                 pathItem.fillColor = fillColor;
             }
+            else {
+                Logger_1.Logger.getDefault().log("Unknown page item type:" + item.typename);
+            }
         };
         for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
             var item = _a[_i];
@@ -1382,15 +1427,23 @@ var ObjectOperator = /** @class */ (function () {
         }
     };
     ObjectOperator.prototype.mergeAndOutineize = function () {
-        var compound = this.layer.compoundPathItems.add();
-        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
-            var item = _a[_i];
-            item.move(compound, ElementPlacement.PLACEATEND);
+        if (this.layer.typename == "Layer") {
+            var compound = this.layer.compoundPathItems.add();
+            for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
+                var item = _a[_i];
+                item.move(compound, ElementPlacement.PLACEATEND);
+            }
+            app.activeDocument.selection = [];
+            compound.selected = true;
+            app.executeMenuCommand("Live Pathfinder Add");
+            app.executeMenuCommand('expandStyle');
         }
-        app.activeDocument.selection = [];
-        compound.selected = true;
-        app.executeMenuCommand("Live Pathfinder Add");
-        app.executeMenuCommand('expandStyle');
+        else {
+            app.activeDocument.selection = [];
+            this.layer.selected = true;
+            app.executeMenuCommand("Live Pathfinder Add");
+            app.executeMenuCommand('expandStyle');
+        }
     };
     return ObjectOperator;
 }());
@@ -1436,6 +1489,15 @@ var ColorPallete = /** @class */ (function () {
     };
     ColorPallete.white = function () {
         return this.rgb(255, 255, 255);
+    };
+    ColorPallete.black = function () {
+        return this.rgb(0, 0, 0);
+    };
+    ColorPallete.red = function () {
+        return this.rgb(255, 0, 0);
+    };
+    ColorPallete.yellow = function () {
+        return this.rgb(255, 255, 0);
     };
     ColorPallete.noColor = function () {
         return new NoColor();
@@ -1561,6 +1623,65 @@ var ImageExporter = /** @class */ (function () {
     return ImageExporter;
 }());
 exports.ImageExporter = ImageExporter;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utils_1 = __webpack_require__(3);
+/**
+ * 画面上にTextFrameItemを作って、実行ログを出力する
+ */
+var Logger = /** @class */ (function () {
+    function Logger(layerName) {
+        var layer;
+        try {
+            layer = app.activeDocument.layers.getByName(layerName);
+            if (layer) {
+                this.textItem = layer.pageItems.getByName("message");
+            }
+        }
+        catch (err) {
+        }
+        if (!layer) {
+            layer = app.activeDocument.layers.add();
+            layer.name = layerName;
+        }
+        if (!this.textItem) {
+            this.textItem = layer.textFrames.add();
+            this.textItem.name = "message";
+        }
+        this.textItem.contents = "";
+        this.textItem.textRange.characterAttributes.size = 15;
+        this.textItem.textRange.characterAttributes.leading = 18;
+        this.textItem.textRange.characterAttributes.autoLeading = false;
+    }
+    Logger.getDefault = function () {
+        if (this._defaultLogger == null) {
+            this._defaultLogger = new Logger("__log");
+        }
+        return this._defaultLogger;
+    };
+    Logger.prototype.log = function (log) {
+        this.coloredLog(log, Utils_1.ColorPallete.black());
+    };
+    Logger.prototype.warn = function (log) {
+        this.coloredLog("WARN: " + log, Utils_1.ColorPallete.yellow());
+    };
+    Logger.prototype.error = function (log) {
+        this.coloredLog("ERROR: " + log, Utils_1.ColorPallete.red());
+    };
+    Logger.prototype.coloredLog = function (log, color) {
+        var tr = this.textItem.characters.add(log + "\n");
+        tr.characterAttributes.strokeColor = color;
+    };
+    return Logger;
+}());
+exports.Logger = Logger;
 
 
 /***/ })

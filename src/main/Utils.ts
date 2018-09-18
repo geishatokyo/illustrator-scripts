@@ -34,6 +34,17 @@ export class ColorPallete {
   static white() : Color{
     return this.rgb(255,255,255)
   }
+  static black() : Color {
+    return this.rgb(0,0,0)
+  }
+
+  static red() : Color {
+    return this.rgb(255,0,0)
+  }
+
+  static yellow(): Color {
+    return this.rgb(255,255,0)
+  }
 
   static noColor() {
     return new NoColor()
