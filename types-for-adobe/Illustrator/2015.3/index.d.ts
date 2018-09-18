@@ -3829,7 +3829,7 @@ declare class Artboards {
 	 * Add artboard object.
 	 * @param artboardRect Size and position of artboard.
 	 */
-	static add(artboardRect: Rect): Artboard;
+	add(artboardRect: Rect): Artboard;
 
 	/**
 	 * Retrieves the index position of the active artboard in the document's list.
@@ -3903,7 +3903,7 @@ declare class Documents {
 	 * @param artboardSpacing Spacing between artboards for new document.
 	 * @param artboardRowsOrCols Number of rows (for rows layout) OR column(for column layouts)of artboards.Range is 1 to (docNumArtboards - 1) or 1 for single row or column layouts.
 	 */
-	static add(documentColorSpace?: DocumentColorSpace, width?: number, height?: number, numArtboards?: number, artboardLayout?: DocumentArtboardLayout, artboardSpacing?: number, artboardRowsOrCols?: number): Document;
+	add(documentColorSpace?: DocumentColorSpace, width?: number, height?: number, numArtboards?: number, artboardLayout?: DocumentArtboardLayout, artboardSpacing?: number, artboardRowsOrCols?: number): Document;
 
 	/**
 	 * Create a new document from a preset.
@@ -3911,14 +3911,14 @@ declare class Documents {
 	 * @param presetSettings Custom settings to apply to the preset.
 	 * @param showOptionsDialog If false, do not show Options dialog.
 	 */
-	static addDocument(startupPreset: string, presetSettings?: DocumentPreset, showOptionsDialog?: boolean): Document;
+	addDocument(startupPreset: string, presetSettings?: DocumentPreset, showOptionsDialog?: boolean): Document;
 
 	/**
 	 * Create a document from the preset with option to throw dialog to customize present settings.
 	 * @param startupPreset The name of startup document preset.
 	 * @param showOptionsDialog Argument controls if options Dialog is shown or not.
 	 */
-	static addDocumentWithDialogOption(startupPreset: string, showOptionsDialog?: boolean): Document;
+	addDocumentWithDialogOption(startupPreset: string, showOptionsDialog?: boolean): Document;
 
 	/**
 	 * Arranges the documents in the specified style.
@@ -4449,19 +4449,15 @@ declare class Characters {
 	 * Create a character.
 	 * @param contents The text string.
 	 */
-	static add(contents: string): TextRange;
-
-	/**
-	 * 
-	 * @param contents The text string.
-	 */
-	static addBefore(contents: string): TextRange;
+	add(contents: string): TextRange;
 
 	/**
 	 * Get the first element in the collection with the provided name.
 	 * @param name 
 	 */
-	getByName(name: string): TextRange;
+	addBefore(name: string): TextRange;
+
+  [itemKey: number]: TextRange
 
 	/**
 	 * Deletes all elements.
@@ -4493,13 +4489,13 @@ declare class Words {
 	 * Create a word.
 	 * @param contents The text string.
 	 */
-	static add(contents: string): TextRange;
+	add(contents: string): TextRange;
 
 	/**
 	 * 
 	 * @param contents The text string.
 	 */
-	static addBefore(contents: string): TextRange;
+	addBefore(contents: string): TextRange;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4518,6 +4514,8 @@ declare class Words {
  * A collection of lines.
  */
 declare class Lines {
+
+
 	/**
 	 * Number of elements in the collection.
 	 */
@@ -4533,11 +4531,9 @@ declare class Lines {
 	 */
 	readonly typename: string;
 
-	/**
-	 * Get the first element in the collection with the provided name.
-	 * @param name 
-	 */
-	getByName(name: string): TextRange;
+	[itemKey: number]: TextRange
+
+	removeAll(): void
 
 }
 
@@ -4564,13 +4560,13 @@ declare class Paragraphs {
 	 * Create a text art item.
 	 * @param contents The text string.
 	 */
-	static add(contents: string): TextRange;
+	add(contents: string): TextRange;
 
 	/**
 	 * 
 	 * @param contents The text string.
 	 */
-	static addBefore(contents: string): TextRange;
+	addBefore(contents: string): TextRange;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4608,7 +4604,7 @@ declare class CharacterStyles {
 	 * Create a named character style.
 	 * @param name The character style name.
 	 */
-	static add(name: string): CharacterStyle;
+	add(name: string): CharacterStyle;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4646,7 +4642,7 @@ declare class ParagraphStyles {
 	 * Create a named paragraph style.
 	 * @param name The paragraph style name.
 	 */
-	static add(name: string): ParagraphStyle;
+	add(name: string): ParagraphStyle;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4918,7 +4914,7 @@ declare class Symbols {
 	 * @param sourceArt The art item from which to make this symbol.
 	 * @param registrationPoint The symbol registration point.
 	 */
-	static add(sourceArt: PageItem, registrationPoint?: SymbolRegistrationPoint): Symbol;
+	add(sourceArt: PageItem, registrationPoint?: SymbolRegistrationPoint): Symbol;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -4962,7 +4958,7 @@ declare class SymbolItems {
 	 * An instance of a symbol item.
 	 * @param symbol The symbol to make an instance of.
 	 */
-	static add(symbol: Symbol): SymbolItem;
+	add(symbol: Symbol): SymbolItem;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5001,13 +4997,13 @@ declare class Brushes {
 	 * @param brushDefinition The brush definition from which the brush would be created.
 	 * @param brushName The name of the brush.
 	 */
-	static add(brushDefinition: File, brushName?: string): Brush;
+	add(brushDefinition: File, brushName?: string): Brush;
 
 	/**
 	 * Create a brush, select the brush tool and load the created brush in the brush tool.
 	 * @param brushDefinition The brush definition from which the brush would be created.
 	 */
-	static addAndLoad(brushDefinition: File): Brush;
+	addAndLoad(brushDefinition: File): Brush;
 
 	/**
 	 * Get the first element in the collection with the provided name.
@@ -5509,7 +5505,7 @@ declare class OpenOptions {
 	/**
 	 * Add this file to the list of recently opened files.
 	 */
-	static addToRecentFiles: boolean;
+	addToRecentFiles: boolean;
 
 	/**
 	 * Convert crop area to Artboard when opening legacy document (pre-Illustrator CS4) in CS4 or later. If false then crop areas are discarded.
