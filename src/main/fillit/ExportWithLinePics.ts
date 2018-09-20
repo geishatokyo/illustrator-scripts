@@ -5,6 +5,7 @@ import { ActionExecutor } from '../ActionExecutor';
 import { aiscripts } from './Actions';
 import { ImageExporter } from '../ImageExporter';
 import { Logger } from '../Logger';
+import { Element } from '../DocumentTree';
 
 
 const OriginLayerName = "original"
@@ -41,76 +42,65 @@ class FillItDocument {
     const logger = Logger.getDefault()
     logger.log("Start copy")
     // 全体をコピー
-    const outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
+    copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
     
-    logger.log(outlinedLayer.layers.length + " layers")
-    logger.log(outlinedLayer.groupItems.length + " group items")
-    logger.log(outlinedLayer.compoundPathItems.length + " compound items")
     logger.log("Make outline")
     // アウトライン化
-    const layersForOutlines = outlinedLayer.layers
-    for(let i = 0;i < layersForOutlines.length;i++) {
-      const layer = layersForOutlines[i]
-      const outlineOperator = new ObjectOperator(layer)
-      outlineOperator.outlinenize(ColorPallete.noColor())
-    }
-    const groupItemsForOutlines = outlinedLayer.groupItems
-    for(let i = 0;i < groupItemsForOutlines.length;i++) {
-      const groupItem = groupItemsForOutlines[i]
-      const outlineOperator = new ObjectOperator(groupItem)
+    for(const ele of Element.getActive().findElement(OutlinedLayerName).children()) {
+      logger.log("Layer " + ele.name())
+      const outlineOperator = new ObjectOperator(ele)
       outlineOperator.outlinenize(ColorPallete.noColor())
     }
 
     logger.log("Make silhouette")
     // シルエット
-    const silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName)
-    const layersForSilhouette = silhouetteLayer.layers
+    Element.getActive().revertAll();
+    Element.clearCache()
 
-    for(let i = 0;i < layersForSilhouette.length;i++){
-      const layer = layersForSilhouette[i]
-      const silhouetteOperator = new ObjectOperator(layer)
-      silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
-    }
-    const groupItemsForSilhouette = silhouetteLayer.groupItems
-    for(let i = 0;i < groupItemsForSilhouette.length;i++){
-      const groupItem = groupItemsForSilhouette[i]
-      const silhouetteOperator = new ObjectOperator(groupItem)
-      silhouetteOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
+    copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName)
+
+    for(const ele of Element.getActive().findElement(SilhouetteLayerName).children()) {
+      const outlineOperator = new ObjectOperator(ele)
+      outlineOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
     }
 
-    logger.log("Export to images")
     this.saveImages()
 
+    Element.getActive().revertAll();
   }
 
   saveImages() {
     const imageExporter = new ImageExporter()
 
     const imageDir = "images/"
+    const logger = Logger.getDefault()
 
     imageExporter.makeDir(imageDir)
-
+    
+    logger.log("Export normal images")
     this.foreachChildLayers(OriginLayerName)(layer => {
-      imageExporter.saveAsPng(imageDir + layer.name, layer)
+      imageExporter.saveAsPng(imageDir + layer.name(), layer)
     })
+    logger.log("Export outline images")
     this.foreachChildLayers(OutlinedLayerName)(layer => {
-      imageExporter.saveAsPng(imageDir + layer.name, layer)
+      imageExporter.saveAsPng(imageDir + layer.name() + "_outline", layer)
     })
+    logger.log("Export silhouette images")
     this.foreachChildLayers(SilhouetteLayerName)(layer => {
-      imageExporter.saveAsPng(imageDir + layer.name, layer)
+      imageExporter.saveAsPng(imageDir + layer.name() + "_silhouette", layer)
     })
+
+    Element.getActive().revertAll()
 
   }
   layer(name: string) {
     return app.activeDocument.layers.getByName(name)
   }
   foreachChildLayers(layerName: string) {
-    return (func: (l: Layer) => any) => {
-      const layers = app.activeDocument.layers.getByName(layerName).layers
-      
-      for(let i = 0;i < layers.length; i++) {
-        const layer = layers[i]
-        func(layer)
+    return (func: (l: Element) => any) => {
+      const targetLayer = Element.getActive().findElement(layerName)
+      for(const ele of targetLayer.children()) {
+        func(ele)
       }
     }
   }
@@ -147,7 +137,10 @@ class LayerCopyer {
 
     newCopyTarget.name = copyTargetLayerName
 
+    const isVisible = originLayer.visible
+    originLayer.visible = true
     this.copyRecursively(originLayer, newCopyTarget)
+    originLayer.visible = isVisible
 
     return newCopyTarget
     
@@ -194,13 +187,11 @@ class LayerCopyer {
 
 class ObjectOperator {
 
-  layer: Layer | GroupItem
+  element: Element
 
-  allItems : PageItem[]
 
-  constructor(layer: Layer | GroupItem) {
-    this.layer = layer
-    this.allItems = this.gatherItems(layer)
+  constructor(element: Element) {
+    this.element = element
   }
 
   gatherItems(layer: Layer | GroupItem) {
@@ -222,6 +213,7 @@ class ObjectOperator {
    * 線画化する
    */
   outlinenize(fillColor: Color) {
+
     this.changeStrokeAndFillColor(
       StrokeColor, 
       fillColor)
@@ -237,50 +229,54 @@ class ObjectOperator {
 
   changeStrokeAndFillColor(strokeColor: Color, fillColor: Color) {
 
-    const changeColor = (item: PageItem) => {
-      if(item.typename == "CompoundPathItem") {
-        const pathItems = (item as CompoundPathItem).pathItems
-        for(let i = 0;i < pathItems.length;i++) {
-          changeColor(pathItems[i])
-        }
-      } else if(item.typename == "GroupItem") {
-        const pathItems = (item as GroupItem).pathItems
-        for(let i = 0;i < pathItems.length;i++) {
-          changeColor(pathItems[i])
-        }
-      } else if(item.typename == "PathItem") {
-        const pathItem = item as PathItem
+    this.element.makeModifiable()
+
+    const changeColor = (ele: Element) => {
+      if(ele.typename() == "PathItem") {
+
+        const pathItem = ele.asPageItem() as PathItem
         pathItem.strokeColor = strokeColor
         pathItem.fillColor = fillColor
+
       } else {
-        Logger.getDefault().log("Unknown page item type:" + item.typename)
+        for(const c of ele.children()) {
+          changeColor(c)
+        }
       }
     }
 
-    for(const item of this.allItems) {
+    for(const item of this.element.children()) {
       changeColor(item)
     }
+
   }
+
   private mergeAndOutineize() {
+    Logger.getDefault().log("Outlineize: " + this.element.name())
+    this.element.makeVisibleAllChildren(true)
 
-    if(this.layer.typename == "Layer") {
-      const compound = this.layer.compoundPathItems.add()
+    if(this.element.typename() == "Layer") {
+      const layer = this.element.asLayer()
+      const compound = layer.compoundPathItems.add()
 
-      for(const item of this.allItems) {
+      for(const child of this.element.children()) {
+        const item = child.raw() as Layer | PageItem
+
         item.move(compound, ElementPlacement.PLACEATEND)
       }
       app.activeDocument.selection = []
       compound.selected = true
       app.executeMenuCommand("Live Pathfinder Add")
       app.executeMenuCommand('expandStyle');
-    } else {
 
+    } else {
       app.activeDocument.selection = [];
-      (this.layer as GroupItem).selected = true
+      this.element.setSelected(true)
       app.executeMenuCommand("Live Pathfinder Add")
       app.executeMenuCommand('expandStyle');
 
     }
+
   }
 
   

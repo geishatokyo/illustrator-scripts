@@ -81,19 +81,75 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ColorPallete = /** @class */ (function () {
+    function ColorPallete() {
+    }
+    /**
+     * 0 <= parameter <= 255
+     * @param r
+     * @param g
+     * @param b
+     */
+    ColorPallete.rgb = function (r, g, b) {
+        var color = new RGBColor();
+        color.red = r;
+        color.green = g;
+        color.blue = b;
+        return color;
+    };
+    /**
+     *
+     * @param sharpColor #ffffff
+     */
+    ColorPallete.rgbString = function (sharpColor) {
+        if (sharpColor.charAt(0) == "#") {
+            sharpColor = sharpColor.slice(1);
+        }
+        var r = parseInt(sharpColor.slice(0, 1));
+        var g = parseInt(sharpColor.slice(2, 3));
+        var b = parseInt(sharpColor.slice(4, 5));
+        return this.rgb(r, g, b);
+    };
+    ColorPallete.white = function () {
+        return this.rgb(255, 255, 255);
+    };
+    ColorPallete.black = function () {
+        return this.rgb(0, 0, 0);
+    };
+    ColorPallete.red = function () {
+        return this.rgb(255, 0, 0);
+    };
+    ColorPallete.yellow = function () {
+        return this.rgb(255, 255, 0);
+    };
+    ColorPallete.noColor = function () {
+        return new NoColor();
+    };
+    return ColorPallete;
+}());
+exports.ColorPallete = ColorPallete;
 
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(2);
+module.exports = __webpack_require__(3);
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1203,18 +1259,19 @@ module.exports = __webpack_require__(2);
 /******/ ]);
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference types="illustrator/2015.3"/>
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(3);
+var Utils_1 = __webpack_require__(0);
 var ActionExecutor_1 = __webpack_require__(4);
 var Actions_1 = __webpack_require__(5);
 var ImageExporter_1 = __webpack_require__(6);
 var Logger_1 = __webpack_require__(7);
+var DocumentTree_1 = __webpack_require__(8);
 var OriginLayerName = "original";
 var OutlinedLayerName = "outline";
 var SilhouetteLayerName = "silhouette";
@@ -1246,65 +1303,56 @@ var FillItDocument = /** @class */ (function () {
         var logger = Logger_1.Logger.getDefault();
         logger.log("Start copy");
         // 全体をコピー
-        var outlinedLayer = copyer.copyAllItems(OriginLayerName, OutlinedLayerName);
-        logger.log(outlinedLayer.layers.length + " layers");
-        logger.log(outlinedLayer.groupItems.length + " group items");
-        logger.log(outlinedLayer.compoundPathItems.length + " compound items");
+        copyer.copyAllItems(OriginLayerName, OutlinedLayerName);
         logger.log("Make outline");
         // アウトライン化
-        var layersForOutlines = outlinedLayer.layers;
-        for (var i = 0; i < layersForOutlines.length; i++) {
-            var layer = layersForOutlines[i];
-            var outlineOperator = new ObjectOperator(layer);
-            outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
-        }
-        var groupItemsForOutlines = outlinedLayer.groupItems;
-        for (var i = 0; i < groupItemsForOutlines.length; i++) {
-            var groupItem = groupItemsForOutlines[i];
-            var outlineOperator = new ObjectOperator(groupItem);
+        for (var _i = 0, _a = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children(); _i < _a.length; _i++) {
+            var ele = _a[_i];
+            logger.log("Layer " + ele.name());
+            var outlineOperator = new ObjectOperator(ele);
             outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
         }
         logger.log("Make silhouette");
         // シルエット
-        var silhouetteLayer = copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);
-        var layersForSilhouette = silhouetteLayer.layers;
-        for (var i = 0; i < layersForSilhouette.length; i++) {
-            var layer = layersForSilhouette[i];
-            var silhouetteOperator = new ObjectOperator(layer);
-            silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
+        DocumentTree_1.Element.getActive().revertAll();
+        DocumentTree_1.Element.clearCache();
+        copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);
+        for (var _b = 0, _c = DocumentTree_1.Element.getActive().findElement(SilhouetteLayerName).children(); _b < _c.length; _b++) {
+            var ele = _c[_b];
+            var outlineOperator = new ObjectOperator(ele);
+            outlineOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
         }
-        var groupItemsForSilhouette = silhouetteLayer.groupItems;
-        for (var i = 0; i < groupItemsForSilhouette.length; i++) {
-            var groupItem = groupItemsForSilhouette[i];
-            var silhouetteOperator = new ObjectOperator(groupItem);
-            silhouetteOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
-        }
-        logger.log("Export to images");
         this.saveImages();
+        DocumentTree_1.Element.getActive().revertAll();
     };
     FillItDocument.prototype.saveImages = function () {
         var imageExporter = new ImageExporter_1.ImageExporter();
         var imageDir = "images/";
+        var logger = Logger_1.Logger.getDefault();
         imageExporter.makeDir(imageDir);
+        logger.log("Export normal images");
         this.foreachChildLayers(OriginLayerName)(function (layer) {
-            imageExporter.saveAsPng(imageDir + layer.name, layer);
+            imageExporter.saveAsPng(imageDir + layer.name(), layer);
         });
+        logger.log("Export outline images");
         this.foreachChildLayers(OutlinedLayerName)(function (layer) {
-            imageExporter.saveAsPng(imageDir + layer.name, layer);
+            imageExporter.saveAsPng(imageDir + layer.name() + "_outline", layer);
         });
+        logger.log("Export silhouette images");
         this.foreachChildLayers(SilhouetteLayerName)(function (layer) {
-            imageExporter.saveAsPng(imageDir + layer.name, layer);
+            imageExporter.saveAsPng(imageDir + layer.name() + "_silhouette", layer);
         });
+        DocumentTree_1.Element.getActive().revertAll();
     };
     FillItDocument.prototype.layer = function (name) {
         return app.activeDocument.layers.getByName(name);
     };
     FillItDocument.prototype.foreachChildLayers = function (layerName) {
         return function (func) {
-            var layers = app.activeDocument.layers.getByName(layerName).layers;
-            for (var i = 0; i < layers.length; i++) {
-                var layer = layers[i];
-                func(layer);
+            var targetLayer = DocumentTree_1.Element.getActive().findElement(layerName);
+            for (var _i = 0, _a = targetLayer.children(); _i < _a.length; _i++) {
+                var ele = _a[_i];
+                func(ele);
             }
         };
     };
@@ -1334,7 +1382,10 @@ var LayerCopyer = /** @class */ (function () {
         }
         var newCopyTarget = doc.layers.add();
         newCopyTarget.name = copyTargetLayerName;
+        var isVisible = originLayer.visible;
+        originLayer.visible = true;
         this.copyRecursively(originLayer, newCopyTarget);
+        originLayer.visible = isVisible;
         return newCopyTarget;
     };
     LayerCopyer.prototype.copyRecursively = function (from, dest) {
@@ -1372,9 +1423,8 @@ var LayerCopyer = /** @class */ (function () {
     return LayerCopyer;
 }());
 var ObjectOperator = /** @class */ (function () {
-    function ObjectOperator(layer) {
-        this.layer = layer;
-        this.allItems = this.gatherItems(layer);
+    function ObjectOperator(element) {
+        this.element = element;
     }
     ObjectOperator.prototype.gatherItems = function (layer) {
         var pageItems = [];
@@ -1399,38 +1449,34 @@ var ObjectOperator = /** @class */ (function () {
         new ActionExecutor_1.ActionExecutor().executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
     };
     ObjectOperator.prototype.changeStrokeAndFillColor = function (strokeColor, fillColor) {
-        var changeColor = function (item) {
-            if (item.typename == "CompoundPathItem") {
-                var pathItems = item.pathItems;
-                for (var i = 0; i < pathItems.length; i++) {
-                    changeColor(pathItems[i]);
-                }
-            }
-            else if (item.typename == "GroupItem") {
-                var pathItems = item.pathItems;
-                for (var i = 0; i < pathItems.length; i++) {
-                    changeColor(pathItems[i]);
-                }
-            }
-            else if (item.typename == "PathItem") {
-                var pathItem = item;
+        this.element.makeModifiable();
+        var changeColor = function (ele) {
+            if (ele.typename() == "PathItem") {
+                var pathItem = ele.asPageItem();
                 pathItem.strokeColor = strokeColor;
                 pathItem.fillColor = fillColor;
             }
             else {
-                Logger_1.Logger.getDefault().log("Unknown page item type:" + item.typename);
+                for (var _i = 0, _a = ele.children(); _i < _a.length; _i++) {
+                    var c = _a[_i];
+                    changeColor(c);
+                }
             }
         };
-        for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
+        for (var _i = 0, _a = this.element.children(); _i < _a.length; _i++) {
             var item = _a[_i];
             changeColor(item);
         }
     };
     ObjectOperator.prototype.mergeAndOutineize = function () {
-        if (this.layer.typename == "Layer") {
-            var compound = this.layer.compoundPathItems.add();
-            for (var _i = 0, _a = this.allItems; _i < _a.length; _i++) {
-                var item = _a[_i];
+        Logger_1.Logger.getDefault().log("Outlineize: " + this.element.name());
+        this.element.makeVisibleAllChildren(true);
+        if (this.element.typename() == "Layer") {
+            var layer = this.element.asLayer();
+            var compound = layer.compoundPathItems.add();
+            for (var _i = 0, _a = this.element.children(); _i < _a.length; _i++) {
+                var child = _a[_i];
+                var item = child.raw();
                 item.move(compound, ElementPlacement.PLACEATEND);
             }
             app.activeDocument.selection = [];
@@ -1440,7 +1486,7 @@ var ObjectOperator = /** @class */ (function () {
         }
         else {
             app.activeDocument.selection = [];
-            this.layer.selected = true;
+            this.element.setSelected(true);
             app.executeMenuCommand("Live Pathfinder Add");
             app.executeMenuCommand('expandStyle');
         }
@@ -1449,62 +1495,6 @@ var ObjectOperator = /** @class */ (function () {
 }());
 new FillItDocument().changeToOutline();
 alert("Done!");
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ColorPallete = /** @class */ (function () {
-    function ColorPallete() {
-    }
-    /**
-     * 0 <= parameter <= 255
-     * @param r
-     * @param g
-     * @param b
-     */
-    ColorPallete.rgb = function (r, g, b) {
-        var color = new RGBColor();
-        color.red = r;
-        color.green = g;
-        color.blue = b;
-        return color;
-    };
-    /**
-     *
-     * @param sharpColor #ffffff
-     */
-    ColorPallete.rgbString = function (sharpColor) {
-        if (sharpColor.charAt(0) == "#") {
-            sharpColor = sharpColor.slice(1);
-        }
-        var r = parseInt(sharpColor.slice(0, 1));
-        var g = parseInt(sharpColor.slice(2, 3));
-        var b = parseInt(sharpColor.slice(4, 5));
-        return this.rgb(r, g, b);
-    };
-    ColorPallete.white = function () {
-        return this.rgb(255, 255, 255);
-    };
-    ColorPallete.black = function () {
-        return this.rgb(0, 0, 0);
-    };
-    ColorPallete.red = function () {
-        return this.rgb(255, 0, 0);
-    };
-    ColorPallete.yellow = function () {
-        return this.rgb(255, 255, 0);
-    };
-    ColorPallete.noColor = function () {
-        return new NoColor();
-    };
-    return ColorPallete;
-}());
-exports.ColorPallete = ColorPallete;
 
 
 /***/ }),
@@ -1577,8 +1567,9 @@ var aiscripts;
 
 "use strict";
 
-/// <reference types="illustrator/2015.3"/>
 Object.defineProperty(exports, "__esModule", { value: true });
+var Logger_1 = __webpack_require__(7);
+/// <reference types="illustrator/2015.3"/>
 var ImageExporter = /** @class */ (function () {
     function ImageExporter() {
     }
@@ -1588,8 +1579,9 @@ var ImageExporter = /** @class */ (function () {
             f.create();
         }
     };
-    ImageExporter.prototype.saveAsPng = function (name, layer) {
-        var invisibled = this.makeInvisibleOthers(layer);
+    ImageExporter.prototype.saveAsPng = function (name, element) {
+        element.makeOthersInvisible();
+        Logger_1.Logger.getDefault().log("Save as png:" + name);
         var exportOptions = new ExportOptionsPNG24();
         exportOptions.antiAliasing = true;
         exportOptions.transparency = true;
@@ -1599,26 +1591,7 @@ var ImageExporter = /** @class */ (function () {
         exportOptions.verticalScale = 100;
         exportOptions.horizontalScale = 100;
         app.activeDocument.exportFile(new File(app.activeDocument.path + "/" + name + ".png"), ExportType.PNG24, exportOptions);
-        for (var _i = 0, invisibled_1 = invisibled; _i < invisibled_1.length; _i++) {
-            var l = invisibled_1[_i];
-            l.visible = true;
-        }
-    };
-    ImageExporter.prototype.makeInvisibleOthers = function (layer) {
-        var p = layer.parent;
-        var changeLayers = [];
-        var layers = p.layers;
-        for (var i = 0; i < layers.length; i++) {
-            var l = layers[i];
-            if (l != layer && l.visible) {
-                changeLayers.push(l);
-                l.visible = false;
-            }
-        }
-        if (p.typename == "Layer") {
-            changeLayers = changeLayers.concat(this.makeInvisibleOthers(p));
-        }
-        return changeLayers;
+        //element.revertAll()
     };
     return ImageExporter;
 }());
@@ -1632,7 +1605,7 @@ exports.ImageExporter = ImageExporter;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(3);
+var Utils_1 = __webpack_require__(0);
 /**
  * 画面上にTextFrameItemを作って、実行ログを出力する
  */
@@ -1682,6 +1655,332 @@ var Logger = /** @class */ (function () {
     return Logger;
 }());
 exports.Logger = Logger;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Logger_1 = __webpack_require__(7);
+var Element = /** @class */ (function () {
+    function Element(parent) {
+        this._isVisible = true;
+        this._isLocked = false;
+        this._parent = parent;
+    }
+    Element.getActive = function () {
+        var doc = app.activeDocument;
+        if (this.cache[doc.name]) {
+            return this.cache[doc.name];
+        }
+        else {
+            var e = new DocumentElement(doc);
+            this.cache[doc.name] = e;
+            return e;
+        }
+    };
+    Element.clearCache = function () {
+        this.cache = {};
+    };
+    Element.prototype.parent = function () {
+        return this._parent;
+    };
+    Element.prototype.root = function () {
+        if (this._parent == null) {
+            return this;
+        }
+        else {
+            return this._parent.root();
+        }
+    };
+    Element.prototype.children = function () {
+        if (this._children) {
+            return this._children;
+        }
+        this._children = this.makeChildren();
+        return this._children;
+    };
+    Element.prototype.findElement = function (name) {
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            if (child.name() === name) {
+                return child;
+            }
+        }
+        return null;
+    };
+    Element.prototype.name = function () {
+        return this.raw().name;
+    };
+    Element.prototype.typename = function () {
+        return this.raw().typename;
+    };
+    Element.prototype.asPageItem = function () {
+        return this.raw();
+    };
+    Element.prototype.asLayer = function () {
+        return this.raw();
+    };
+    Element.prototype.asDocument = function () {
+        return this.raw();
+    };
+    Element.prototype.makeModifiable = function () {
+        if (this.parent() !== null) {
+            this.parent().makeModifiable();
+        }
+        this.setVisible(true);
+        this.setLocked(false);
+    };
+    Element.prototype.makeVisibleAllChildren = function (visible) {
+        this.setVisible(visible);
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.makeVisibleAllChildren(visible);
+        }
+    };
+    Element.prototype.isModifiable = function () {
+        return this.isVisible() && !this.isLocked();
+    };
+    /**
+     * この要素以外を不可視状態にする
+     */
+    Element.prototype.makeOthersInvisible = function () {
+        return this.makeOthersInvisibleExcept(null);
+    };
+    Element.prototype.makeOthersInvisibleExcept = function (except) {
+        if (this.parent() !== null) {
+            this.parent().makeOthersInvisibleExcept(this);
+        }
+        this.setVisible(true);
+        if (except === null)
+            return;
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            if (child === except) {
+                child.setVisible(true);
+            }
+            else {
+                child.setVisible(false);
+            }
+        }
+    };
+    Element.prototype.saveState = function () {
+        this._isLocked = this.isLocked();
+        this._isVisible = this.isVisible();
+    };
+    /**
+     * 自身のみを巻き戻す
+     */
+    Element.prototype.revertState = function () {
+        if (this.isLocked() != this._isLocked) {
+            // 可視状態でないと変更できない
+            if (!this.isVisible()) {
+                this.setVisible(true);
+            }
+            this.setLocked(this._isLocked);
+        }
+        if (this.isVisible() != this._isVisible) {
+            this.setVisible(this._isVisible);
+        }
+    };
+    /**
+     * ドキュメント全体を巻き戻す
+     */
+    Element.prototype.revertAll = function () {
+        Logger_1.Logger.getDefault().log("Revert " + this.name());
+        if (this.parent() !== null) {
+            this.parent().revertAll();
+        }
+        else {
+            this.revertChildren();
+        }
+    };
+    /**
+     * 自分と子供のみを巻き戻す
+     */
+    Element.prototype.revertChildren = function () {
+        this.setVisible(true);
+        this.setLocked(false);
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.revertChildren();
+        }
+        this.revertState();
+    };
+    Element.cache = {};
+    return Element;
+}());
+exports.Element = Element;
+var PageItemElement = /** @class */ (function (_super) {
+    __extends(PageItemElement, _super);
+    function PageItemElement(item, parent) {
+        var _this = _super.call(this, parent) || this;
+        _this.item = item;
+        _this.saveState();
+        return _this;
+    }
+    PageItemElement.create = function (item, parent) {
+        if (item.typename === "GroupItem") {
+            return new GroupItemElemennt(item, parent);
+        }
+        else {
+            return new PageItemElement(item, parent);
+        }
+    };
+    PageItemElement.prototype.raw = function () {
+        return this.item;
+    };
+    PageItemElement.prototype.makeChildren = function () {
+        return [];
+    };
+    PageItemElement.prototype.setVisible = function (visible) {
+        this.item.hidden = !visible;
+    };
+    PageItemElement.prototype.isVisible = function () {
+        return !this.item.hidden;
+    };
+    PageItemElement.prototype.isLocked = function () {
+        return this.item.locked;
+    };
+    PageItemElement.prototype.setLocked = function (locked) {
+        this.item.locked = locked;
+    };
+    PageItemElement.prototype.isSelected = function () {
+        return this.item.selected;
+    };
+    PageItemElement.prototype.setSelected = function (selected) {
+        this.item.selected = selected;
+    };
+    return PageItemElement;
+}(Element));
+var GroupItemElemennt = /** @class */ (function (_super) {
+    __extends(GroupItemElemennt, _super);
+    function GroupItemElemennt(item, parent) {
+        var _this = _super.call(this, item, parent) || this;
+        _this.item = item;
+        return _this;
+    }
+    GroupItemElemennt.prototype.makeChildren = function () {
+        var items = [];
+        var pageItems = this.item.pageItems;
+        for (var i = 0; i < pageItems.length; i++) {
+            items.push(PageItemElement.create(pageItems[i], this));
+        }
+        return items;
+    };
+    return GroupItemElemennt;
+}(PageItemElement));
+var LayerElement = /** @class */ (function (_super) {
+    __extends(LayerElement, _super);
+    function LayerElement(layer, parent) {
+        var _this = _super.call(this, parent) || this;
+        _this.layer = layer;
+        _this.saveState();
+        return _this;
+    }
+    LayerElement.prototype.raw = function () {
+        return this.layer;
+    };
+    LayerElement.prototype.makeChildren = function () {
+        var items = [];
+        var layers = this.layer.layers;
+        for (var i = 0; i < layers.length; i++) {
+            items.push(new LayerElement(layers[i], this));
+        }
+        var pageItems = this.layer.pageItems;
+        for (var i = 0; i < pageItems.length; i++) {
+            items.push(PageItemElement.create(pageItems[i], this));
+        }
+        return items;
+    };
+    LayerElement.prototype.setVisible = function (visible) {
+        this.layer.visible = visible;
+    };
+    LayerElement.prototype.isVisible = function () {
+        return this.layer.visible;
+    };
+    LayerElement.prototype.isLocked = function () {
+        return this.layer.locked;
+    };
+    LayerElement.prototype.setLocked = function (locked) {
+        this.layer.locked = locked;
+    };
+    LayerElement.prototype.isSelected = function () {
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            if (!child.isSelected()) {
+                return false;
+            }
+        }
+        return true;
+    };
+    LayerElement.prototype.setSelected = function (selected) {
+        for (var _i = 0, _a = this.children(); _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.setSelected(selected);
+        }
+    };
+    return LayerElement;
+}(Element));
+var DocumentElement = /** @class */ (function (_super) {
+    __extends(DocumentElement, _super);
+    function DocumentElement(document) {
+        var _this = _super.call(this, null) || this;
+        _this.document = document;
+        return _this;
+    }
+    DocumentElement.prototype.raw = function () {
+        return this.document;
+    };
+    DocumentElement.prototype.makeChildren = function () {
+        var items = [];
+        var layers = this.document.layers;
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].parent === this.document) {
+                items.push(new LayerElement(layers[i], this));
+            }
+        }
+        var pageItems = this.document.pageItems;
+        for (var i = 0; i < pageItems.length; i++) {
+            if (pageItems[i].parent === this.document) {
+                items.push(PageItemElement.create(pageItems[i], this));
+            }
+        }
+        return items;
+    };
+    DocumentElement.prototype.setVisible = function (visible) {
+    };
+    DocumentElement.prototype.isVisible = function () {
+        return true;
+    };
+    DocumentElement.prototype.isLocked = function () {
+        return false;
+    };
+    DocumentElement.prototype.setLocked = function (locked) {
+    };
+    DocumentElement.prototype.isSelected = function () {
+        return false;
+    };
+    DocumentElement.prototype.setSelected = function (selected) {
+    };
+    return DocumentElement;
+}(Element));
 
 
 /***/ })

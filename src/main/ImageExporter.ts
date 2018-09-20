@@ -1,3 +1,5 @@
+import { Logger } from './Logger';
+import { Element } from './DocumentTree';
 /// <reference types="illustrator/2015.3"/>
 
 
@@ -11,11 +13,11 @@ export class ImageExporter {
     }
   }
 
+  saveAsPng(name: string, element: Element) {
 
-  saveAsPng(name: string, layer: Layer) {
+    element.makeOthersInvisible()
 
-    const invisibled = this.makeInvisibleOthers(layer)
-
+    Logger.getDefault().log("Save as png:" + name)
 
     const exportOptions = new ExportOptionsPNG24()
     exportOptions.antiAliasing = true;
@@ -32,34 +34,9 @@ export class ImageExporter {
       exportOptions
     )
 
-    for(const l of invisibled) {
-      l.visible = true
-    }
+    //element.revertAll()
   }
 
-  private makeInvisibleOthers(layer: Layer) {
-    const p = layer.parent 
-
-    let changeLayers = []
-
-    const layers = p.layers
-    for(let i = 0;i < layers.length;i++) {
-      const l = layers[i]
-      if(l != layer && l.visible) {
-        changeLayers.push(l)
-        l.visible = false
-      }
-    }
-
-
-    if(p.typename == "Layer") {
-      changeLayers = changeLayers.concat(
-        this.makeInvisibleOthers(p as Layer)
-      )
-    }
-  
-    return changeLayers
-  }
 
 
 
