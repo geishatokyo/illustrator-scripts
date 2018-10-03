@@ -81,11 +81,70 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utils_1 = __webpack_require__(1);
+/**
+ * 画面上にTextFrameItemを作って、実行ログを出力する
+ */
+var Logger = /** @class */ (function () {
+    function Logger(layerName) {
+        var layer;
+        try {
+            layer = app.activeDocument.layers.getByName(layerName);
+            if (layer) {
+                this.textItem = layer.pageItems.getByName("message");
+            }
+        }
+        catch (err) {
+        }
+        if (!layer) {
+            layer = app.activeDocument.layers.add();
+            layer.name = layerName;
+        }
+        if (!this.textItem) {
+            this.textItem = layer.textFrames.add();
+            this.textItem.name = "message";
+        }
+        this.textItem.contents = "";
+        this.textItem.textRange.characterAttributes.size = 15;
+        this.textItem.textRange.characterAttributes.leading = 18;
+        this.textItem.textRange.characterAttributes.autoLeading = false;
+    }
+    Logger.getDefault = function () {
+        if (this._defaultLogger == null) {
+            this._defaultLogger = new Logger("__log");
+        }
+        return this._defaultLogger;
+    };
+    Logger.prototype.log = function (log) {
+        this.coloredLog(log, Utils_1.ColorPallete.black());
+    };
+    Logger.prototype.warn = function (log) {
+        this.coloredLog("WARN: " + log, Utils_1.ColorPallete.yellow());
+    };
+    Logger.prototype.error = function (log) {
+        this.coloredLog("ERROR: " + log, Utils_1.ColorPallete.red());
+    };
+    Logger.prototype.coloredLog = function (log, color) {
+        var tr = this.textItem.characters.add(log + "\n");
+        tr.characterAttributes.strokeColor = color;
+    };
+    return Logger;
+}());
+exports.Logger = Logger;
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -141,15 +200,15 @@ exports.ColorPallete = ColorPallete;
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(2);
-module.exports = __webpack_require__(3);
+__webpack_require__(3);
+module.exports = __webpack_require__(4);
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1259,21 +1318,22 @@ module.exports = __webpack_require__(3);
 /******/ ]);
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference types="illustrator/2015.3"/>
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-var ActionExecutor_1 = __webpack_require__(4);
-var Actions_1 = __webpack_require__(5);
-var ImageExporter_1 = __webpack_require__(6);
-var Logger_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(1);
+var ActionExecutor_1 = __webpack_require__(5);
+var Actions_1 = __webpack_require__(6);
+var ImageExporter_1 = __webpack_require__(7);
+var Logger_1 = __webpack_require__(0);
 var DocumentTree_1 = __webpack_require__(8);
 var OriginLayerName = "original";
 var OutlinedLayerName = "outline";
+var TempOutlinedLayerName = "temp_outline";
 var SilhouetteLayerName = "silhouette";
 var StrokeColor = Utils_1.ColorPallete.rgbString("#898989");
 /**
@@ -1302,25 +1362,36 @@ var FillItDocument = /** @class */ (function () {
         var copyer = new LayerCopyer();
         var logger = Logger_1.Logger.getDefault();
         logger.log("Start copy");
-        // 全体をコピー
         copyer.copyAllItems(OriginLayerName, OutlinedLayerName);
+        copyer.copyAllItems(OriginLayerName, TempOutlinedLayerName);
+        copyer.copyAllItems(OriginLayerName, SilhouetteLayerName);
         logger.log("Make outline");
         // アウトライン化
+        // 細線のみ
+        logger.log("Inner lines");
         for (var _i = 0, _a = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children(); _i < _a.length; _i++) {
             var ele = _a[_i];
             logger.log("Layer " + ele.name());
             var outlineOperator = new ObjectOperator(ele);
-            outlineOperator.outlinenize(Utils_1.ColorPallete.noColor());
+            outlineOperator.outlinenize();
         }
+        // 外線
+        logger.log("Outer lines");
+        for (var _b = 0, _c = DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).children(); _b < _c.length; _b++) {
+            var ele = _c[_b];
+            logger.log("Layer " + ele.name());
+            var outlineOperator = new ObjectOperator(ele);
+            outlineOperator.shilhouettenize(Utils_1.ColorPallete.noColor());
+        }
+        // 結合
+        this.mergeOutlineElements();
         logger.log("Make silhouette");
-        // シルエット
         DocumentTree_1.Element.getActive().revertAll();
         DocumentTree_1.Element.clearCache();
-        copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName);
-        for (var _b = 0, _c = DocumentTree_1.Element.getActive().findElement(SilhouetteLayerName).children(); _b < _c.length; _b++) {
-            var ele = _c[_b];
+        for (var _d = 0, _e = DocumentTree_1.Element.getActive().findElement(SilhouetteLayerName).children(); _d < _e.length; _d++) {
+            var ele = _e[_d];
             var outlineOperator = new ObjectOperator(ele);
-            outlineOperator.changeStrokeAndFillColor(StrokeColor, Utils_1.ColorPallete.white());
+            outlineOperator.shilhouettenize(Utils_1.ColorPallete.white());
         }
         this.saveImages();
         DocumentTree_1.Element.getActive().revertAll();
@@ -1355,6 +1426,17 @@ var FillItDocument = /** @class */ (function () {
                 func(ele);
             }
         };
+    };
+    FillItDocument.prototype.mergeOutlineElements = function () {
+        var destinations = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children();
+        var froms = DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).children();
+        for (var i = 0; i < destinations.length; i++) {
+            var dest = destinations[i];
+            var from = froms[i];
+            from.raw().name = "outer";
+            from.moveTo(dest, ElementPlacement.PLACEATBEGINNING);
+        }
+        DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).remove();
     };
     return FillItDocument;
 }());
@@ -1442,7 +1524,23 @@ var ObjectOperator = /** @class */ (function () {
     /**
      * 線画化する
      */
-    ObjectOperator.prototype.outlinenize = function (fillColor) {
+    ObjectOperator.prototype.outlinenize = function () {
+        var actionExecutor = new ActionExecutor_1.ActionExecutor();
+        for (var _i = 0, _a = this.element.children(); _i < _a.length; _i++) {
+            var i = _a[_i];
+            var pageItem = i.raw();
+            var strokeWidth = pageItem.strokeWidth;
+            if (pageItem == null) {
+                continue;
+            }
+            // 色変更
+            pageItem.strokeColor = pageItem.fillColor;
+            pageItem.fillColor = Utils_1.ColorPallete.white();
+            actionExecutor.executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
+            pageItem.strokeWidth = strokeWidth;
+        }
+    };
+    ObjectOperator.prototype.shilhouettenize = function (fillColor) {
         this.changeStrokeAndFillColor(StrokeColor, fillColor);
         this.mergeAndOutineize();
         // 線の設定を変更
@@ -1498,7 +1596,7 @@ alert("Done!");
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1536,7 +1634,7 @@ exports.ActionExecutor = ActionExecutor;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1562,13 +1660,13 @@ var aiscripts;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Logger_1 = __webpack_require__(7);
+var Logger_1 = __webpack_require__(0);
 /// <reference types="illustrator/2015.3"/>
 var ImageExporter = /** @class */ (function () {
     function ImageExporter() {
@@ -1599,65 +1697,6 @@ exports.ImageExporter = ImageExporter;
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-/**
- * 画面上にTextFrameItemを作って、実行ログを出力する
- */
-var Logger = /** @class */ (function () {
-    function Logger(layerName) {
-        var layer;
-        try {
-            layer = app.activeDocument.layers.getByName(layerName);
-            if (layer) {
-                this.textItem = layer.pageItems.getByName("message");
-            }
-        }
-        catch (err) {
-        }
-        if (!layer) {
-            layer = app.activeDocument.layers.add();
-            layer.name = layerName;
-        }
-        if (!this.textItem) {
-            this.textItem = layer.textFrames.add();
-            this.textItem.name = "message";
-        }
-        this.textItem.contents = "";
-        this.textItem.textRange.characterAttributes.size = 15;
-        this.textItem.textRange.characterAttributes.leading = 18;
-        this.textItem.textRange.characterAttributes.autoLeading = false;
-    }
-    Logger.getDefault = function () {
-        if (this._defaultLogger == null) {
-            this._defaultLogger = new Logger("__log");
-        }
-        return this._defaultLogger;
-    };
-    Logger.prototype.log = function (log) {
-        this.coloredLog(log, Utils_1.ColorPallete.black());
-    };
-    Logger.prototype.warn = function (log) {
-        this.coloredLog("WARN: " + log, Utils_1.ColorPallete.yellow());
-    };
-    Logger.prototype.error = function (log) {
-        this.coloredLog("ERROR: " + log, Utils_1.ColorPallete.red());
-    };
-    Logger.prototype.coloredLog = function (log, color) {
-        var tr = this.textItem.characters.add(log + "\n");
-        tr.characterAttributes.strokeColor = color;
-    };
-    return Logger;
-}());
-exports.Logger = Logger;
-
-
-/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1677,7 +1716,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Logger_1 = __webpack_require__(7);
+var Logger_1 = __webpack_require__(0);
 var Element = /** @class */ (function () {
     function Element(parent) {
         this._isVisible = true;
@@ -1823,6 +1862,9 @@ var Element = /** @class */ (function () {
         }
         this.revertState();
     };
+    Element.prototype.clearCache = function () {
+        this._children = null;
+    };
     Element.cache = {};
     return Element;
 }());
@@ -1866,6 +1908,16 @@ var PageItemElement = /** @class */ (function (_super) {
     };
     PageItemElement.prototype.setSelected = function (selected) {
         this.item.selected = selected;
+    };
+    PageItemElement.prototype.remove = function () {
+        this.item.remove();
+        this._children = null;
+        this._parent.clearCache();
+    };
+    PageItemElement.prototype.moveTo = function (newParent, ep) {
+        this.item.move(newParent.raw(), ep);
+        this._parent = newParent;
+        newParent.clearCache();
     };
     return PageItemElement;
 }(Element));
@@ -1936,6 +1988,16 @@ var LayerElement = /** @class */ (function (_super) {
             child.setSelected(selected);
         }
     };
+    LayerElement.prototype.remove = function () {
+        this.layer.remove();
+        this._children = null;
+        this._parent.clearCache();
+    };
+    LayerElement.prototype.moveTo = function (newParent, ep) {
+        this.layer.move(newParent.raw(), ep);
+        this._parent = newParent;
+        newParent.clearCache();
+    };
     return LayerElement;
 }(Element));
 var DocumentElement = /** @class */ (function (_super) {
@@ -1978,6 +2040,10 @@ var DocumentElement = /** @class */ (function (_super) {
         return false;
     };
     DocumentElement.prototype.setSelected = function (selected) {
+    };
+    DocumentElement.prototype.remove = function () {
+    };
+    DocumentElement.prototype.moveTo = function (newParent, ep) {
     };
     return DocumentElement;
 }(Element));

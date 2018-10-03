@@ -24,7 +24,14 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        minimizer : [new UglifyJsPlugin()],
+        minimizer : [new UglifyJsPlugin({
+            extractComments: true,
+            uglifyOptions: {
+                output : {
+                    ascii_only : true
+                }
+            }
+        })],
         concatenateModules: true
     }
     

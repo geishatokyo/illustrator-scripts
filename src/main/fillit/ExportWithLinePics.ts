@@ -10,6 +10,7 @@ import { Element } from '../DocumentTree';
 
 const OriginLayerName = "original"
 const OutlinedLayerName = "outline"
+const TempOutlinedLayerName = "temp_outline";
 const SilhouetteLayerName = "silhouette"
 
 const StrokeColor = ColorPallete.rgbString("#898989")
@@ -41,30 +42,41 @@ class FillItDocument {
     const copyer = new LayerCopyer()
     const logger = Logger.getDefault()
     logger.log("Start copy")
-    // 全体をコピー
     copyer.copyAllItems(OriginLayerName, OutlinedLayerName)
+    copyer.copyAllItems(OriginLayerName, TempOutlinedLayerName)
+    copyer.copyAllItems(OriginLayerName, SilhouetteLayerName)
     
     logger.log("Make outline")
     // アウトライン化
+    // 細線のみ
+    logger.log("Inner lines");
     for(const ele of Element.getActive().findElement(OutlinedLayerName).children()) {
       logger.log("Layer " + ele.name())
       const outlineOperator = new ObjectOperator(ele)
-      outlineOperator.outlinenize(ColorPallete.noColor())
+      outlineOperator.outlinenize()
     }
+    // 外線
+    logger.log("Outer lines");
+    for(const ele of Element.getActive().findElement(TempOutlinedLayerName).children()) {
+      logger.log("Layer " + ele.name())
+      const outlineOperator = new ObjectOperator(ele)
+      outlineOperator.shilhouettenize(ColorPallete.noColor());
+    }
+    // 結合
+    this.mergeOutlineElements();
+
 
     logger.log("Make silhouette")
-    // シルエット
-    Element.getActive().revertAll();
-    Element.clearCache()
 
-    copyer.copyAllItems(OutlinedLayerName, SilhouetteLayerName)
+    Element.getActive().revertAll();
+    Element.clearCache();
 
     for(const ele of Element.getActive().findElement(SilhouetteLayerName).children()) {
       const outlineOperator = new ObjectOperator(ele)
-      outlineOperator.changeStrokeAndFillColor(StrokeColor, ColorPallete.white())
+      outlineOperator.shilhouettenize(ColorPallete.white());
     }
 
-    this.saveImages()
+    this.saveImages();
 
     Element.getActive().revertAll();
   }
@@ -103,6 +115,21 @@ class FillItDocument {
         func(ele)
       }
     }
+  }
+
+  mergeOutlineElements() {
+    const destinations = Element.getActive().findElement(OutlinedLayerName).children();
+    const froms = Element.getActive().findElement(TempOutlinedLayerName).children();
+    
+    for(let i = 0;i < destinations.length;i++){
+      const dest = destinations[i];
+      const from = froms[i];
+      (from.raw() as PageItem | Layer).name = "outer";
+      from.moveTo(dest, ElementPlacement.PLACEATBEGINNING);
+      
+    }
+
+    Element.getActive().findElement(TempOutlinedLayerName).remove();
   }
 
 }
@@ -212,18 +239,40 @@ class ObjectOperator {
   /**
    * 線画化する
    */
-  outlinenize(fillColor: Color) {
+  outlinenize() {
 
+    const actionExecutor = new ActionExecutor();
+    for( const i of this.element.children()) {
+      const pageItem = i.raw() as PathItem;
+      const strokeWidth = pageItem.strokeWidth;
+
+      if(pageItem == null) {
+        continue;
+      }
+
+      // 色変更
+      pageItem.strokeColor = pageItem.fillColor;
+      pageItem.fillColor = ColorPallete.white();
+
+      actionExecutor.executeActionFromSrc(
+        aiscripts.ChangeStrokeSide
+      );
+      pageItem.strokeWidth = strokeWidth;
+    }
+  }
+
+
+  shilhouettenize(fillColor: Color) {
     this.changeStrokeAndFillColor(
       StrokeColor, 
-      fillColor)
+      fillColor);
 
-    this.mergeAndOutineize()
+    this.mergeAndOutineize();
 
     // 線の設定を変更
     new ActionExecutor().executeActionFromSrc(
       aiscripts.ChangeStrokeSide
-    )
+    );
 
   }
 
@@ -250,7 +299,7 @@ class ObjectOperator {
     }
 
   }
-
+  
   private mergeAndOutineize() {
     Logger.getDefault().log("Outlineize: " + this.element.name())
     this.element.makeVisibleAllChildren(true)

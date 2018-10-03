@@ -157,6 +157,7 @@ export abstract class Element {
       this.setVisible(this._isVisible)
     }
   }
+  abstract remove(): void;
   /**
    * ドキュメント全体を巻き戻す
    */
@@ -180,6 +181,11 @@ export abstract class Element {
     this.revertState()
   }
 
+  abstract moveTo(newParent: Element, ep: ElementPlacement): void;
+
+  clearCache() {
+    this._children = null;
+  }
 
 }
 
@@ -229,6 +235,16 @@ class PageItemElement extends Element {
     this.item.selected = selected
   }
 
+  remove() {
+    this.item.remove();
+    this._children = null;
+    this._parent.clearCache();
+  }
+  moveTo(newParent: Element, ep: ElementPlacement) {
+    this.item.move(newParent.raw(), ep);
+    this._parent = newParent;
+    newParent.clearCache();
+  }
 }
 
 
@@ -305,7 +321,17 @@ class LayerElement extends Element {
       child.setSelected(selected)
     }
   }
+  remove() {
+    this.layer.remove();
+    this._children = null;
+    this._parent.clearCache();
+  }
 
+  moveTo(newParent: Element, ep: ElementPlacement) {
+    this.layer.move(newParent.raw(), ep);
+    this._parent = newParent;
+    newParent.clearCache();
+  }
 }
 
 
@@ -359,4 +385,10 @@ class DocumentElement extends Element {
   setSelected(selected: boolean): void {
   }
 
+
+  remove() {
+  }
+
+  moveTo(newParent: Element, ep: ElementPlacement) {
+  }
 }
