@@ -48,28 +48,28 @@ class FillItDocument {
     
     logger.log("Make outline")
     // アウトライン化
+    // 結合
+    this.mergeOutlineElements();
+    Element.getActive().revertAll();
+    Element.clearCache();
     // 細線のみ
     logger.log("Inner lines");
     for(const ele of Element.getActive().findElement(OutlinedLayerName).children()) {
       logger.log("Layer " + ele.name())
-      const outlineOperator = new ObjectOperator(ele)
+      const outlineOperator = new ObjectOperator(ele.findElement("inner"))
       outlineOperator.outlinenize()
     }
     // 外線
     logger.log("Outer lines");
-    for(const ele of Element.getActive().findElement(TempOutlinedLayerName).children()) {
+    for(const ele of Element.getActive().findElement(OutlinedLayerName).children()) {
       logger.log("Layer " + ele.name())
-      const outlineOperator = new ObjectOperator(ele)
+      const outlineOperator = new ObjectOperator(ele.findElement("outer"));
       outlineOperator.shilhouettenize(ColorPallete.noColor());
     }
-    // 結合
-    this.mergeOutlineElements();
 
-
+    // シルエット化
     logger.log("Make silhouette")
 
-    Element.getActive().revertAll();
-    Element.clearCache();
 
     for(const ele of Element.getActive().findElement(SilhouetteLayerName).children()) {
       const outlineOperator = new ObjectOperator(ele)
@@ -118,24 +118,32 @@ class FillItDocument {
   }
 
   mergeOutlineElements() {
-    const destinations = Element.getActive().findElement(OutlinedLayerName).children();
-    const froms = Element.getActive().findElement(TempOutlinedLayerName).children();
+    const outerLines = Element.getActive().findElement(OutlinedLayerName).children();
+    const innerLines = Element.getActive().findElement(TempOutlinedLayerName).children();
     
-    for(let i = 0;i < destinations.length;i++){
-      const dest = destinations[i];
-      const from = froms[i];
-      (from.raw() as PageItem | Layer).name = "outer";
-      from.moveTo(dest, ElementPlacement.PLACEATBEGINNING);
-      
+    const layer = Element.getActive().findElement(OutlinedLayerName);
+
+    for(let i = 0;i < outerLines.length;i++) {
+      const l = layer.asLayer().layers.add();
+      const innerLine = innerLines[i];
+      const outerLine = outerLines[i];
+      l.name = innerLine.name();
+      innerLine.setName("inner");
+      (innerLine.raw() as GroupItem).move(
+        l, ElementPlacement.PLACEATBEGINNING
+      );
+      outerLine.setName("outer");
+      (outerLine.raw() as GroupItem).move(
+        l, ElementPlacement.PLACEATBEGINNING
+      );
     }
 
-    Element.getActive().findElement(TempOutlinedLayerName).remove();
+    //Element.getActive().findElement(TempOutlinedLayerName).remove();
   }
 
 }
 
 class LayerCopyer {
-
   copyAllItems(copyFromLayerName: string, copyTargetLayerName: string) {
     const doc = app.activeDocument
 
@@ -210,6 +218,7 @@ class LayerCopyer {
       }
     }
   }
+
 }
 
 class ObjectOperator {
@@ -242,23 +251,33 @@ class ObjectOperator {
   outlinenize() {
 
     const actionExecutor = new ActionExecutor();
-    for( const i of this.element.children()) {
-      const pageItem = i.raw() as PathItem;
-      const strokeWidth = pageItem.strokeWidth;
+    const outlineizeRec = (e: Element) => {
+      if(e.children().length > 0) {
+        for(const c of e.children()) {
+          outlineizeRec(c);
+        }
+      } else {
+        const pageItem = e.raw() as PathItem;
 
-      if(pageItem == null) {
-        continue;
+        if(pageItem == null) {
+          return;
+        }
+        const strokeWidth = pageItem.strokeWidth;
+
+        // 色変更
+        pageItem.strokeColor = pageItem.fillColor;
+        pageItem.fillColor = ColorPallete.white();
+
+        app.activeDocument.selection = [];
+        pageItem.selected = true;
+
+        actionExecutor.executeActionFromSrc(
+          aiscripts.ChangeStrokeSide
+        );
+        pageItem.strokeWidth = strokeWidth;
       }
-
-      // 色変更
-      pageItem.strokeColor = pageItem.fillColor;
-      pageItem.fillColor = ColorPallete.white();
-
-      actionExecutor.executeActionFromSrc(
-        aiscripts.ChangeStrokeSide
-      );
-      pageItem.strokeWidth = strokeWidth;
     }
+    outlineizeRec(this.element);
   }
 
 
@@ -267,7 +286,7 @@ class ObjectOperator {
       StrokeColor, 
       fillColor);
 
-    this.mergeAndOutineize();
+    this.mergeAndOutineize(this.element);
 
     // 線の設定を変更
     new ActionExecutor().executeActionFromSrc(
@@ -300,15 +319,15 @@ class ObjectOperator {
 
   }
   
-  private mergeAndOutineize() {
-    Logger.getDefault().log("Outlineize: " + this.element.name())
-    this.element.makeVisibleAllChildren(true)
+  private mergeAndOutineize(element: Element = this.element) {
+    Logger.getDefault().log("Outlineize: " + element.name())
+    element.makeVisibleAllChildren(true)
 
-    if(this.element.typename() == "Layer") {
-      const layer = this.element.asLayer()
+    if(element.typename() == "Layer") {
+      const layer = element.asLayer()
       const compound = layer.compoundPathItems.add()
 
-      for(const child of this.element.children()) {
+      for(const child of element.children()) {
         const item = child.raw() as Layer | PageItem
 
         item.move(compound, ElementPlacement.PLACEATEND)
@@ -320,7 +339,7 @@ class ObjectOperator {
 
     } else {
       app.activeDocument.selection = [];
-      this.element.setSelected(true)
+      element.setSelected(true)
       app.executeMenuCommand("Live Pathfinder Add")
       app.executeMenuCommand('expandStyle');
 

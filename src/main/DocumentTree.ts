@@ -75,6 +75,12 @@ export abstract class Element {
     return this.raw().name
   }
 
+  setName(name: string) {
+    const raw = this.raw();
+    if(raw.typename !== "Document") {
+      (raw as PageItem | Layer).name = name;
+    }
+  }
   typename() {
     return this.raw().typename as string
   }

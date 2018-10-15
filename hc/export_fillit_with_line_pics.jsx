@@ -174,9 +174,9 @@ var ColorPallete = /** @class */ (function () {
         if (sharpColor.charAt(0) == "#") {
             sharpColor = sharpColor.slice(1);
         }
-        var r = parseInt(sharpColor.slice(0, 1));
-        var g = parseInt(sharpColor.slice(2, 3));
-        var b = parseInt(sharpColor.slice(4, 5));
+        var r = parseInt(sharpColor.slice(0, 2), 16);
+        var g = parseInt(sharpColor.slice(2, 4), 16);
+        var b = parseInt(sharpColor.slice(4, 6), 16);
         return this.rgb(r, g, b);
     };
     ColorPallete.white = function () {
@@ -1367,27 +1367,28 @@ var FillItDocument = /** @class */ (function () {
         copyer.copyAllItems(OriginLayerName, SilhouetteLayerName);
         logger.log("Make outline");
         // アウトライン化
+        // 結合
+        this.mergeOutlineElements();
+        DocumentTree_1.Element.getActive().revertAll();
+        DocumentTree_1.Element.clearCache();
         // 細線のみ
         logger.log("Inner lines");
         for (var _i = 0, _a = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children(); _i < _a.length; _i++) {
             var ele = _a[_i];
             logger.log("Layer " + ele.name());
-            var outlineOperator = new ObjectOperator(ele);
+            var outlineOperator = new ObjectOperator(ele.findElement("inner"));
             outlineOperator.outlinenize();
         }
         // 外線
         logger.log("Outer lines");
-        for (var _b = 0, _c = DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).children(); _b < _c.length; _b++) {
+        for (var _b = 0, _c = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children(); _b < _c.length; _b++) {
             var ele = _c[_b];
             logger.log("Layer " + ele.name());
-            var outlineOperator = new ObjectOperator(ele);
+            var outlineOperator = new ObjectOperator(ele.findElement("outer"));
             outlineOperator.shilhouettenize(Utils_1.ColorPallete.noColor());
         }
-        // 結合
-        this.mergeOutlineElements();
+        // シルエット化
         logger.log("Make silhouette");
-        DocumentTree_1.Element.getActive().revertAll();
-        DocumentTree_1.Element.clearCache();
         for (var _d = 0, _e = DocumentTree_1.Element.getActive().findElement(SilhouetteLayerName).children(); _d < _e.length; _d++) {
             var ele = _e[_d];
             var outlineOperator = new ObjectOperator(ele);
@@ -1428,15 +1429,20 @@ var FillItDocument = /** @class */ (function () {
         };
     };
     FillItDocument.prototype.mergeOutlineElements = function () {
-        var destinations = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children();
-        var froms = DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).children();
-        for (var i = 0; i < destinations.length; i++) {
-            var dest = destinations[i];
-            var from = froms[i];
-            from.raw().name = "outer";
-            from.moveTo(dest, ElementPlacement.PLACEATBEGINNING);
+        var outerLines = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName).children();
+        var innerLines = DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).children();
+        var layer = DocumentTree_1.Element.getActive().findElement(OutlinedLayerName);
+        for (var i = 0; i < outerLines.length; i++) {
+            var l = layer.asLayer().layers.add();
+            var innerLine = innerLines[i];
+            var outerLine = outerLines[i];
+            l.name = innerLine.name();
+            innerLine.setName("inner");
+            innerLine.raw().move(l, ElementPlacement.PLACEATBEGINNING);
+            outerLine.setName("outer");
+            outerLine.raw().move(l, ElementPlacement.PLACEATBEGINNING);
         }
-        DocumentTree_1.Element.getActive().findElement(TempOutlinedLayerName).remove();
+        //Element.getActive().findElement(TempOutlinedLayerName).remove();
     };
     return FillItDocument;
 }());
@@ -1526,23 +1532,33 @@ var ObjectOperator = /** @class */ (function () {
      */
     ObjectOperator.prototype.outlinenize = function () {
         var actionExecutor = new ActionExecutor_1.ActionExecutor();
-        for (var _i = 0, _a = this.element.children(); _i < _a.length; _i++) {
-            var i = _a[_i];
-            var pageItem = i.raw();
-            var strokeWidth = pageItem.strokeWidth;
-            if (pageItem == null) {
-                continue;
+        var outlineizeRec = function (e) {
+            if (e.children().length > 0) {
+                for (var _i = 0, _a = e.children(); _i < _a.length; _i++) {
+                    var c = _a[_i];
+                    outlineizeRec(c);
+                }
             }
-            // 色変更
-            pageItem.strokeColor = pageItem.fillColor;
-            pageItem.fillColor = Utils_1.ColorPallete.white();
-            actionExecutor.executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
-            pageItem.strokeWidth = strokeWidth;
-        }
+            else {
+                var pageItem = e.raw();
+                if (pageItem == null) {
+                    return;
+                }
+                var strokeWidth = pageItem.strokeWidth;
+                // 色変更
+                pageItem.strokeColor = pageItem.fillColor;
+                pageItem.fillColor = Utils_1.ColorPallete.white();
+                app.activeDocument.selection = [];
+                pageItem.selected = true;
+                actionExecutor.executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
+                pageItem.strokeWidth = strokeWidth;
+            }
+        };
+        outlineizeRec(this.element);
     };
     ObjectOperator.prototype.shilhouettenize = function (fillColor) {
         this.changeStrokeAndFillColor(StrokeColor, fillColor);
-        this.mergeAndOutineize();
+        this.mergeAndOutineize(this.element);
         // 線の設定を変更
         new ActionExecutor_1.ActionExecutor().executeActionFromSrc(Actions_1.aiscripts.ChangeStrokeSide);
     };
@@ -1566,13 +1582,14 @@ var ObjectOperator = /** @class */ (function () {
             changeColor(item);
         }
     };
-    ObjectOperator.prototype.mergeAndOutineize = function () {
-        Logger_1.Logger.getDefault().log("Outlineize: " + this.element.name());
-        this.element.makeVisibleAllChildren(true);
-        if (this.element.typename() == "Layer") {
-            var layer = this.element.asLayer();
+    ObjectOperator.prototype.mergeAndOutineize = function (element) {
+        if (element === void 0) { element = this.element; }
+        Logger_1.Logger.getDefault().log("Outlineize: " + element.name());
+        element.makeVisibleAllChildren(true);
+        if (element.typename() == "Layer") {
+            var layer = element.asLayer();
             var compound = layer.compoundPathItems.add();
-            for (var _i = 0, _a = this.element.children(); _i < _a.length; _i++) {
+            for (var _i = 0, _a = element.children(); _i < _a.length; _i++) {
                 var child = _a[_i];
                 var item = child.raw();
                 item.move(compound, ElementPlacement.PLACEATEND);
@@ -1584,7 +1601,7 @@ var ObjectOperator = /** @class */ (function () {
         }
         else {
             app.activeDocument.selection = [];
-            this.element.setSelected(true);
+            element.setSelected(true);
             app.executeMenuCommand("Live Pathfinder Add");
             app.executeMenuCommand('expandStyle');
         }
@@ -1766,6 +1783,12 @@ var Element = /** @class */ (function () {
     };
     Element.prototype.name = function () {
         return this.raw().name;
+    };
+    Element.prototype.setName = function (name) {
+        var raw = this.raw();
+        if (raw.typename !== "Document") {
+            raw.name = name;
+        }
     };
     Element.prototype.typename = function () {
         return this.raw().typename;

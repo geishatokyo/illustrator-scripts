@@ -23,9 +23,9 @@ export class ColorPallete {
       sharpColor = sharpColor.slice(1)
     }
 
-    const r = parseInt(sharpColor.slice(0,1))
-    const g = parseInt(sharpColor.slice(2,3))
-    const b = parseInt(sharpColor.slice(4,5))
+    const r = parseInt(sharpColor.slice(0,2), 16)
+    const g = parseInt(sharpColor.slice(2,4), 16)
+    const b = parseInt(sharpColor.slice(4,6), 16)
 
     return this.rgb(r,g,b)
   }
